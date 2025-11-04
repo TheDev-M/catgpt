@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: "Meow Project"
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/meow-project
+    username: postgres
+    password: Krumpli-1
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+meow:
+  stats:
+    max-hunger: 10
+    max-mood: 10
+    max-health: 10
