@@ -6,8 +6,8 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-public class MeowProjectApplication {
+public class CatGPTApplication {
     public static void main(String[] args) {
-        SpringApplication.run(MeowProjectApplication.class, args);
+        SpringApplication.run(CatGPTApplication.class, args);
     }
 }
