@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: "CatGPT Server (dev)"
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/meow-project
+    username: postgres
+    password: Krumpli-1
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+jwt:
+  secret: XMPX4mN1asH=r}aVm2kLH%bmK#%QmM?FofmG1HCgWP:B,GmL-m^%CV-!yM7cFnu_
+  expiration: 3600000
+
+meow:
+  stats:
+    max-hunger: 10
+    max-mood: 10
+    max-health: 10
