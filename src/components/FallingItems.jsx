@@ -42,21 +42,26 @@ export default function FallingItems({ reloadInventory }) {
     return () => clearTimeout(timeoutId);
   }, []);
 
-  async function handleCatch() {
-    if (!falling) return;
+    async function handleCatch() {
+        if (!falling) return;
 
-    try {
-      await increaseItemAmountByName(falling.name);
-      setLastCaught({ name: falling.name, icon: falling.icon });
-      setFalling(null);
+        const caught = falling;
 
-      reloadInventory?.({ background: true });
-    } catch (e) {
-      console.error("Failed to increase item amount", e);
+        setFalling(null);
+
+        try {
+            await increaseItemAmountByName(caught.name);
+
+            setLastCaught({ name: caught.name, icon: caught.icon });
+
+            reloadInventory?.({ background: true });
+        } catch (e) {
+            console.error("Failed to increase item amount", e);
+        }
     }
-  }
 
-  return (
+
+    return (
     <>
       {falling && (
         <div
@@ -68,7 +73,7 @@ export default function FallingItems({ reloadInventory }) {
             backgroundImage: `url(${falling.icon})`,
             animation: `fallItem ${FALL_DURATION}ms linear forwards`
           }}
-          onClick={handleCatch}
+          onMouseDown={handleCatch}
         />
       )}
 

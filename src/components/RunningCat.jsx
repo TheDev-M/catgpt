@@ -69,7 +69,7 @@ export default function RunningCat() {
             } ${RUN_DURATION}ms linear forwards`,
             willChange: "left"
           }}
-          onClick={handleClick}
+          onMouseDown={handleClick}
         />
       )}
 
