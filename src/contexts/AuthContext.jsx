@@ -1,27 +1,29 @@
 import { createContext, useEffect, useState } from "react";
 import { loginUser, registerUser } from "@/services/userApi.js";
+import { jwtDecode } from "jwt-decode";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext(null);
 
 const STORAGE_KEY = "auth";
 
+function isTokenValid(token) {
+    try {
+        const decoded = jwtDecode(token);
+
+        if (!decoded || !decoded.exp) return true;
+
+        return decoded.exp * 1000 > Date.now();
+    } catch (e) {
+        console.error("Failed to decode JWT", e);
+        return false;
+    }
+}
+
 export function AuthProvider({ children }) {
     const [token, setToken] = useState(null);
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-            const parsed = JSON.parse(stored);
-            if (parsed?.token) {
-                setToken(parsed.token);
-                setUser(parsed.user ?? null);
-            }
-        }
-        setLoading(false);
-    }, []);
 
     function saveAuth(newToken, newUser) {
         setToken(newToken);
@@ -38,6 +40,29 @@ export function AuthProvider({ children }) {
         setUser(null);
         localStorage.removeItem(STORAGE_KEY);
     }
+
+    useEffect(() => {
+        const stored = localStorage.getItem(STORAGE_KEY);
+
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                const storedToken = parsed?.token;
+
+                if (storedToken && isTokenValid(storedToken)) {
+                    setToken(storedToken);
+                    setUser(parsed.user ?? null);
+                } else {
+                    clearAuth();
+                }
+            } catch (err) {
+                console.error("Failed to restore auth:", err);
+                clearAuth();
+            }
+        }
+
+        setLoading(false);
+    }, []);
 
     async function login(username, password) {
         const { token, user } = await loginUser(username, password);
@@ -58,8 +83,12 @@ export function AuthProvider({ children }) {
         login,
         register,
         logout,
-        isAuthenticated: Boolean(token)
+        isAuthenticated: Boolean(token),
     };
 
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+    return (
+        <AuthContext.Provider value={value}>
+            {children}
+        </AuthContext.Provider>
+    );
 }
