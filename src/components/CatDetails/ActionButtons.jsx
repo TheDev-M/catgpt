@@ -1,6 +1,6 @@
 export default function ActionButtons({
   isSelected,
-  isBob,
+  isDefaultCat,
   onRename,
   onRelease,
   onBack,
@@ -20,7 +20,7 @@ export default function ActionButtons({
         <button
           className="btn btn-info rounded-full px-5"
           onClick={onRename}
-          disabled={isBob}
+          disabled={isDefaultCat}
         >
           Rename
         </button>
@@ -28,7 +28,7 @@ export default function ActionButtons({
         <button
           className="btn btn-error rounded-full px-5"
           onClick={onRelease}
-          disabled={isBob}
+          disabled={isDefaultCat}
         >
           Release
         </button>

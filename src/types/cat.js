@@ -13,4 +13,5 @@
  * @property {string[]} temperaments
  * @property {string} image
  * @property {CatStats} stats
+ * @property {boolean} isDefaultCat
  */

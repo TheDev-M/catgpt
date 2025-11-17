@@ -47,7 +47,7 @@ export default function CatDetailsInterface() {
     const [showRelease, setShowRelease] = useState(false);
 
     const isSelected = String(cat?.id) === String(selectedCatId);
-    const isBob = cat?.id === 1;
+    const isDefaultCat = cat?.isDefaultCat;
 
     async function handleRename(e) {
         e.preventDefault();
@@ -144,10 +144,10 @@ export default function CatDetailsInterface() {
 
                 <ActionButtons
                     isSelected={isSelected}
-                    isBob={isBob}
+                    isDefaultCat={isDefaultCat}
                     onRename={() => {
                         setRenaming(true);
-                        setNewName(cat.name); // optional: prefill with current name
+                        setNewName(cat.name);
                     }}
                     onRelease={() => setShowRelease(true)}
                     onBack={() => navigate("/catbox")}
