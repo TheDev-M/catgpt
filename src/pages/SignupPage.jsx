@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth.js";
 import LayoutBackground from "@/components/Layouts/LayoutBackground.jsx";
@@ -12,10 +12,13 @@ export default function SignupPage() {
     const [password, setPassword] = useState("");
     const [confirm, setConfirm] = useState("");
     const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
-    if (isAuthenticated) {
-        navigate("/", { replace: true });
-    }
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate("/", { replace: true });
+        }
+    }, [isAuthenticated, navigate]);
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -26,11 +29,15 @@ export default function SignupPage() {
             return;
         }
 
+        setIsLoading(true);
+
         try {
             await register(username.trim(), password, description.trim() || null);
             navigate("/", { replace: true });
         } catch {
             setError("Failed to register. Try a different username?");
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -43,7 +50,7 @@ export default function SignupPage() {
                             Create your account 😺
                         </h1>
                         <p className="text-sm opacity-70 mb-6 text-center">
-                            You'll get your own Bob and items.
+                            You'll get your own Bob as my gift.
                         </p>
 
                         <form onSubmit={handleSubmit} className="space-y-6">
@@ -60,6 +67,7 @@ export default function SignupPage() {
                                     minLength={3}
                                     maxLength={24}
                                     autoComplete="username"
+                                    disabled={isLoading}
                                 />
                             </div>
 
@@ -77,9 +85,10 @@ export default function SignupPage() {
                                     onChange={(e) => setDescription(e.target.value)}
                                     placeholder="Write something fun for the dev to read…"
                                     maxLength={300}
+                                    disabled={isLoading}
                                 />
                                 <span className="label-text-alt opacity-60 text-xs mt-1">
-                  This is just a note for you / the dev, not visible to others.
+                  This is just a note for the dev, not visible to others.
                 </span>
                             </div>
 
@@ -95,6 +104,7 @@ export default function SignupPage() {
                                     required
                                     minLength={6}
                                     autoComplete="new-password"
+                                    disabled={isLoading}
                                 />
                             </div>
 
@@ -110,6 +120,7 @@ export default function SignupPage() {
                                     required
                                     minLength={6}
                                     autoComplete="new-password"
+                                    disabled={isLoading}
                                 />
                             </div>
 
@@ -117,8 +128,19 @@ export default function SignupPage() {
                                 <p className="text-error text-sm text-center">{error}</p>
                             )}
 
-                            <button type="submit" className="btn btn-primary w-full mt-2">
-                                Sign up
+                            <button
+                                type="submit"
+                                className="btn btn-primary w-full mt-2"
+                                disabled={isLoading}
+                            >
+                                {isLoading ? (
+                                    <>
+                                        <span className="loading loading-spinner loading-sm" />
+                                        <span className="ml-2">Signing you up…</span>
+                                    </>
+                                ) : (
+                                    "Sign up"
+                                )}
                             </button>
                         </form>
 

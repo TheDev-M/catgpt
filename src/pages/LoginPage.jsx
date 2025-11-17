@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth.js";
 import LayoutBackground from "@/components/Layouts/LayoutBackground.jsx";
@@ -12,20 +12,27 @@ export default function LoginPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
-    if (isAuthenticated) {
-        navigate(from, { replace: true });
-    }
+    // (Optional) avoid navigate in render:
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate(from, { replace: true });
+        }
+    }, [isAuthenticated, from, navigate]);
 
     async function handleSubmit(e) {
         e.preventDefault();
         setError("");
+        setIsLoading(true);
 
         try {
             await login(username.trim(), password);
             navigate(from, { replace: true });
         } catch {
             setError("Invalid username or password.");
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -53,6 +60,7 @@ export default function LoginPage() {
                                     onChange={(e) => setUsername(e.target.value)}
                                     required
                                     autoComplete="username"
+                                    disabled={isLoading}
                                 />
                             </div>
 
@@ -67,6 +75,7 @@ export default function LoginPage() {
                                     onChange={(e) => setPassword(e.target.value)}
                                     required
                                     autoComplete="current-password"
+                                    disabled={isLoading}
                                 />
                             </div>
 
@@ -74,8 +83,19 @@ export default function LoginPage() {
                                 <p className="text-error text-sm text-center">{error}</p>
                             )}
 
-                            <button type="submit" className="btn btn-primary w-full mt-2">
-                                Log in
+                            <button
+                                type="submit"
+                                className="btn btn-primary w-full mt-2"
+                                disabled={isLoading}
+                            >
+                                {isLoading ? (
+                                    <>
+                                        <span className="loading loading-spinner loading-sm" />
+                                        <span className="ml-2">Logging in…</span>
+                                    </>
+                                ) : (
+                                    "Log in"
+                                )}
                             </button>
                         </form>
 
