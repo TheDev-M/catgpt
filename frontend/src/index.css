@@ -1,0 +1,4 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: caramellatte, valentine --default, synthwave, autumn, abyss;
+}
