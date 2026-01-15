@@ -43,13 +43,7 @@
         <li><a href="#key-features">Key Features</a></li>
       </ul>
     </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
+    <li><a href="#live-demo">Live Demo</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#project-structure">Project Structure</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
@@ -57,6 +51,13 @@
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li>
+      <a href="#local-development-setup">Local Development Setup</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
   </ol>
 </details>
 
@@ -117,11 +118,11 @@ Whether you're a cat lover, game enthusiast, or developer exploring full-stack a
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- GETTING STARTED -->
+<!-- LOCAL DEVELOPMENT SETUP -->
 
-## Getting Started
+## Local Development Setup
 
-Follow these instructions to get CatGPT running on your local machine.
+Want to run CatGPT locally or contribute to development? Follow these instructions.
 
 ### Prerequisites
 
@@ -251,6 +252,27 @@ http://localhost:5173
 ```
 
 Create an account, adopt your first cat, and start your CatGPT journey!
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- LIVE DEMO -->
+
+## Live Demo
+
+Experience CatGPT without any setup:
+
+🌐 **Frontend**: [https://catgpt-demo.netlify.app](https://catgpt-demo.netlify.app)
+
+🖥️ **Backend API**: [https://catgpt-server.onrender.com](https://catgpt-server.onrender.com)
+
+> **Note**: The backend is hosted on Render's free tier, which means the server goes to sleep after periods of inactivity. The first request may take 1-2 minutes to wake up the server, but subsequent requests will be fast. Please be patient on your first visit!
+
+### Getting Started with the Demo
+
+1. Visit [https://catgpt-demo.netlify.app](https://catgpt-demo.netlify.app)
+2. Create a new account on the signup page
+3. Adopt your first cat and start playing!
+4. If the app seems slow initially, wait a moment for the server to wake up
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
