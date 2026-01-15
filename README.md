@@ -47,8 +47,6 @@
     <li><a href="#usage">Usage</a></li>
     <li><a href="#project-structure">Project Structure</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
     <li>
@@ -65,7 +63,7 @@
 
 ## About The Project
 
-[![CatGPT Screen Shot][product-screenshot]](https://imgur.com/a/kz7XVHi)
+[![CatGPT Screen Shot][product-screenshot]](https://i.imgur.com/qOl223V.png)
 
 CatGPT is an innovative virtual pet simulator that combines the charm of Tamagotchi-style pet care with modern AI chat capabilities. Adopt virtual cats of different breeds, care for them by managing their hunger, mood, and health stats, and engage in conversations powered by AI to create a unique bond with your feline companions.
 
@@ -378,7 +376,7 @@ See the [open issues](https://github.com/TheDev-M/catgpt/issues) for a full list
 
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Nagy Márton - nagy.marton.2002@gmail.com
 
 Project Link: [https://github.com/TheDev-M/catgpt](https://github.com/TheDev-M/catgpt)
 
@@ -398,7 +396,6 @@ Resources and libraries that made this project possible:
 - [TailwindCSS](https://tailwindcss.com)
 - [JWT.io](https://jwt.io)
 - [React Router](https://reactrouter.com)
-- [Img Shields](https://shields.io)
 - [Best README Template](https://github.com/othneildrew/Best-README-Template)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
