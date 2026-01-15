@@ -12,7 +12,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/yourusername/catgpt">
+  <a href="https://github.com/TheDev-M/catgpt">
     <img src="frontend/public/imgs/catbox.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -21,14 +21,14 @@
   <p align="center">
     An interactive virtual pet simulator with AI-powered cat companions!
     <br />
-    <a href="https://github.com/yourusername/catgpt"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/TheDev-M/catgpt"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/yourusername/catgpt">View Demo</a>
+    <a href="https://github.com/TheDev-M/catgpt">View Demo</a>
     ·
-    <a href="https://github.com/yourusername/catgpt/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/TheDev-M/catgpt/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
-    <a href="https://github.com/yourusername/catgpt/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/TheDev-M/catgpt/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
@@ -65,7 +65,7 @@
 
 ## About The Project
 
-[![CatGPT Screen Shot][product-screenshot]](https://example.com)
+[![CatGPT Screen Shot][product-screenshot]](https://imgur.com/a/kz7XVHi)
 
 CatGPT is an innovative virtual pet simulator that combines the charm of Tamagotchi-style pet care with modern AI chat capabilities. Adopt virtual cats of different breeds, care for them by managing their hunger, mood, and health stats, and engage in conversations powered by AI to create a unique bond with your feline companions.
 
@@ -122,7 +122,7 @@ Whether you're a cat lover, game enthusiast, or developer exploring full-stack a
 
 ## Local Development Setup
 
-Want to run CatGPT locally or contribute to development? Follow these instructions.
+Want to run CatGPT locally ? Follow these instructions.
 
 ### Prerequisites
 
@@ -162,7 +162,7 @@ Ensure you have the following installed:
 #### 1. Clone the Repository
 
 ```sh
-git clone https://github.com/yourusername/catgpt.git
+git clone https://github.com/TheDev-M/catgpt.git
 cd catgpt
 ```
 
@@ -263,16 +263,15 @@ Experience CatGPT without any setup:
 
 🌐 **Frontend**: [https://catgpt-demo.netlify.app](https://catgpt-demo.netlify.app)
 
-🖥️ **Backend API**: [https://catgpt-server.onrender.com](https://catgpt-server.onrender.com)
-
 > **Note**: The backend is hosted on Render's free tier, which means the server goes to sleep after periods of inactivity. The first request may take 1-2 minutes to wake up the server, but subsequent requests will be fast. Please be patient on your first visit!
 
 ### Getting Started with the Demo
 
 1. Visit [https://catgpt-demo.netlify.app](https://catgpt-demo.netlify.app)
-2. Create a new account on the signup page
-3. Adopt your first cat and start playing!
-4. If the app seems slow initially, wait a moment for the server to wake up
+2. Create a new account on the signup page.
+3. A Bob cat is gifted for every new user now!
+4. Adopt your first cat and start playing!
+5. If the app seems slow initially, wait a few for the server to wake up, then reload the page.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -286,12 +285,11 @@ Experience CatGPT without any setup:
 2. Enter your username, email, and password
 3. Click "Sign Up" to create your account
 
-### Adopting Your First Cat
+### Adopting Cats
 
-1. After logging in, click the "Cat Box" button
-2. Browse available cat breeds using the breed selector
+1. Catch the running nyan-cats.
+2. Give your cat a nickname in the popup modal
 3. Click "Catch Cat" to adopt a new companion
-4. Give your cat a nickname in the popup modal
 
 ### Caring for Your Cats
 
@@ -366,42 +364,13 @@ catgpt/
 - [x] Item collection and usage system
 - [x] Multi-cat management
 - [x] Real-time stat decay
-- [ ] Cat breeding system
 - [ ] Achievement/badge system
 - [ ] Social features (friend list, cat trading)
 - [ ] Mini-games for earning items
 - [ ] Mobile app (React Native)
-- [ ] Cat customization (accessories, colors)
 - [ ] Notifications for critical stat levels
-- [ ] Leaderboards and competitions
 
-See the [open issues](https://github.com/yourusername/catgpt/issues) for a full list of proposed features and known issues.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- CONTRIBUTING -->
-
-## Contributing
-
-Contributions make the open source community an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-Don't forget to give the project a star! ⭐
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- LICENSE -->
-
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+See the [open issues](https://github.com/TheDev-M/catgpt/issues) for a full list of proposed features and known issues.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -411,7 +380,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
 
-Project Link: [https://github.com/yourusername/catgpt](https://github.com/yourusername/catgpt)
+Project Link: [https://github.com/TheDev-M/catgpt](https://github.com/TheDev-M/catgpt)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -436,16 +405,16 @@ Resources and libraries that made this project possible:
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/yourusername/catgpt.svg?style=for-the-badge
-[contributors-url]: https://github.com/yourusername/catgpt/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/yourusername/catgpt.svg?style=for-the-badge
-[forks-url]: https://github.com/yourusername/catgpt/network/members
-[stars-shield]: https://img.shields.io/github/stars/yourusername/catgpt.svg?style=for-the-badge
-[stars-url]: https://github.com/yourusername/catgpt/stargazers
-[issues-shield]: https://img.shields.io/github/issues/yourusername/catgpt.svg?style=for-the-badge
-[issues-url]: https://github.com/yourusername/catgpt/issues
-[license-shield]: https://img.shields.io/github/license/yourusername/catgpt.svg?style=for-the-badge
-[license-url]: https://github.com/yourusername/catgpt/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/TheDev-M/catgpt.svg?style=for-the-badge
+[contributors-url]: https://github.com/TheDev-M/catgpt/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/TheDev-M/catgpt.svg?style=for-the-badge
+[forks-url]: https://github.com/TheDev-M/catgpt/network/members
+[stars-shield]: https://img.shields.io/github/stars/TheDev-M/catgpt.svg?style=for-the-badge
+[stars-url]: https://github.com/TheDev-M/catgpt/stargazers
+[issues-shield]: https://img.shields.io/github/issues/TheDev-M/catgpt.svg?style=for-the-badge
+[issues-url]: https://github.com/TheDev-M/catgpt/issues
+[license-shield]: https://img.shields.io/github/license/TheDev-M/catgpt.svg?style=for-the-badge
+[license-url]: https://github.com/TheDev-M/catgpt/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/yourprofile
 [product-screenshot]: images/screenshot.png
