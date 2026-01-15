@@ -395,7 +395,6 @@ Resources and libraries that made this project possible:
 - [TailwindCSS](https://tailwindcss.com)
 - [JWT.io](https://jwt.io)
 - [React Router](https://reactrouter.com)
-- [Best README Template](https://github.com/othneildrew/Best-README-Template)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -434,3 +433,5 @@ Resources and libraries that made this project possible:
 [JWT-url]: https://jwt.io/
 [HuggingFace.co]: https://img.shields.io/badge/Hugging_Face-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black
 [HuggingFace-url]: https://huggingface.co/
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
