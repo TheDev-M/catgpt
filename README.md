@@ -2,7 +2,6 @@
 
 <!-- PROJECT SHIELDS -->
 
-[![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
@@ -48,13 +47,7 @@
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
-    <li>
-      <a href="#local-development-setup">Local Development Setup</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
+    <li><a href="#local-development-setup">Local Development Setup</a></li>
   </ol>
 </details>
 
@@ -112,143 +105,6 @@ Whether you're a cat lover, game enthusiast, or developer exploring full-stack a
 - **Cat Collection**: Build your collection by catching different cat breeds
 - **Stat Decay System**: Hunger and mood decrease over time, requiring active care
 - **Responsive Design**: Seamless experience across desktop and mobile devices
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- LOCAL DEVELOPMENT SETUP -->
-
-## Local Development Setup
-
-Want to run CatGPT locally ? Follow these instructions.
-
-### Prerequisites
-
-Ensure you have the following installed:
-
-- **Java Development Kit (JDK) 21**
-
-  ```sh
-  java --version
-  ```
-
-- **Maven 3.8+**
-
-  ```sh
-  mvn --version
-  ```
-
-- **Node.js 16+**
-
-  ```sh
-  node --version
-  ```
-
-- **PostgreSQL 14+**
-
-  ```sh
-  psql --version
-  ```
-
-- **npm**
-  ```sh
-  npm install npm@latest -g
-  ```
-
-### Installation
-
-#### 1. Clone the Repository
-
-```sh
-git clone https://github.com/TheDev-M/catgpt.git
-cd catgpt
-```
-
-#### 2. Set Up the Database
-
-Create a PostgreSQL database:
-
-```sh
-createdb catgpt
-```
-
-Or using psql:
-
-```sql
-CREATE DATABASE catgpt;
-```
-
-#### 3. Configure Backend Environment
-
-Navigate to the backend directory and create a `.env` file:
-
-```sh
-cd backend
-cp .env.example .env
-```
-
-Edit `.env` with your configuration:
-
-```env
-# Database Configuration
-SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/catgpt
-SPRING_DATASOURCE_USERNAME=your_db_username
-SPRING_DATASOURCE_PASSWORD=your_db_password
-
-# JWT Configuration
-JWT_SECRET=your_super_secret_jwt_key_here
-JWT_EXPIRATION=3600000
-
-# CatGPT Stats
-MAX_HUNGER=10
-MAX_MOOD=10
-MAX_HEALTH=10
-```
-
-#### 4. Install Backend Dependencies and Run
-
-```sh
-# Install dependencies and run
-./mvnw clean install
-./mvnw spring-boot:run
-```
-
-The backend will start on `http://localhost:8080`
-
-#### 5. Configure Frontend Environment
-
-In a new terminal, navigate to the frontend directory:
-
-```sh
-cd ../frontend
-cp .env.example .env
-```
-
-Edit the `.env` file with your Hugging Face API token:
-
-```env
-VITE_HUGGINGFACE_API_TOKEN=your_huggingface_token_here
-```
-
-Get your API token from [Hugging Face](https://huggingface.co/settings/tokens)
-
-#### 6. Install Frontend Dependencies and Run
-
-```sh
-npm install
-npm run dev
-```
-
-The frontend will start on `http://localhost:5173`
-
-#### 7. Access the Application
-
-Open your browser and navigate to:
-
-```
-http://localhost:5173
-```
-
-Create an account, adopt your first cat, and start your CatGPT journey!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -400,19 +256,15 @@ Resources and libraries that made this project possible:
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/TheDev-M/catgpt.svg?style=for-the-badge
-[contributors-url]: https://github.com/TheDev-M/catgpt/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/TheDev-M/catgpt.svg?style=for-the-badge
 [forks-url]: https://github.com/TheDev-M/catgpt/network/members
 [stars-shield]: https://img.shields.io/github/stars/TheDev-M/catgpt.svg?style=for-the-badge
 [stars-url]: https://github.com/TheDev-M/catgpt/stargazers
 [issues-shield]: https://img.shields.io/github/issues/TheDev-M/catgpt.svg?style=for-the-badge
 [issues-url]: https://github.com/TheDev-M/catgpt/issues
-[license-shield]: https://img.shields.io/github/license/TheDev-M/catgpt.svg?style=for-the-badge
-[license-url]: https://github.com/TheDev-M/catgpt/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/yourprofile
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: https://i.imgur.com/qOl223V.png
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
 [Vite.js]: https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white
