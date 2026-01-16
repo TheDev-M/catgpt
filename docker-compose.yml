@@ -13,7 +13,7 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-catgpt}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-catgpt} -d catgpt"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -35,16 +35,16 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/catgpt
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-catgpt}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-catgpt123}
-      
+
       # JWT Configuration
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRATION: ${JWT_EXPIRATION:-3600000}
-      
+
       # CatGPT Stats
       MAX_HUNGER: ${MAX_HUNGER:-10}
       MAX_MOOD: ${MAX_MOOD:-10}
       MAX_HEALTH: ${MAX_HEALTH:-10}
-      
+
       # Spring Boot Configuration
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: false
