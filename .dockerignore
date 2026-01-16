@@ -1,0 +1,41 @@
+# Dependencies (will be installed fresh in container)
+node_modules/
+backend/target/
+frontend/.vite/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Docker files (don't need these inside the image)
+docker-compose.yml
+docker-compose.override.yml
+.dockerignore
+
+# Documentation
+DOCKER_SETUP.md
+
+# Test coverage
+coverage/
+
+# Backend specific
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+
+# Frontend specific
+frontend/dist/
