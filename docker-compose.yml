@@ -35,16 +35,16 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/catgpt
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-catgpt}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-catgpt123}
-
+      
       # JWT Configuration
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRATION: ${JWT_EXPIRATION:-3600000}
-
+      
       # CatGPT Stats
       MAX_HUNGER: ${MAX_HUNGER:-10}
       MAX_MOOD: ${MAX_MOOD:-10}
       MAX_HEALTH: ${MAX_HEALTH:-10}
-
+      
       # Spring Boot Configuration
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: false
@@ -54,12 +54,6 @@ services:
       - "8080:8080"
     networks:
       - catgpt-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
 
   # React Frontend
   frontend:

@@ -1,4 +1,6 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080";
+const envValue = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = envValue === "PROXY" ? "" : (envValue || "http://localhost:8080");
+
 const STORAGE_KEY = "auth";
 
 function getAuthToken() {
