@@ -19,7 +19,7 @@ jwt:
   secret: ${JWT_SECRET}
   expiration: ${JWT_EXPIRATION:3600000}
 
-meow:
+catgpt:
   stats:
     max-hunger: 10
     max-mood: 10

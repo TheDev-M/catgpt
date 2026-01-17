@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "meow.stats")
+@ConfigurationProperties(prefix = "catgpt.stats")
 @Getter @Setter
 public class StatsConfig {
     private int maxHunger = 10;
