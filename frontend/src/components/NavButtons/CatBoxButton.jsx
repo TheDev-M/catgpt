@@ -4,6 +4,7 @@ export default function CatBoxButton() {
   const navigate = useNavigate();
   return (
     <button
+      id="catbox-button"
       type="button"
       aria-label="Go to Cat Box"
       title="Cat Box"

@@ -1,6 +1,7 @@
 export default function CatFilter({ value, onChange }) {
   return (
     <input
+      id="catbox-search-input"
       type="text"
       value={value}
       onChange={(e) => onChange?.(e.target.value)}

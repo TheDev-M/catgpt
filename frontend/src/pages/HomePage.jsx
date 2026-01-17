@@ -70,13 +70,14 @@ export default function HomePage() {
 
                     <div className="absolute top-3 right-3 z-1000 flex items-center gap-2">
                         {username && (
-                            <span className="text-xs sm:text-sm opacity-80">
+                            <span id="home-username-display" className="text-xs sm:text-sm opacity-80">
                 Logged in as{" "}
                                 <span className="font-semibold">{username}</span>
               </span>
                         )}
 
                         <button
+                            id="home-logout-button"
                             type="button"
                             onClick={handleLogout}
                             className="btn btn-xs btn-outline"
