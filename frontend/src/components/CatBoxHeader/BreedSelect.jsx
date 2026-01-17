@@ -1,6 +1,7 @@
 export default function BreedSelect({ breeds = [], value, onChange }) {
   return (
     <select
+      id="catbox-breed-select"
       value={value}
       onChange={(e) => onChange?.(e.target.value)}
       aria-label="Select cat breed"
