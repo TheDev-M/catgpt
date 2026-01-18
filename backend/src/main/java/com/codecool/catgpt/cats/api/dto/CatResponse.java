@@ -10,6 +10,7 @@ public record CatResponse(
         String breed,
         List<String> temperaments,
         StatsResponse stats,
+        Boolean isDefaultCat,
         String image
 ) {
     public static CatResponse from(Cat c) {
@@ -24,6 +25,7 @@ public record CatResponse(
                         c.getStats().getMood(),
                         c.getStats().getHealth()
                 ),
+                c.isDefaultCat(),
                 c.getImage()
         );
     }
