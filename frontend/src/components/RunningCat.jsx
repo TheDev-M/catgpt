@@ -58,6 +58,7 @@ export default function RunningCat() {
 
       {cat && (
         <div
+          id="running-cat"
           key={cat.key}
           className="pointer-events-auto fixed z-1500 h-[100px] w-[150px] cursor-pointer bg-no-repeat bg-cover"
           style={{
