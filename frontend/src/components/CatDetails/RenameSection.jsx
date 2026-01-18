@@ -1,34 +1,14 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 export default function RenameSection({
   newName,
   setNewName,
+  hint,
   error,
   onSubmit,
   onCancel
 }) {
   const inputRef = useRef(null);
-  const [hint, setHint] = useState("");
-
-  function handleInput(e) {
-    const el = inputRef.current;
-
-    setNewName(e.target.value);
-
-    if (el.validity.valueMissing) {
-      setHint("Name is required.");
-    } else if (el.validity.patternMismatch) {
-      setHint(
-        "Only letters, numbers, and spaces allowed. Must start with a letter."
-      );
-    } else if (el.validity.tooShort) {
-      setHint(`Name must be at least ${el.minLength} characters.`);
-    } else if (el.validity.tooLong) {
-      setHint(`Name must be less than ${el.maxLength} characters.`);
-    } else {
-      setHint("");
-    }
-  }
 
   return (
     <form
@@ -36,7 +16,7 @@ export default function RenameSection({
       onSubmit={onSubmit}
       className="
         fixed bottom-20 left-1/2 -translate-x-1/2
-        z-[60]
+        z-60
         w-full max-w-md
         bg-base-200/95 backdrop-blur
         rounded-2xl shadow-lg
@@ -49,7 +29,6 @@ export default function RenameSection({
         </label>
 
         <input
-          id="cat-rename-input"
           ref={inputRef}
           type="text"
           required
@@ -58,31 +37,26 @@ export default function RenameSection({
           maxLength={16}
           placeholder="New cat name"
           value={newName}
-          onChange={handleInput}
-          className={`input validator input-bordered w-full ${
+          onChange={(e) => setNewName(e.target.value)}
+          className={`input input-bordered w-full ${
             error ? "input-error" : ""
           }`}
         />
 
-        {hint && <p id="cat-rename-hint" className="text-xs mt-1 text-warning">{hint}</p>}
+        {hint && <p className="text-xs mt-1 text-warning">{hint}</p>}
       </div>
 
-      {error && <p id="cat-rename-error" className="text-error text-xs text-center -mt-1">{error}</p>}
+      {error && <p className="text-error text-xs text-center -mt-1">{error}</p>}
 
       <div className="flex justify-end gap-2">
         <button
-          id="cat-rename-cancel"
           type="button"
           className="btn btn-ghost btn-sm"
           onClick={onCancel}
         >
           Cancel
         </button>
-        <button 
-          id="cat-rename-submit"
-          type="submit" 
-          className="btn btn-primary btn-sm"
-        >
+        <button type="submit" className="btn btn-primary btn-sm">
           Done
         </button>
       </div>
