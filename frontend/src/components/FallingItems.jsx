@@ -65,6 +65,7 @@ export default function FallingItems({ reloadInventory }) {
     <>
       {falling && (
         <div
+          id="falling-item"
           key={falling.key}
           className="fixed z-1200 w-14 h-14 cursor-pointer bg-no-repeat bg-contain pointer-events-auto"
           style={{
@@ -74,6 +75,7 @@ export default function FallingItems({ reloadInventory }) {
             animation: `fallItem ${FALL_DURATION}ms linear forwards`
           }}
           onMouseDown={handleCatch}
+          data-item-name={falling.name}
         />
       )}
 

@@ -32,6 +32,7 @@ export default function RenameSection({
 
   return (
     <form
+      id="cat-rename-form"
       onSubmit={onSubmit}
       className="
         fixed bottom-20 left-1/2 -translate-x-1/2
@@ -48,6 +49,7 @@ export default function RenameSection({
         </label>
 
         <input
+          id="cat-rename-input"
           ref={inputRef}
           type="text"
           required
@@ -62,20 +64,25 @@ export default function RenameSection({
           }`}
         />
 
-        {hint && <p className="text-xs mt-1 text-warning">{hint}</p>}
+        {hint && <p id="cat-rename-hint" className="text-xs mt-1 text-warning">{hint}</p>}
       </div>
 
-      {error && <p className="text-error text-xs text-center -mt-1">{error}</p>}
+      {error && <p id="cat-rename-error" className="text-error text-xs text-center -mt-1">{error}</p>}
 
       <div className="flex justify-end gap-2">
         <button
+          id="cat-rename-cancel"
           type="button"
           className="btn btn-ghost btn-sm"
           onClick={onCancel}
         >
           Cancel
         </button>
-        <button type="submit" className="btn btn-primary btn-sm">
+        <button 
+          id="cat-rename-submit"
+          type="submit" 
+          className="btn btn-primary btn-sm"
+        >
           Done
         </button>
       </div>

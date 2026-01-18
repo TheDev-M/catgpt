@@ -1,6 +1,7 @@
 export default function InventoryButton({ open, onToggle }) {
   return (
     <button
+      id="inventory-button"
       type="button"
       aria-label="Toggle Inventory"
       title={open ? "Close Inventory" : "Open Inventory"}
