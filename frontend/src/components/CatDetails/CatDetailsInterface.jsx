@@ -12,7 +12,7 @@ import RenameSection from "./RenameSection.jsx";
 import ActionButtons from "./ActionButtons.jsx";
 import ReleaseModal from "./ReleaseModal.jsx";
 
-function validateCatName(rawName, currentCat, hasDuplicateName) {
+function validateCatName(rawName, currentCat, hasDuplicateName, originalName) {
   const trimmed = rawName.trim();
 
   if (!trimmed) return "Name is required.";
@@ -21,6 +21,10 @@ function validateCatName(rawName, currentCat, hasDuplicateName) {
   }
   if (trimmed.length < 3) return "Name must be at least 3 characters.";
   if (trimmed.length > 16) return "Name must be less than 16 characters.";
+
+  if (trimmed === originalName) {
+    return "";
+  }
 
   if (
     trimmed.toLowerCase() !== currentCat.name.toLowerCase() &&
@@ -41,6 +45,7 @@ export default function CatDetailsInterface() {
 
   const [renaming, setRenaming] = useState(false);
   const [newName, setNewName] = useState("");
+  const [originalName, setOriginalName] = useState("");
   const [nameHint, setNameHint] = useState("");
   const [nameError, setNameError] = useState("");
   const [showRelease, setShowRelease] = useState(false);
@@ -54,10 +59,23 @@ export default function CatDetailsInterface() {
 
     setNameError("");
 
-    const validationMessage = validateCatName(newName, cat, hasDuplicateName);
+    const validationMessage = validateCatName(
+      newName,
+      cat,
+      hasDuplicateName,
+      originalName
+    );
 
     if (validationMessage) {
       setNameHint(validationMessage);
+      return;
+    }
+
+    if (newName.trim().toLowerCase() === cat.name.toLowerCase()) {
+      setRenaming(false);
+      setNewName("");
+      setOriginalName("");
+      setNameHint("");
       return;
     }
 
@@ -67,6 +85,7 @@ export default function CatDetailsInterface() {
 
       setRenaming(false);
       setNewName("");
+      setOriginalName("");
       setNameHint("");
     } catch (err) {
       setNameError(
@@ -132,8 +151,9 @@ export default function CatDetailsInterface() {
           isSelected={isSelected}
           isDefaultCat={isDefaultCat}
           onRename={() => {
-            setRenaming(true);
+            setOriginalName(cat.name);
             setNewName(cat.name);
+            setRenaming(true);
           }}
           onRelease={() => setShowRelease(true)}
           onBack={() => navigate("/catbox")}
@@ -155,6 +175,7 @@ export default function CatDetailsInterface() {
           onCancel={() => {
             setRenaming(false);
             setNewName("");
+            setOriginalName("");
             setNameHint("");
             setNameError("");
           }}
