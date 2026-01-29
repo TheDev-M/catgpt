@@ -24,8 +24,12 @@ export default function useCats() {
     void fetchCats();
   }, [fetchCats]);
 
-  const hasDuplicateName = (name) => cats.some(cat =>
-      cat.name.toLowerCase() === name.trim().toLowerCase());
+  const hasDuplicateName = (name, currentCatId) =>
+    cats.some(
+      (cat) =>
+        cat.name.toLowerCase() === name.trim().toLowerCase() &&
+        cat.id !== currentCatId
+    );
 
-  return { cats, loading, error, refetch: () => fetchCats(), hasDuplicateName };
+  return { cats, loading, error, refetch: fetchCats, hasDuplicateName };
 }

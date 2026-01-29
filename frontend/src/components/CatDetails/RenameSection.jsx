@@ -23,7 +23,10 @@ export default function RenameSection({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const validationMessage = validateCatName(newName, cat, hasDuplicateName);
+    const validationMessage = validateCatName(newName, cat, (name) =>
+      hasDuplicateName(name, cat.id)
+    );
+
     if (validationMessage) {
       setHint(validationMessage);
       return;
