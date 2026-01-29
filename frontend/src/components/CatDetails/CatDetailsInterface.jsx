@@ -3,8 +3,9 @@ import { useState } from "react";
 import { useCat } from "@/hooks/useCat.js";
 import useCats from "@/hooks/useCats.js";
 import { useSelectedCat } from "@/contexts/SelectedCatContext.jsx";
+import { useRenameForm } from "@/hooks/useRenameForm.js";
 
-import { renameCatById, deleteCatById } from "@/services/catApi.js";
+import { deleteCatById } from "@/services/catApi.js";
 
 import CatProfileCard from "./CatProfileCard.jsx";
 import CatInfoCard from "./CatInfoCard.jsx";
@@ -12,72 +13,27 @@ import RenameSection from "./RenameSection.jsx";
 import ActionButtons from "./ActionButtons.jsx";
 import ReleaseModal from "./ReleaseModal.jsx";
 
-function validateCatName(rawName, currentCat, hasDuplicateName) {
-  const trimmed = rawName.trim();
-
-  if (!trimmed) return "Name is required.";
-  if (!/^[A-Za-z][A-Za-z0-9 ]*$/.test(trimmed)) {
-    return "Only letters, numbers, and spaces allowed. Must start with a letter.";
-  }
-  if (trimmed.length < 3) return "Name must be at least 3 characters.";
-  if (trimmed.length > 16) return "Name must be less than 16 characters.";
-
-  if (
-    trimmed.toLowerCase() !== currentCat.name.toLowerCase() &&
-    hasDuplicateName(trimmed, currentCat.id)
-  ) {
-    return `You already have a cat named "${trimmed}"`;
-  }
-
-  return "";
-}
-
 export default function CatDetailsInterface() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { selectedCatId, setSelectedCatId } = useSelectedCat();
   const { cat, loading, error, refetch } = useCat(id);
   const { hasDuplicateName } = useCats();
-
-  const [renaming, setRenaming] = useState(false);
-  const [newName, setNewName] = useState("");
-  const [nameHint, setNameHint] = useState("");
-  const [nameError, setNameError] = useState("");
   const [showRelease, setShowRelease] = useState(false);
+
+  const {
+    renaming,
+    newName,
+    nameHint,
+    nameError,
+    startRenaming,
+    cancelRenaming,
+    updateName,
+    handleRename,
+  } = useRenameForm(cat, hasDuplicateName, () => refetch({ background: true }));
 
   const isSelected = String(cat?.id) === String(selectedCatId);
   const isDefaultCat = cat?.isDefaultCat;
-
-  async function handleRename(e) {
-    e.preventDefault();
-    if (!cat) return;
-
-    setNameError("");
-
-    const validationMessage = validateCatName(newName, cat, hasDuplicateName);
-
-    if (validationMessage) {
-      setNameHint(validationMessage);
-      return;
-    }
-
-    try {
-      await renameCatById(cat.id, newName.trim());
-      await refetch({ background: true });
-
-      setRenaming(false);
-      setNewName("");
-      setNameHint("");
-    } catch (err) {
-      setNameError(
-        err?.response?.data?.error ||
-          err?.response?.data?.message ||
-          err?.response?.data?.detail ||
-          err?.message ||
-          "Failed to rename. Please try again."
-      );
-    }
-  }
 
   async function handleRelease() {
     if (!cat) return;
@@ -131,10 +87,7 @@ export default function CatDetailsInterface() {
         <ActionButtons
           isSelected={isSelected}
           isDefaultCat={isDefaultCat}
-          onRename={() => {
-            setRenaming(true);
-            setNewName(cat.name);
-          }}
+          onRename={startRenaming}
           onRelease={() => setShowRelease(true)}
           onBack={() => navigate("/catbox")}
           onSelect={() => setSelectedCatId(cat.id)}
@@ -144,20 +97,11 @@ export default function CatDetailsInterface() {
       {renaming && (
         <RenameSection
           newName={newName}
-          setNewName={(val) => {
-            setNewName(val);
-            if (nameHint) setNameHint("");
-            if (nameError) setNameError("");
-          }}
+          setNewName={updateName}
           hint={nameHint}
           error={nameError}
           onSubmit={handleRename}
-          onCancel={() => {
-            setRenaming(false);
-            setNewName("");
-            setNameHint("");
-            setNameError("");
-          }}
+          onCancel={cancelRenaming}
         />
       )}
 

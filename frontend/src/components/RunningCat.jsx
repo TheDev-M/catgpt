@@ -1,45 +1,16 @@
-import { GAME_CONFIG} from "@/config/gameConfig.js";
-
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { useRunningCat } from "@/hooks/useRunningCat.js";
+import { GAME_CONFIG } from "@/config/gameConfig.js";
 import CaughtCatPopup from "@/components/CaughtCatPopup/CaughtCatPopup.jsx";
 
 const RUN_DURATION = GAME_CONFIG.runningCat.runDuration;
-const MIN_INTERVAL = GAME_CONFIG.runningCat.minInterval;
-const MAX_INTERVAL = GAME_CONFIG.runningCat.maxInterval;
-
-const rand = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
 export default function RunningCat() {
-  const [cat, setCat] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
-  const keyRef = useRef(0);
+  const { cat, handleClick } = useRunningCat(showPopup);
 
-  useEffect(() => {
-    let timeout;
-
-    const spawn = () => {
-      if (!showPopup) {
-        keyRef.current += 1;
-
-        setCat({
-          key: keyRef.current,
-          top: rand(0, window.innerHeight - 120),
-          fromLeft: Math.random() < 0.5
-        });
-      }
-
-      timeout = setTimeout(
-        spawn,
-        RUN_DURATION + rand(MIN_INTERVAL, MAX_INTERVAL)
-      );
-    };
-
-    timeout = setTimeout(spawn, rand(MIN_INTERVAL, MAX_INTERVAL));
-    return () => clearTimeout(timeout);
-  }, [showPopup]);
-
-  const handleClick = () => {
-    setCat(null);
+  const onCatClick = () => {
+    handleClick();
     setShowPopup(true);
   };
 
@@ -68,9 +39,9 @@ export default function RunningCat() {
             animation: `${
               cat.fromLeft ? "runRight" : "runLeft"
             } ${RUN_DURATION}ms linear forwards`,
-            willChange: "left"
+            willChange: "left",
           }}
-          onMouseDown={handleClick}
+          onMouseDown={onCatClick}
         />
       )}
 
