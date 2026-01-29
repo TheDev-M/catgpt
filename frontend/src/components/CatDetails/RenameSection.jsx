@@ -34,7 +34,7 @@ export default function RenameSection({
 
     try {
       await renameCatById(cat.id, newName.trim());
-      await refetch();
+      await refetch({ background: true });
       onClose();
     } catch (err) {
       setError(
