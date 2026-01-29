@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useCat } from "@/hooks/useCat.js";
 import useCats from "@/hooks/useCats.js";
 import { useSelectedCat } from "@/contexts/SelectedCatContext.jsx";
-import { useRenameForm } from "@/hooks/useRenameForm.js";
 
 import { deleteCatById } from "@/services/catApi.js";
 
@@ -20,17 +19,7 @@ export default function CatDetailsInterface() {
   const { cat, loading, error, refetch } = useCat(id);
   const { hasDuplicateName } = useCats();
   const [showRelease, setShowRelease] = useState(false);
-
-  const {
-    renaming,
-    newName,
-    nameHint,
-    nameError,
-    startRenaming,
-    cancelRenaming,
-    updateName,
-    handleRename
-  } = useRenameForm(cat, hasDuplicateName, () => refetch({ background: true }));
+  const [renaming, setRenaming] = useState(false);
 
   const isSelected = String(cat?.id) === String(selectedCatId);
   const isDefaultCat = cat?.isDefaultCat;
@@ -42,9 +31,7 @@ export default function CatDetailsInterface() {
       const wasSelected = isSelected;
       await deleteCatById(cat.id);
 
-      if (wasSelected) {
-        setSelectedCatId(1);
-      }
+      if (wasSelected) setSelectedCatId(1);
 
       navigate("/catbox");
     } catch {
@@ -87,7 +74,7 @@ export default function CatDetailsInterface() {
         <ActionButtons
           isSelected={isSelected}
           isDefaultCat={isDefaultCat}
-          onRename={startRenaming}
+          onRename={() => setRenaming(true)}
           onRelease={() => setShowRelease(true)}
           onBack={() => navigate("/catbox")}
           onSelect={() => setSelectedCatId(cat.id)}
@@ -96,12 +83,10 @@ export default function CatDetailsInterface() {
 
       {renaming && (
         <RenameSection
-          newName={newName}
-          setNewName={updateName}
-          hint={nameHint}
-          error={nameError}
-          onSubmit={handleRename}
-          onCancel={cancelRenaming}
+          cat={cat}
+          hasDuplicateName={hasDuplicateName}
+          onClose={() => setRenaming(false)}
+          refetch={refetch}
         />
       )}
 
