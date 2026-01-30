@@ -39,7 +39,7 @@ export default function RunningCat() {
             animation: `${
               cat.fromLeft ? "runRight" : "runLeft"
             } ${RUN_DURATION}ms linear forwards`,
-            willChange: "left"
+            willChange: "left",
           }}
           onMouseDown={onCatClick}
         />

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { useLoginForm } from "@/hooks/useLoginForm.js";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth.js";
+import { useLoginForm } from "@/hooks/useLoginForm.js";
 import LayoutBackground from "@/components/Layouts/LayoutBackground.jsx";
 
 export default function LoginPage() {
@@ -23,14 +23,24 @@ export default function LoginPage() {
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="card bg-base-100/95 backdrop-blur shadow-xl w-full max-w-md">
           <div className="card-body py-8 px-6">
-            <h1 id="login-title" className="card-title text-3xl mb-1 text-center">
+            <h1
+              id="login-title"
+              className="card-title text-3xl mb-1 text-center"
+            >
               Welcome back 🐾
             </h1>
-            <p id="login-subtitle" className="text-sm opacity-70 mb-6 text-center">
+            <p
+              id="login-subtitle"
+              className="text-sm opacity-70 mb-6 text-center"
+            >
               Log in to chat with your cats.
             </p>
 
-            <form id="login-form" onSubmit={form.handleSubmit} className="space-y-6">
+            <form
+              id="login-form"
+              onSubmit={form.handleSubmit}
+              className="space-y-6"
+            >
               <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text">Username</span>
@@ -88,7 +98,11 @@ export default function LoginPage() {
 
             <div className="mt-8 pt-4 border-t text-center text-sm">
               <span className="opacity-70">Don't have an account? </span>
-              <Link id="login-signup-link" to="/signup" className="link link-primary">
+              <Link
+                id="login-signup-link"
+                to="/signup"
+                className="link link-primary"
+              >
                 Sign up
               </Link>
             </div>

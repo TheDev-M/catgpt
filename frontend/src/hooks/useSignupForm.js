@@ -39,6 +39,6 @@ export function useSignupForm(register, onSuccess) {
     setConfirm,
     error,
     loading,
-    handleSubmit,
+    handleSubmit
   };
 }

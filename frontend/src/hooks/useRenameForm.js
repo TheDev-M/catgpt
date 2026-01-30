@@ -48,6 +48,6 @@ export function useRenameForm(cat, hasDuplicateName, onSuccess) {
     error,
     open,
     close,
-    handleSubmit,
+    handleSubmit
   };
 }

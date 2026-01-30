@@ -27,6 +27,6 @@ export function useLoginForm(login, onSuccess) {
     setPassword,
     error,
     loading,
-    handleSubmit,
+    handleSubmit
   };
 }

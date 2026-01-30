@@ -23,7 +23,7 @@ export function useFallingItems() {
         name: item.name,
         icon: item.icon,
         top: -70,
-        left: randomInt(20, window.innerWidth - 80),
+        left: randomInt(20, window.innerWidth - 80)
       });
 
       setTimeout(spawn, FALL_DURATION + randomInt(MIN_INTERVAL, MAX_INTERVAL));
@@ -51,6 +51,6 @@ export function useFallingItems() {
     falling,
     lastCaught,
     handleCatch,
-    clearLastCaught: () => setLastCaught(null),
+    clearLastCaught: () => setLastCaught(null)
   };
 }

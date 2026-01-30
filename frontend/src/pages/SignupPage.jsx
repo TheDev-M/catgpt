@@ -21,14 +21,24 @@ export default function SignupPage() {
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="card bg-base-100/95 backdrop-blur shadow-xl w-full max-w-md">
           <div className="card-body py-8 px-6">
-            <h1 id="signup-title" className="card-title text-3xl mb-1 text-center">
+            <h1
+              id="signup-title"
+              className="card-title text-3xl mb-1 text-center"
+            >
               Create your account 😺
             </h1>
-            <p id="signup-subtitle" className="text-sm opacity-70 mb-6 text-center">
+            <p
+              id="signup-subtitle"
+              className="text-sm opacity-70 mb-6 text-center"
+            >
               You'll get your own Bob as my gift.
             </p>
 
-            <form id="signup-form" onSubmit={form.handleSubmit} className="space-y-6">
+            <form
+              id="signup-form"
+              onSubmit={form.handleSubmit}
+              className="space-y-6"
+            >
               <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text">Username</span>
@@ -128,7 +138,11 @@ export default function SignupPage() {
 
             <div className="mt-8 pt-4 border-t text-center text-sm">
               <span className="opacity-70">Already have an account? </span>
-              <Link id="signup-login-link" to="/login" className="link link-primary">
+              <Link
+                id="signup-login-link"
+                to="/login"
+                className="link link-primary"
+              >
                 Log in
               </Link>
             </div>

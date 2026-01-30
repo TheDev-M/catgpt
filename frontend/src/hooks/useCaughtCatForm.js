@@ -40,9 +40,9 @@ export function useCaughtCatForm(cat, hasDuplicateName, onSuccess) {
         sourceMetrics: {
           energyLevel: cat.energy_level,
           grooming: cat.grooming,
-          healthIssues: cat.health_issues,
+          healthIssues: cat.health_issues
         },
-        image: cat.image || null,
+        image: cat.image || null
       });
       onSuccess();
     } catch (err) {
@@ -57,6 +57,6 @@ export function useCaughtCatForm(cat, hasDuplicateName, onSuccess) {
       setError("");
     },
     error,
-    handleSubmit,
+    handleSubmit
   };
 }
