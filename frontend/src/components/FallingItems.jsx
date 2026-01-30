@@ -4,10 +4,9 @@ import ItemPopup from "@/components/ItemPopup.jsx";
 
 const FALL_DURATION = GAME_CONFIG.fallingItems.fallDuration;
 
-export default function FallingItems({ reloadInventory }) {
-  const { falling, lastCaught, handleCatch, clearLastCaught } = useFallingItems(
-    () => reloadInventory?.({ background: true })
-  );
+export default function FallingItems() {
+  const { falling, lastCaught, handleCatch, clearLastCaught } =
+    useFallingItems();
 
   return (
     <>
@@ -20,7 +19,7 @@ export default function FallingItems({ reloadInventory }) {
             top: `${falling.top}px`,
             left: `${falling.left}px`,
             backgroundImage: `url(${falling.icon})`,
-            animation: `fallItem ${FALL_DURATION}ms linear forwards`,
+            animation: `fallItem ${FALL_DURATION}ms linear forwards`
           }}
           onMouseDown={handleCatch}
           data-item-name={falling.name}

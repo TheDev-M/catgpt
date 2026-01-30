@@ -1,60 +1,63 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getAllItems } from "@/services/itemsApi.js";
 import { applyItem } from "@/services/catApi.js";
 
-export function useInventory(selectedCatId, { onCatUpdated } = {}) {
+export function useInventory(selectedCatId, onCatUpdated) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [usingId, setUsingId] = useState(null);
   const [error, setError] = useState(null);
 
-  const load = useCallback(async ({ background = false } = {}) => {
-    if (!background) setLoading(true);
-    setError(null);
-
-    try {
-      const data = await getAllItems();
-      setItems(Array.isArray(data) ? data : []);
-    } catch (e) {
-      console.error(e);
-      setError("Failed to load items.");
-      setItems([]);
-    } finally {
-      if (!background) setLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
-    void load();
-  }, [load]);
+    let cancelled = false;
 
-  const useItem = useCallback(
-    async (item) => {
-      if (!selectedCatId || !item?.id) return;
-
+    async function loadItems() {
+      setLoading(true);
       setError(null);
-      setUsingId(item.id);
 
       try {
-        const updatedCat = await applyItem(selectedCatId, item.id);
-        await load({ background: true });
-        onCatUpdated?.(updatedCat);
+        const data = await getAllItems();
+        if (!cancelled) {
+          setItems(Array.isArray(data) ? data : []);
+        }
       } catch (e) {
-        console.error(e);
-        setError("Failed to use item.");
+        if (!cancelled) {
+          console.error(e);
+          setError("Failed to load items.");
+          setItems([]);
+        }
       } finally {
-        setUsingId(null);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
-    },
-    [selectedCatId, load, onCatUpdated]
-  );
+    }
 
-  return {
-    items,
-    loading,
-    error,
-    usingId,
-    useItem,
-    reload: load
+    loadItems();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedCatId]);
+
+  const useItem = async (item) => {
+    if (!selectedCatId || !item?.id) return;
+
+    setError(null);
+    setUsingId(item.id);
+
+    try {
+      const updatedCat = await applyItem(selectedCatId, item.id);
+      const data = await getAllItems();
+      setItems(Array.isArray(data) ? data : []);
+      onCatUpdated?.(updatedCat);
+    } catch (e) {
+      console.error(e);
+      setError("Failed to use item.");
+    } finally {
+      setUsingId(null);
+    }
   };
+
+  return { items, loading, error, usingId, useItem };
 }

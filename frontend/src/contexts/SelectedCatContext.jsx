@@ -1,101 +1,77 @@
-// SelectedCatContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth.js";
 import { getCurrentUser, updateSelectedCat } from "@/services/userApi.js";
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const SelectedCatContext = createContext(null);
 
-function getStorageKeyForUser(user) {
-    if (!user?.id) return null;
-    return `selectedCatId:${user.id}`;
+function getStorageKey(userId) {
+  return userId ? `selectedCatId:${userId}` : null;
 }
 
 export function SelectedCatProvider({ children }) {
-    const { user, isAuthenticated } = useAuth();
-    const [selectedCatId, setSelectedCatIdState] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const { user, isAuthenticated } = useAuth();
+  const [selectedCatId, setSelectedCatIdState] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        async function load() {
-            if (!isAuthenticated || !user) {
-                setSelectedCatIdState(null);
-                setLoading(false);
-                return;
-            }
+  useEffect(() => {
+    if (!isAuthenticated || !user) {
+      setSelectedCatIdState(null);
+      setLoading(false);
+      return;
+    }
 
-            setLoading(true);
+    const storageKey = getStorageKey(user.id);
+    const stored = storageKey ? localStorage.getItem(storageKey) : null;
 
-            // 1) try localStorage per user (fast)
-            const storageKey = getStorageKeyForUser(user);
-            if (storageKey) {
-                const stored = localStorage.getItem(storageKey);
-                if (stored) {
-                    setSelectedCatIdState(stored);
-                    setLoading(false);
-                }
-            }
+    if (stored) {
+      setSelectedCatIdState(stored);
+    }
 
-            try {
-                const currentUser = await getCurrentUser();
-                const id = currentUser.selectedCatId ?? null;
-                const idStr = id != null ? String(id) : null;
-                setSelectedCatIdState(idStr);
-
-                if (storageKey && idStr != null) {
-                    localStorage.setItem(storageKey, idStr);
-                }
-            } catch (err) {
-                console.error("Failed to load selected cat from backend:", err);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        void load();
-    }, [isAuthenticated, user]);
-
-    const setSelectedCatId = async (id) => {
+    getCurrentUser()
+      .then((currentUser) => {
+        const id = currentUser.selectedCatId ? String(currentUser.selectedCatId) : null;
         setSelectedCatIdState(id);
-
-        if (user) {
-            const storageKey = getStorageKeyForUser(user);
-            if (storageKey) {
-                if (id != null) {
-                    localStorage.setItem(storageKey, id);
-                } else {
-                    localStorage.removeItem(storageKey);
-                }
-            }
+        if (storageKey && id) {
+          localStorage.setItem(storageKey, id);
         }
+      })
+      .catch((err) => console.error("Failed to load selected cat:", err))
+      .finally(() => setLoading(false));
+  }, [isAuthenticated, user]);
 
-        if (!isAuthenticated) return;
+  const setSelectedCatId = async (id) => {
+    const idStr = id ? String(id) : null;
+    setSelectedCatIdState(idStr);
 
-        try {
-            await updateSelectedCat(id != null ? Number(id) : null);
-        } catch (err) {
-            console.error("Failed to update selected cat on backend:", err);
-        }
-    };
+    const storageKey = getStorageKey(user?.id);
+    if (storageKey) {
+      if (idStr) {
+        localStorage.setItem(storageKey, idStr);
+      } else {
+        localStorage.removeItem(storageKey);
+      }
+    }
 
-    const value = {
-        selectedCatId,
-        setSelectedCatId,
-        loading,
-    };
+    if (isAuthenticated) {
+      try {
+        await updateSelectedCat(id ? Number(id) : null);
+      } catch (err) {
+        console.error("Failed to update selected cat:", err);
+      }
+    }
+  };
 
-    return (
-        <SelectedCatContext.Provider value={value}>
-            {children}
-        </SelectedCatContext.Provider>
-    );
+  return (
+    <SelectedCatContext.Provider value={{ selectedCatId, setSelectedCatId, loading }}>
+      {children}
+    </SelectedCatContext.Provider>
+  );
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 export function useSelectedCat() {
-    const ctx = useContext(SelectedCatContext);
-    if (!ctx) {
-        throw new Error("useSelectedCat must be used within <SelectedCatProvider>");
-    }
-    return ctx;
+  const ctx = useContext(SelectedCatContext);
+  if (!ctx) {
+    throw new Error("useSelectedCat must be used within <SelectedCatProvider>");
+  }
+  return ctx;
 }

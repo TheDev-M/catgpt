@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useCat } from "@/hooks/useCat.js";
 import useCats from "@/hooks/useCats.js";
 import { useSelectedCat } from "@/contexts/SelectedCatContext.jsx";
-
+import { useRenameForm } from "@/hooks/useRenameForm.js";
 import { deleteCatById } from "@/services/catApi.js";
 
 import CatProfileCard from "./CatProfileCard.jsx";
@@ -16,15 +16,18 @@ export default function CatDetailsInterface() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { selectedCatId, setSelectedCatId } = useSelectedCat();
-  const { cat, loading, error, refetch } = useCat(id);
+  const { cat, loading, error } = useCat(id);
   const { hasDuplicateName } = useCats();
   const [showRelease, setShowRelease] = useState(false);
-  const [renaming, setRenaming] = useState(false);
+
+  const renameForm = useRenameForm(cat, hasDuplicateName, () => {
+    navigate(`/cats/${id}`, { replace: true });
+  });
 
   const isSelected = String(cat?.id) === String(selectedCatId);
   const isDefaultCat = cat?.isDefaultCat;
 
-  async function handleRelease() {
+  const handleRelease = async () => {
     if (!cat) return;
 
     try {
@@ -37,7 +40,7 @@ export default function CatDetailsInterface() {
     } catch {
       alert("Failed to release cat. Please try again.");
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -74,19 +77,21 @@ export default function CatDetailsInterface() {
         <ActionButtons
           isSelected={isSelected}
           isDefaultCat={isDefaultCat}
-          onRename={() => setRenaming(true)}
+          onRename={renameForm.open}
           onRelease={() => setShowRelease(true)}
           onBack={() => navigate("/catbox")}
           onSelect={() => setSelectedCatId(cat.id)}
         />
       </div>
 
-      {renaming && (
+      {renameForm.isOpen && (
         <RenameSection
-          cat={cat}
-          hasDuplicateName={hasDuplicateName}
-          onClose={() => setRenaming(false)}
-          refetch={refetch}
+          newName={renameForm.name}
+          setNewName={renameForm.setName}
+          hint={renameForm.error}
+          error={renameForm.error}
+          onSubmit={renameForm.handleSubmit}
+          onCancel={renameForm.close}
         />
       )}
 

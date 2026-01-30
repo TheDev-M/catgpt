@@ -31,7 +31,7 @@ export default function RunningCat() {
         <div
           id="running-cat"
           key={cat.key}
-          className="pointer-events-auto fixed z-1500 h-[100px] w-[150px] cursor-pointer bg-no-repeat bg-cover"
+          className="pointer-events-auto fixed z-1500 h-25 w-37.5 cursor-pointer bg-no-repeat bg-cover"
           style={{
             top: `${cat.top}px`,
             backgroundImage: 'url("/imgs/RunningCat.gif")',
@@ -39,7 +39,7 @@ export default function RunningCat() {
             animation: `${
               cat.fromLeft ? "runRight" : "runLeft"
             } ${RUN_DURATION}ms linear forwards`,
-            willChange: "left",
+            willChange: "left"
           }}
           onMouseDown={onCatClick}
         />
