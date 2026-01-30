@@ -21,14 +21,7 @@ export default function HomePage() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const { cat, loading: catLoading, error: catError } = useCat(selectedCatId);
-  
-  const updateCat = (updatedCat) => {
-    // Force re-render by navigating to same route
-    if (updatedCat) {
-      navigate("/", { replace: true });
-    }
-  };
+  const { cat, loading: catLoading, error: catError, updateCat } = useCat(selectedCatId);
 
   const { items, loading: invLoading, error: invError, usingId, useItem } = 
     useInventory(selectedCatId, updateCat);

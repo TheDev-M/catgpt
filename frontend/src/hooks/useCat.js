@@ -45,5 +45,12 @@ export function useCat(id) {
     };
   }, [id]);
 
-  return { cat, loading, error };
+  // Allow direct cat updates without refetching
+  const updateCat = (updatedCat) => {
+    if (updatedCat) {
+      setCat(updatedCat);
+    }
+  };
+
+  return { cat, loading, error, updateCat };
 }
