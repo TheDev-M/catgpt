@@ -8,19 +8,7 @@ export default function SignupPage() {
   const { register, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  const {
-    username,
-    setUsername,
-    description,
-    setDescription,
-    password,
-    setPassword,
-    confirm,
-    setConfirm,
-    error,
-    isLoading,
-    handleSubmit,
-  } = useSignupForm(register, () => navigate("/", { replace: true }));
+  const form = useSignupForm(register, () => navigate("/", { replace: true }));
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -33,14 +21,24 @@ export default function SignupPage() {
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="card bg-base-100/95 backdrop-blur shadow-xl w-full max-w-md">
           <div className="card-body py-8 px-6">
-            <h1 id="signup-title" className="card-title text-3xl mb-1 text-center">
+            <h1
+              id="signup-title"
+              className="card-title text-3xl mb-1 text-center"
+            >
               Create your account 😺
             </h1>
-            <p id="signup-subtitle" className="text-sm opacity-70 mb-6 text-center">
+            <p
+              id="signup-subtitle"
+              className="text-sm opacity-70 mb-6 text-center"
+            >
               You'll get your own Bob as my gift.
             </p>
 
-            <form id="signup-form" onSubmit={handleSubmit} className="space-y-6">
+            <form
+              id="signup-form"
+              onSubmit={form.handleSubmit}
+              className="space-y-6"
+            >
               <div className="form-control w-full">
                 <label className="label">
                   <span className="label-text">Username</span>
@@ -49,13 +47,13 @@ export default function SignupPage() {
                   id="signup-username"
                   type="text"
                   className="input input-bordered w-full focus:mt-1"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={form.username}
+                  onChange={(e) => form.setUsername(e.target.value)}
                   required
                   minLength={3}
                   maxLength={24}
                   autoComplete="username"
-                  disabled={isLoading}
+                  disabled={form.loading}
                 />
               </div>
 
@@ -70,11 +68,11 @@ export default function SignupPage() {
                   id="signup-description"
                   className="textarea textarea-bordered rounded-md w-full resize-none focus:mt-1"
                   rows={3}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  value={form.description}
+                  onChange={(e) => form.setDescription(e.target.value)}
                   placeholder="Write something fun for the dev to read…"
                   maxLength={300}
-                  disabled={isLoading}
+                  disabled={form.loading}
                 />
                 <span className="label-text-alt opacity-60 text-xs mt-1">
                   This is just a note for the dev, not visible to others.
@@ -89,12 +87,12 @@ export default function SignupPage() {
                   id="signup-password"
                   type="password"
                   className="input input-bordered w-full focus:mt-1"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={form.password}
+                  onChange={(e) => form.setPassword(e.target.value)}
                   required
                   minLength={6}
                   autoComplete="new-password"
-                  disabled={isLoading}
+                  disabled={form.loading}
                 />
               </div>
 
@@ -106,18 +104,18 @@ export default function SignupPage() {
                   id="signup-confirm-password"
                   type="password"
                   className="input input-bordered w-full focus:mt-1"
-                  value={confirm}
-                  onChange={(e) => setConfirm(e.target.value)}
+                  value={form.confirm}
+                  onChange={(e) => form.setConfirm(e.target.value)}
                   required
                   minLength={6}
                   autoComplete="new-password"
-                  disabled={isLoading}
+                  disabled={form.loading}
                 />
               </div>
 
-              {error && (
+              {form.error && (
                 <p id="signup-error" className="text-error text-sm text-center">
-                  {error}
+                  {form.error}
                 </p>
               )}
 
@@ -125,9 +123,9 @@ export default function SignupPage() {
                 id="signup-submit"
                 type="submit"
                 className="btn btn-primary w-full mt-2"
-                disabled={isLoading}
+                disabled={form.loading}
               >
-                {isLoading ? (
+                {form.loading ? (
                   <>
                     <span className="loading loading-spinner loading-sm" />
                     <span className="ml-2">Signing you up…</span>
@@ -140,7 +138,11 @@ export default function SignupPage() {
 
             <div className="mt-8 pt-4 border-t text-center text-sm">
               <span className="opacity-70">Already have an account? </span>
-              <Link id="signup-login-link" to="/login" className="link link-primary">
+              <Link
+                id="signup-login-link"
+                to="/login"
+                className="link link-primary"
+              >
                 Log in
               </Link>
             </div>

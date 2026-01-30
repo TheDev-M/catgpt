@@ -1,25 +1,18 @@
 import { useSelectedCat } from "@/contexts/SelectedCatContext.jsx";
 import { useCatChat } from "@/hooks/useCatChat.js";
+import { useMoodDecay } from "@/hooks/useMoodDecay.js";
 
 import CatProfileCard from "./CatProfileCard.jsx";
 import CatProfileSkeleton from "./CatProfileSkeleton.jsx";
 import ErrorMessage from "@/components/Errors/ErrorMessage.jsx";
-
 import UserInterface from "./UserInterface.jsx";
 import ChatAnswer from "./ChatAnswer.jsx";
 
-import { useMoodDecay } from "@/hooks/useMoodDecay.js";
-
-export default function ChatInterface({ cat, loading, error, refetchCat }) {
+export default function ChatInterface({ cat, loading, error }) {
   const { selectedCatId } = useSelectedCat();
-
-  const catName = cat?.name ?? "";
-  const catImage = cat?.image || null;
-
   const { answer, thinking, sendPrompt } = useCatChat(cat);
-
-  const decreaseMood = useMoodDecay(selectedCatId, {
-    onCatUpdated: () => refetchCat({ background: true })
+  const decreaseMood = useMoodDecay(selectedCatId, () => {
+    // Mood decreased - could trigger a refresh if needed
   });
 
   if (loading) {
@@ -33,11 +26,7 @@ export default function ChatInterface({ cat, loading, error, refetchCat }) {
   if (error) {
     return (
       <div className="h-full flex items-center justify-center p-4">
-        <ErrorMessage
-          title="Failed to load your cat."
-          message="Please try again!"
-          onRetry={() => refetchCat({ background: false })}
-        />
+        <ErrorMessage title="Failed to load your cat." message="Please try again!" />
       </div>
     );
   }
@@ -50,7 +39,7 @@ export default function ChatInterface({ cat, loading, error, refetchCat }) {
   return (
     <div className="h-full flex flex-col items-center justify-center p-4">
       <div className="w-full flex justify-center">
-        <CatProfileCard catName={catName} catImage={catImage} />
+        <CatProfileCard catName={cat?.name} catImage={cat?.image} />
       </div>
 
       <div className="w-full flex-1 flex items-center justify-center">
@@ -60,7 +49,7 @@ export default function ChatInterface({ cat, loading, error, refetchCat }) {
       <div className="w-full flex justify-center">
         <UserInterface
           disabled={thinking || !cat}
-          placeholder={`Asking ${catName || "Your cat"}…`}
+          placeholder={`Asking ${cat?.name || "Your cat"}…`}
           onSend={handleSend}
         />
       </div>

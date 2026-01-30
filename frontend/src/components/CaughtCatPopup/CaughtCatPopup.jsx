@@ -12,9 +12,7 @@ import NicknameForm from "./NicknameForm.jsx";
 export default function CaughtCatPopup({ onClose }) {
   const { cat, loading, error: loadError } = useRandomBreedCat();
   const { hasDuplicateName } = useCats();
-
-  const { nickname, updateNickname, hint, error, handleSubmit } =
-    useCaughtCatForm(cat, hasDuplicateName, onClose);
+  const form = useCaughtCatForm(cat, hasDuplicateName, onClose);
 
   if (loading) return <LoadingSkeleton />;
   if (!cat) return null;
@@ -25,11 +23,11 @@ export default function CaughtCatPopup({ onClose }) {
       {cat.image && <BreedImage src={cat.image} alt={cat.name} />}
       <BreedDescription description={cat.description} error={loadError} />
       <NicknameForm
-        nickname={nickname}
-        setNickname={updateNickname}
-        hint={hint}
-        error={error}
-        onSubmit={handleSubmit}
+        nickname={form.nickname}
+        setNickname={form.setNickname}
+        hint={form.error}
+        error={form.error}
+        onSubmit={form.handleSubmit}
         onCancel={onClose}
       />
     </ModalFrame>
