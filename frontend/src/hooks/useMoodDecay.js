@@ -1,15 +1,14 @@
-import { useCallback } from "react";
 import { decreaseCatStat } from "@/services/catApi.js";
 
-export function useMoodDecay(selectedCatId, { onCatUpdated } = {}) {
-  return useCallback(async () => {
+export function useMoodDecay(selectedCatId, onCatUpdated) {
+  return async () => {
     if (!selectedCatId) return;
 
     try {
       await decreaseCatStat(selectedCatId, "mood");
-      onCatUpdated?.({ background: true });
+      onCatUpdated?.();
     } catch (e) {
       console.error("Failed to decrease mood", e);
     }
-  }, [selectedCatId, onCatUpdated]);
+  };
 }

@@ -8,7 +8,7 @@ export default function CatDetailsButton({ id }) {
       id={`cat-view-button-${id}`}
       type="button"
       onClick={() => navigate(`/catbox/${id}`)}
-      className="btn btn-primary btn-sm rounded-full px-6 shadow-md hover:shadow-lg transition-transform hover:-translate-y-[1px]"
+      className="btn btn-primary btn-sm rounded-full px-6 shadow-md hover:shadow-lg transition-transform hover:-translate-y-px"
       title="View cat details"
       data-cat-id={id}
     >

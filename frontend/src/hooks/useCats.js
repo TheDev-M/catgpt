@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getAllCats } from "@/services/catApi.js";
 
 export default function useCats() {
@@ -6,26 +6,39 @@ export default function useCats() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchCats = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await getAllCats();
-      setCats(data);
-    } catch (err) {
-      setError(err);
-      setCats([]);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchCats() {
+      setLoading(true);
+      setError(null);
+      
+      try {
+        const data = await getAllCats();
+        if (!cancelled) {
+          setCats(data);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(err);
+          setCats([]);
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
     }
+
+    fetchCats();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  useEffect(() => {
-    void fetchCats();
-  }, [fetchCats]);
+  const hasDuplicateName = (name) =>
+    cats.some((cat) => cat.name.toLowerCase() === name.trim().toLowerCase());
 
-  const hasDuplicateName = (name) => cats.some(cat =>
-      cat.name.toLowerCase() === name.trim().toLowerCase());
-
-  return { cats, loading, error, refetch: () => fetchCats(), hasDuplicateName };
+  return { cats, loading, error, hasDuplicateName };
 }
