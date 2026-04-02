@@ -41,13 +41,14 @@ export function useFallingItems(onItemCaught) {
     setFalling(null);
 
     try {
-      onItemCaught?.({
+      const inventoryItem = {
         id: caught.id,
         name: caught.name,
         icon: caught.icon,
         availableAmount: 1
-      });
+      };
 
+      onItemCaught?.(inventoryItem);
       setLastCaught({ name: caught.name, icon: caught.icon });
 
       await increaseItemAmountByName(caught.name);

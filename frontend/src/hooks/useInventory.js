@@ -14,12 +14,9 @@ export function useInventory(selectedCatId, onCatUpdated) {
     async function loadItems() {
       setLoading(true);
       setError(null);
-
       try {
         const data = await getAllItems();
-        if (!cancelled) {
-          setItems(Array.isArray(data) ? data : []);
-        }
+        if (!cancelled) setItems(Array.isArray(data) ? data : []);
       } catch (e) {
         if (!cancelled) {
           console.error(e);
@@ -27,22 +24,17 @@ export function useInventory(selectedCatId, onCatUpdated) {
           setItems([]);
         }
       } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
+        if (!cancelled) setLoading(false);
       }
     }
 
-    if (selectedCatId) {
-      loadItems();
-    } else {
+    if (selectedCatId) loadItems();
+    else {
       setItems([]);
       setLoading(false);
     }
 
-    return () => {
-      cancelled = true;
-    };
+    return () => (cancelled = true);
   }, [selectedCatId]);
 
   const addItem = (newItem) => {
@@ -50,7 +42,6 @@ export function useInventory(selectedCatId, onCatUpdated) {
 
     setItems((prev) => {
       const existing = prev.find((i) => i.id === newItem.id);
-
       if (existing) {
         return prev.map((i) =>
           i.id === newItem.id
@@ -58,7 +49,6 @@ export function useInventory(selectedCatId, onCatUpdated) {
             : i
         );
       }
-
       return [...prev, { ...newItem, availableAmount: 1 }];
     });
   };
@@ -81,7 +71,6 @@ export function useInventory(selectedCatId, onCatUpdated) {
       );
 
       const updatedCat = await applyItem(selectedCatId, item.id);
-
       onCatUpdated?.(updatedCat);
     } catch (e) {
       console.error(e);
@@ -91,12 +80,5 @@ export function useInventory(selectedCatId, onCatUpdated) {
     }
   };
 
-  return {
-    items,
-    loading,
-    error,
-    usingId,
-    useItem,
-    addItem
-  };
+  return { items, loading, error, usingId, addItem, useItem };
 }
