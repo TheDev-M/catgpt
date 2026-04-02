@@ -20,7 +20,6 @@ export function useFallingItems(onItemCaught) {
 
       setFalling({
         key: keyRef.current,
-        id: item.id,
         name: item.name,
         icon: item.icon,
         top: -70,
@@ -41,17 +40,9 @@ export function useFallingItems(onItemCaught) {
     setFalling(null);
 
     try {
-      const inventoryItem = {
-        id: caught.id,
-        name: caught.name,
-        icon: caught.icon,
-        availableAmount: 1
-      };
-
-      onItemCaught?.(inventoryItem);
-      setLastCaught({ name: caught.name, icon: caught.icon });
-
       await increaseItemAmountByName(caught.name);
+      setLastCaught({ name: caught.name, icon: caught.icon });
+      onItemCaught?.();
     } catch (e) {
       console.error("Failed to increase item amount", e);
     }
