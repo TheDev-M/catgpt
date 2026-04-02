@@ -21,10 +21,21 @@ export default function HomePage() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const { cat, loading: catLoading, error: catError, updateCat } = useCat(selectedCatId);
+  const {
+    cat,
+    loading: catLoading,
+    error: catError,
+    updateCat
+  } = useCat(selectedCatId);
 
-  const { items, loading: invLoading, error: invError, usingId, useItem } = 
-    useInventory(selectedCatId, updateCat);
+  const {
+    items,
+    loading: invLoading,
+    error: invError,
+    usingId,
+    useItem,
+    refetchItems
+  } = useInventory(selectedCatId, updateCat);
 
   useHungerDecay(selectedCatId, updateCat);
 
@@ -56,8 +67,12 @@ export default function HomePage() {
 
           <div className="absolute top-3 right-3 z-1000 flex items-center gap-2">
             {user?.username && (
-              <span id="home-username-display" className="text-xs sm:text-sm opacity-80">
-                Logged in as <span className="font-semibold">{user.username}</span>
+              <span
+                id="home-username-display"
+                className="text-xs sm:text-sm opacity-80"
+              >
+                Logged in as{" "}
+                <span className="font-semibold">{user.username}</span>
               </span>
             )}
 
@@ -74,7 +89,10 @@ export default function HomePage() {
           </div>
 
           <div className="absolute bottom-3 left-3 z-1000">
-            <InventoryButton open={inventoryOpen} onToggle={() => setInventoryOpen(!inventoryOpen)} />
+            <InventoryButton
+              open={inventoryOpen}
+              onToggle={() => setInventoryOpen(!inventoryOpen)}
+            />
           </div>
 
           <div className="absolute bottom-3 right-3 z-1000">
@@ -82,13 +100,18 @@ export default function HomePage() {
           </div>
 
           <div className="h-full">
-            <ChatInterface cat={cat} loading={catLoading} error={catError} />
+            <ChatInterface
+              cat={cat}
+              loading={catLoading}
+              error={catError}
+              onCatUpdated={updateCat}
+            />
           </div>
         </div>
       </div>
 
       <RunningCat />
-      <FallingItems />
+      <FallingItems onItemCaught={refetchItems} />
     </LayoutBackground>
   );
 }

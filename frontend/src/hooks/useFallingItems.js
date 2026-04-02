@@ -8,7 +8,7 @@ const FALL_DURATION = GAME_CONFIG.fallingItems.fallDuration;
 const MIN_INTERVAL = GAME_CONFIG.fallingItems.minInterval;
 const MAX_INTERVAL = GAME_CONFIG.fallingItems.maxInterval;
 
-export function useFallingItems() {
+export function useFallingItems(onItemCaught) {
   const [falling, setFalling] = useState(null);
   const [lastCaught, setLastCaught] = useState(null);
   const keyRef = useRef(0);
@@ -42,6 +42,7 @@ export function useFallingItems() {
     try {
       await increaseItemAmountByName(caught.name);
       setLastCaught({ name: caught.name, icon: caught.icon });
+      onItemCaught?.();
     } catch (e) {
       console.error("Failed to increase item amount", e);
     }

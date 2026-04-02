@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getAllItems } from "@/services/itemsApi.js";
 import { applyItem } from "@/services/catApi.js";
 
@@ -7,6 +7,11 @@ export function useInventory(selectedCatId, onCatUpdated) {
   const [loading, setLoading] = useState(true);
   const [usingId, setUsingId] = useState(null);
   const [error, setError] = useState(null);
+  const [fetchTrigger, setFetchTrigger] = useState(0);
+
+  const refetchItems = useCallback(() => {
+    setFetchTrigger((n) => n + 1);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -38,7 +43,7 @@ export function useInventory(selectedCatId, onCatUpdated) {
     return () => {
       cancelled = true;
     };
-  }, [selectedCatId]);
+  }, [selectedCatId, fetchTrigger]);
 
   const useItem = async (item) => {
     if (!selectedCatId || !item?.id) return;
@@ -59,5 +64,5 @@ export function useInventory(selectedCatId, onCatUpdated) {
     }
   };
 
-  return { items, loading, error, usingId, useItem };
+  return { items, loading, error, usingId, useItem, refetchItems };
 }

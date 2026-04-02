@@ -4,9 +4,9 @@ import ItemPopup from "@/components/ItemPopup.jsx";
 
 const FALL_DURATION = GAME_CONFIG.fallingItems.fallDuration;
 
-export default function FallingItems() {
+export default function FallingItems({ onItemCaught }) {
   const { falling, lastCaught, handleCatch, clearLastCaught } =
-    useFallingItems();
+    useFallingItems(onItemCaught);
 
   return (
     <>
