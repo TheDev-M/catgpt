@@ -41,14 +41,17 @@ export function useInventory(selectedCatId, onCatUpdated) {
     if (!newItem?.id) return;
 
     setItems((prev) => {
-      const existing = prev.find((i) => i.id === newItem.id);
-      if (existing) {
-        return prev.map((i) =>
-          i.id === newItem.id
-            ? { ...i, availableAmount: (i.availableAmount ?? 0) + 1 }
-            : i
-        );
+      const existingIndex = prev.findIndex((i) => i.id === newItem.id);
+
+      if (existingIndex !== -1) {
+        const updated = [...prev];
+        updated[existingIndex] = {
+          ...updated[existingIndex],
+          availableAmount: (updated[existingIndex].availableAmount ?? 0) + 1
+        };
+        return updated;
       }
+
       return [...prev, { ...newItem, availableAmount: 1 }];
     });
   };
@@ -56,7 +59,6 @@ export function useInventory(selectedCatId, onCatUpdated) {
   const useItem = async (item) => {
     if (!selectedCatId || !item?.id) return;
 
-    setError(null);
     setUsingId(item.id);
 
     try {
@@ -74,7 +76,6 @@ export function useInventory(selectedCatId, onCatUpdated) {
       onCatUpdated?.(updatedCat);
     } catch (e) {
       console.error(e);
-      setError("Failed to use item.");
     } finally {
       setUsingId(null);
     }
