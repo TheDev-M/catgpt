@@ -15,11 +15,11 @@ export function useCat(id) {
     }
 
     let cancelled = false;
-    
+
     async function fetchCat() {
       setLoading(true);
       setError(null);
-      
+
       try {
         const data = await getCatById(id);
         if (!cancelled) {
@@ -45,12 +45,14 @@ export function useCat(id) {
     };
   }, [id]);
 
-  // Allow direct cat updates without refetching
   const updateCat = (updatedCat) => {
-    if (updatedCat) {
+    if (!updatedCat) return;
+
+    if (typeof updatedCat === "function") {
+      setCat((prev) => updatedCat(prev));
+    } else {
       setCat(updatedCat);
     }
   };
-
   return { cat, loading, error, updateCat };
 }

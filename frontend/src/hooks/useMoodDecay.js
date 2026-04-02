@@ -5,8 +5,15 @@ export function useMoodDecay(selectedCatId, onCatUpdated) {
     if (!selectedCatId) return;
 
     try {
+      onCatUpdated?.((prev) => ({
+        ...prev,
+        stats: {
+          ...prev.stats,
+          mood: Math.max(0, prev.stats.mood - 1)
+        }
+      }));
+
       await decreaseCatStat(selectedCatId, "mood");
-      onCatUpdated?.();
     } catch (e) {
       console.error("Failed to decrease mood", e);
     }
