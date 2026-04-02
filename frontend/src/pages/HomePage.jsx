@@ -34,7 +34,7 @@ export default function HomePage() {
     error: invError,
     usingId,
     useItem,
-    refetchItems
+    addItem
   } = useInventory(selectedCatId, updateCat);
 
   useHungerDecay(selectedCatId, updateCat);
@@ -111,7 +111,7 @@ export default function HomePage() {
       </div>
 
       <RunningCat />
-      <FallingItems onItemCaught={refetchItems} />
+      <FallingItems onItemCaught={addItem} />
     </LayoutBackground>
   );
 }
