@@ -8,8 +8,19 @@ export function useHungerDecay(selectedCatId, onCatUpdated) {
 
     const interval = setInterval(async () => {
       try {
-        const updatedCat = await decreaseCatStat(selectedCatId, "hunger");
-        onCatUpdated?.(updatedCat);
+        onCatUpdated?.((prev) => {
+          if (!prev) return prev;
+
+          return {
+            ...prev,
+            stats: {
+              ...prev.stats,
+              hunger: Math.max(0, prev.stats.hunger - 1)
+            }
+          };
+        });
+
+        await decreaseCatStat(selectedCatId, "hunger");
       } catch (e) {
         console.error("Failed to decrease hunger", e);
       }
