@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { chatAsCat } from "@/services/chatApi.js";
+import { chatAsCat } from "@/services/catApi.js";
 
 export function useCatChat(cat) {
   const [answer, setAnswer] = useState("");

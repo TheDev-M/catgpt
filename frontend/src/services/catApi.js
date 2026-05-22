@@ -86,3 +86,27 @@ export async function decreaseCatStat(catId, stat) {
   const data = await res.json();
   return data.cat;
 }
+
+export async function chatAsCat(prompt, cat) {
+  const res = await apiFetch("/api/chat", {
+    method: "POST",
+    body: JSON.stringify({ prompt, cat })
+  });
+
+  if (!res.ok) throw new Error("CHAT_FAILED");
+
+  const data = await res.json();
+  return data.reply ?? "Zzz… 💤";
+}
+
+export async function getRandomBreedWithImage() {
+  const res = await apiFetch("/api/breeds/random");
+
+  if (!res.ok) {
+    const err = new Error("BREEDS_LOAD_FAILED");
+    err.status = res.status;
+    throw err;
+  }
+
+  return res.json();
+}

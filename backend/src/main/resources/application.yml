@@ -1,3 +1,9 @@
 spring:
   profiles:
     active: dev
+
+groq:
+  api-key: ${GROQ_API_KEY}
+
+thecatapi:
+  api-key: ${THE_CAT_API_KEY:}

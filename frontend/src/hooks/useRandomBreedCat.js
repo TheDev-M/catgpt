@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getRandomBreedWithImage } from "@/services/theCatApi.js";
+import { getRandomBreedWithImage } from "@/services/catApi.js";
 
 export function useRandomBreedCat() {
   const [cat, setCat] = useState(null);

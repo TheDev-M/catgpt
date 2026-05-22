@@ -24,3 +24,9 @@ catgpt:
     max-hunger: 10
     max-mood: 10
     max-health: 10
+
+groq:
+  api-key: ${GROQ_API_KEY}
+
+thecatapi:
+  api-key: ${THE_CAT_API_KEY:}
