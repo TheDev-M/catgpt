@@ -20,20 +20,11 @@ services:
     networks:
       - catgpt-network
 
-  # Spring Boot Backend (also serves the React frontend)
+  # Spring Boot Backend
   backend:
     build:
-      context: .
-      dockerfile: backend/Dockerfile
-      args:
-        VITE_HF_TOKEN: ${VITE_HF_TOKEN}
-        VITE_RUN_DURATION_MS: ${VITE_RUN_DURATION_MS:-4000}
-        VITE_RUN_MIN_INTERVAL_MS: ${VITE_RUN_MIN_INTERVAL_MS:-120000}
-        VITE_RUN_MAX_INTERVAL_MS: ${VITE_RUN_MAX_INTERVAL_MS:-300000}
-        VITE_FALL_DURATION_MS: ${VITE_FALL_DURATION_MS:-5000}
-        VITE_FALL_MIN_INTERVAL_MS: ${VITE_FALL_MIN_INTERVAL_MS:-10000}
-        VITE_FALL_MAX_INTERVAL_MS: ${VITE_FALL_MAX_INTERVAL_MS:-20000}
-        VITE_HUNGER_INTERVAL_MS: ${VITE_HUNGER_INTERVAL_MS:-60000}
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: catgpt-backend
     restart: unless-stopped
     depends_on:
@@ -54,12 +45,32 @@ services:
       SPRING_JPA_SHOW_SQL: false
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
       SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: true
-
-      # External API Keys
-      GROQ_API_KEY: ${GROQ_API_KEY}
-      THE_CAT_API_KEY: ${THE_CAT_API_KEY:-}
     ports:
-      - "3000:8080"
+      - "8080:8080"
+    networks:
+      - catgpt-network
+
+  # React Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080}
+        VITE_HF_TOKEN: ${VITE_HF_TOKEN}
+        VITE_RUN_DURATION_MS: ${VITE_RUN_DURATION_MS:-4000}
+        VITE_RUN_MIN_INTERVAL_MS: ${VITE_RUN_MIN_INTERVAL_MS:-120000}
+        VITE_RUN_MAX_INTERVAL_MS: ${VITE_RUN_MAX_INTERVAL_MS:-300000}
+        VITE_FALL_DURATION_MS: ${VITE_FALL_DURATION_MS:-5000}
+        VITE_FALL_MIN_INTERVAL_MS: ${VITE_FALL_MIN_INTERVAL_MS:-10000}
+        VITE_FALL_MAX_INTERVAL_MS: ${VITE_FALL_MAX_INTERVAL_MS:-20000}
+        VITE_HUNGER_INTERVAL_MS: ${VITE_HUNGER_INTERVAL_MS:-60000}
+    container_name: catgpt-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
     networks:
       - catgpt-network
 
