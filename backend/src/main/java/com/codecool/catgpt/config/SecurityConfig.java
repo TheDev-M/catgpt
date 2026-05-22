@@ -30,7 +30,17 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/auth/register",
                                 "/api/auth/login",
-                                "/error"
+                                "/error",
+                                "/",
+                                "/index.html",
+                                "/login",
+                                "/signup",
+                                "/assets/**",
+                                "/*.js",
+                                "/*.css",
+                                "/*.ico",
+                                "/*.png",
+                                "/*.svg"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
