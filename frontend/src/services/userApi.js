@@ -52,3 +52,29 @@ export async function updateSelectedCat(selectedCatId) {
 
     return res.json();
 }
+
+export async function updateNickname(nickname) {
+    const res = await apiFetch("/api/user/me/nickname", {
+        method: "PATCH",
+        body: JSON.stringify({ nickname })
+    });
+
+    if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || "Failed to update nickname.");
+    }
+
+    return res.json();
+}
+
+export async function changePassword(currentPassword, newPassword) {
+    const res = await apiFetch("/api/user/me/password", {
+        method: "PATCH",
+        body: JSON.stringify({ currentPassword, newPassword })
+    });
+
+    if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || "Failed to change password.");
+    }
+}

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -32,6 +33,7 @@ class ItemServiceTest {
     @BeforeEach
     void setUp() {
         user = new User();
+        ReflectionTestUtils.setField(user, "id", 1L);
         item = Item.builder()
                 .name("Salmon")
                 .category(ItemCategory.FOOD)
@@ -115,6 +117,7 @@ class ItemServiceTest {
     @Test
     void getOwnedItem_shouldThrowForbidden() {
         User otherUser = new User();
+        ReflectionTestUtils.setField(otherUser, "id", 2L);
         item.setOwner(otherUser);
         when(repository.findById(1L)).thenReturn(Optional.of(item));
 

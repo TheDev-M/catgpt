@@ -156,5 +156,19 @@ public class UserService {
         user.setSelectedCatId(catId);
         users.save(user);
     }
+
+    public void updateNickname(User user, String nickname) {
+        user.setNickname(nickname == null || nickname.isBlank() ? null : nickname.trim());
+    }
+
+    public void changePassword(User user, String currentPassword, String newPassword) {
+        if (user.getPasswordHash() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This account uses Google sign-in. Password cannot be changed.");
+        }
+        if (!passwordEncoder.matches(currentPassword, user.getPasswordHash())) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Current password is incorrect.");
+        }
+        user.setPasswordHash(passwordEncoder.encode(newPassword));
+    }
 }
 

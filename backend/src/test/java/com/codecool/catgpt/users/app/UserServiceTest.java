@@ -181,4 +181,56 @@ class UserServiceTest {
 
         verify(catService, never()).decrementStat(any(), any(), any());
     }
+
+    // --- updateNickname ---
+
+    @Test
+    void updateNickname_validValue_shouldSetNickname() {
+        service.updateNickname(existingUser, "  CoolCat  ");
+        assertThat(existingUser.getNickname()).isEqualTo("CoolCat");
+    }
+
+    @Test
+    void updateNickname_blank_shouldClearNickname() {
+        existingUser.setNickname("OldNick");
+        service.updateNickname(existingUser, "   ");
+        assertThat(existingUser.getNickname()).isNull();
+    }
+
+    @Test
+    void updateNickname_null_shouldClearNickname() {
+        existingUser.setNickname("OldNick");
+        service.updateNickname(existingUser, null);
+        assertThat(existingUser.getNickname()).isNull();
+    }
+
+    // --- changePassword ---
+
+    @Test
+    void changePassword_correctCurrentPassword_shouldUpdateHash() {
+        when(passwordEncoder.matches("oldpass", "hashed")).thenReturn(true);
+        when(passwordEncoder.encode("newpass")).thenReturn("newhashed");
+
+        service.changePassword(existingUser, "oldpass", "newpass");
+
+        assertThat(existingUser.getPasswordHash()).isEqualTo("newhashed");
+    }
+
+    @Test
+    void changePassword_wrongCurrentPassword_shouldThrowUnauthorized() {
+        when(passwordEncoder.matches("wrong", "hashed")).thenReturn(false);
+
+        var ex = assertThrows(ResponseStatusException.class,
+                () -> service.changePassword(existingUser, "wrong", "newpass"));
+        assertThat(ex.getStatusCode().value()).isEqualTo(401);
+    }
+
+    @Test
+    void changePassword_googleAccount_shouldThrowBadRequest() {
+        existingUser.setPasswordHash(null);
+
+        var ex = assertThrows(ResponseStatusException.class,
+                () -> service.changePassword(existingUser, "any", "newpass"));
+        assertThat(ex.getStatusCode().value()).isEqualTo(400);
+    }
 }

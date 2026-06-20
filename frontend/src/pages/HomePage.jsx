@@ -72,9 +72,18 @@ export default function HomePage() {
                 className="text-xs sm:text-sm opacity-80"
               >
                 Logged in as{" "}
-                <span className="font-semibold">{user.username}</span>
+                <span className="font-semibold">{user.nickname ?? user.username}</span>
               </span>
             )}
+
+            <button
+                id="home-profile-button"
+                type="button"
+                onClick={() => navigate("/profile")}
+                className="btn btn-xs btn-ghost"
+            >
+                Profile
+            </button>
 
             <button
               id="home-logout-button"

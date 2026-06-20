@@ -29,6 +29,9 @@ public class User extends BaseEntity {
     @Column(length = 512)
     private String description;
 
+    @Column(length = 64)
+    private String nickname;
+
     @Column
     private Long selectedCatId;
 

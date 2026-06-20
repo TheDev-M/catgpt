@@ -60,6 +60,20 @@ export function AuthProvider({ children }) {
     saveAuth(newToken, newUser);
   };
 
+  const refreshUser = async () => {
+    try {
+      const me = await getCurrentUser();
+      setUser(me);
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...parsed, user: me }));
+      }
+    } catch {
+      // ignore — stale user data is acceptable
+    }
+  };
+
   // Completes login for a JWT obtained from the Google OAuth2 redirect
   // (see OAuthCallbackPage). The backend has already verified the user;
   // we just need to fetch their profile and persist the session locally.
@@ -110,6 +124,7 @@ export function AuthProvider({ children }) {
         register,
         loginWithOAuthToken,
         logout: clearAuth,
+        refreshUser,
         isAuthenticated: Boolean(token),
       }}
     >

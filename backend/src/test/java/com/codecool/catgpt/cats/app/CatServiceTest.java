@@ -18,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -43,6 +44,7 @@ class CatServiceTest {
     @BeforeEach
     void setUp() {
         owner = new User();
+        ReflectionTestUtils.setField(owner, "id", 1L);
         cat = Cat.builder()
                 .name("Luna")
                 .breed("Siamese")
@@ -115,6 +117,7 @@ class CatServiceTest {
     @Test
     void delete_catOwnedByOther_shouldThrow403() {
         var otherOwner = new User();
+        ReflectionTestUtils.setField(otherOwner, "id", 2L);
         when(cats.findById(1L)).thenReturn(Optional.of(cat));
 
         var ex = assertThrows(ResponseStatusException.class, () -> service.delete(1L, otherOwner));

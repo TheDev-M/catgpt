@@ -12,6 +12,7 @@ import CatDetailsPage from "@/pages/CatDetailsPage.jsx";
 import LoginPage from "@/pages/LoginPage.jsx";
 import SignupPage from "@/pages/SignupPage.jsx";
 import OAuthCallbackPage from "@/pages/OAuthCallbackPage.jsx";
+import ProfilePage from "@/pages/ProfilePage.jsx";
 
 function AppShell() {
     const wakeupStatus = useServerWakeup();
@@ -29,6 +30,7 @@ function AppShell() {
                         <Route path="/" element={<HomePage />} />
                         <Route path="/catbox" element={<CatBoxPage />} />
                         <Route path="/catbox/:id" element={<CatDetailsPage />} />
+                        <Route path="/profile" element={<ProfilePage />} />
                     </Route>
 
                     <Route path="*" element={<Navigate to="/" replace />} />
