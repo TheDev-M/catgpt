@@ -5,14 +5,10 @@ import com.codecool.catgpt.security.OAuth2LoginFailureHandler;
 import com.codecool.catgpt.security.OAuth2LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.*;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.*;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.*;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -47,17 +43,5 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration configuration
-    ) throws Exception {
-        return configuration.getAuthenticationManager();
     }
 }
