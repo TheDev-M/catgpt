@@ -9,6 +9,7 @@ import CatBoxPage from "@/pages/CatBoxPage.jsx";
 import CatDetailsPage from "@/pages/CatDetailsPage.jsx";
 import LoginPage from "@/pages/LoginPage.jsx";
 import SignupPage from "@/pages/SignupPage.jsx";
+import OAuthCallbackPage from "@/pages/OAuthCallbackPage.jsx";
 
 export default function App() {
     return (
@@ -18,6 +19,7 @@ export default function App() {
                     <Routes>
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/signup" element={<SignupPage />} />
+                        <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
 
 
                         <Route element={<RequireAuth />}>

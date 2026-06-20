@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth.js";
 import { useLoginForm } from "@/hooks/useLoginForm.js";
 import LayoutBackground from "@/components/Layouts/LayoutBackground.jsx";
+import { API_BASE_URL } from "@/services/apiClient.js";
 
 export default function LoginPage() {
   const { login, isAuthenticated } = useAuth();
@@ -11,6 +12,11 @@ export default function LoginPage() {
   const from = location.state?.from?.pathname || "/";
 
   const form = useLoginForm(login, () => navigate(from, { replace: true }));
+  const oauthError = new URLSearchParams(location.search).get("oauthError");
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${API_BASE_URL}/oauth2/authorization/google`;
+  };
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -35,6 +41,12 @@ export default function LoginPage() {
             >
               Log in to chat with your cats.
             </p>
+
+            {oauthError && (
+              <p className="text-error text-sm text-center mb-4">
+                Google sign-in failed. Please try again.
+              </p>
+            )}
 
             <form
               id="login-form"
@@ -95,6 +107,17 @@ export default function LoginPage() {
                 )}
               </button>
             </form>
+
+            <div className="divider text-xs opacity-60">OR</div>
+
+            <button
+              id="login-google"
+              type="button"
+              onClick={handleGoogleLogin}
+              className="btn btn-outline w-full"
+            >
+              Continue with Google
+            </button>
 
             <div className="mt-8 pt-4 border-t text-center text-sm">
               <span className="opacity-70">Don't have an account? </span>

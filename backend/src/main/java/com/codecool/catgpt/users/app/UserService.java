@@ -4,6 +4,7 @@ import com.codecool.catgpt.cats.app.CatService;
 import com.codecool.catgpt.items.domain.StatType;
 import com.codecool.catgpt.users.api.dto.UserLoginRequest;
 import com.codecool.catgpt.users.api.dto.UserRegisterRequest;
+import com.codecool.catgpt.users.domain.AuthProvider;
 import com.codecool.catgpt.users.domain.User;
 import com.codecool.catgpt.users.infra.UserRepository;
 import jakarta.transaction.Transactional;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -58,12 +60,59 @@ public class UserService {
                         HttpStatus.UNAUTHORIZED, "Invalid username or password"
                 ));
 
+        if (user.getPasswordHash() == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    "This account uses Google sign-in. Please log in with Google."
+            );
+        }
+
         if (!passwordEncoder.matches(req.password(), user.getPasswordHash())) {
             throw new ResponseStatusException(
                     HttpStatus.UNAUTHORIZED, "Invalid username or password"
             );
         }
 
+        recordVisit(user);
+        return user;
+    }
+
+    /**
+     * Finds the user matching the given Google account, or creates a new one
+     * (with its starter cat) on first login. Mirrors the visit/health bookkeeping
+     * done for password logins.
+     */
+    public User processOAuthLogin(String email, String displayName) {
+        if (email == null || email.isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Google account has no email");
+        }
+
+        var existing = users.findByEmail(email);
+        if (existing.isPresent()) {
+            var user = existing.get();
+            recordVisit(user);
+            return user;
+        }
+
+        var user = User.builder()
+                .username(generateUsernameFromEmail(email))
+                .email(email)
+                .authProvider(AuthProvider.GOOGLE)
+                .passwordHash(null)
+                .description(displayName)
+                .lastVisit(null)
+                .build();
+
+        users.save(user);
+
+        var catId = catService.createDefaultCatForUser(user);
+        updateSelectedCat(user, catId);
+
+        recordVisit(user);
+        return user;
+    }
+
+    private void recordVisit(User user) {
         Instant now = Instant.now();
         Instant lastVisit = user.getLastVisit();
         boolean shouldLoseHealth = false;
@@ -90,7 +139,31 @@ public class UserService {
         }
 
         user.setLastVisit(Instant.now());
-        return user;
+    }
+
+    private String generateUsernameFromEmail(String email) {
+        String base = email.split("@")[0]
+                .replaceAll("[^a-zA-Z0-9_]", "")
+                .toLowerCase();
+
+        if (base.isBlank()) {
+            base = "cat-fan";
+        }
+        if (base.length() > 50) {
+            base = base.substring(0, 50);
+        }
+
+        if (!users.existsByUsername(base)) {
+            return base;
+        }
+
+        var random = new SecureRandom();
+        String candidate;
+        do {
+            candidate = base + "-" + (1000 + random.nextInt(9000));
+        } while (users.existsByUsername(candidate));
+
+        return candidate;
     }
 
     @Transactional

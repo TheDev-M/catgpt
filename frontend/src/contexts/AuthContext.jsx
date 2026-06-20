@@ -1,5 +1,5 @@
 import { createContext, useEffect, useRef, useState } from "react";
-import { loginUser, registerUser } from "@/services/userApi.js";
+import { loginUser, registerUser, getCurrentUser } from "@/services/userApi.js";
 import { jwtDecode } from "jwt-decode";
 
 export const AuthContext = createContext(null);
@@ -60,6 +60,20 @@ export function AuthProvider({ children }) {
     saveAuth(newToken, newUser);
   };
 
+  // Completes login for a JWT obtained from the Google OAuth2 redirect
+  // (see OAuthCallbackPage). The backend has already verified the user;
+  // we just need to fetch their profile and persist the session locally.
+  const loginWithOAuthToken = async (newToken) => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ token: newToken, user: null }));
+    try {
+      const me = await getCurrentUser();
+      saveAuth(newToken, me);
+    } catch (err) {
+      clearAuth();
+      throw err;
+    }
+  };
+
   // Restore auth from localStorage on mount
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -94,6 +108,7 @@ export function AuthProvider({ children }) {
         loading,
         login,
         register,
+        loginWithOAuthToken,
         logout: clearAuth,
         isAuthenticated: Boolean(token),
       }}

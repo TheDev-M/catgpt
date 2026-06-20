@@ -39,6 +39,11 @@ services:
       # JWT Configuration
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRATION: ${JWT_EXPIRATION:-3600000}
+
+      # Google OAuth2 Configuration
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
       
       # Spring Boot Configuration
       SPRING_JPA_HIBERNATE_DDL_AUTO: update

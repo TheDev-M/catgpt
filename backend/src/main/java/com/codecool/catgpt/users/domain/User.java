@@ -15,8 +15,16 @@ public class User extends BaseEntity {
     @Column(nullable = false, unique = true, length = 64)
     private String username;
 
-    @Column(nullable = false)
+    @Column
     private String passwordHash;
+
+    @Column(unique = true, length = 320)
+    private String email;
+
+    @Builder.Default
+    @Column(nullable = false, length = 16)
+    @Enumerated(EnumType.STRING)
+    private AuthProvider authProvider = AuthProvider.LOCAL;
 
     @Column(length = 512)
     private String description;

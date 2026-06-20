@@ -19,6 +19,9 @@ jwt:
   secret: ${JWT_SECRET}
   expiration: ${JWT_EXPIRATION:3600000}
 
+app:
+  frontend-url: ${FRONTEND_URL}
+
 catgpt:
   stats:
     max-hunger: 10

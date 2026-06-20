@@ -3,12 +3,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth.js";
 import { useSignupForm } from "@/hooks/useSignupForm.js";
 import LayoutBackground from "@/components/Layouts/LayoutBackground.jsx";
+import { API_BASE_URL } from "@/services/apiClient.js";
 
 export default function SignupPage() {
   const { register, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const form = useSignupForm(register, () => navigate("/", { replace: true }));
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${API_BASE_URL}/oauth2/authorization/google`;
+  };
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -135,6 +140,17 @@ export default function SignupPage() {
                 )}
               </button>
             </form>
+
+            <div className="divider text-xs opacity-60">OR</div>
+
+            <button
+              id="signup-google"
+              type="button"
+              onClick={handleGoogleLogin}
+              className="btn btn-outline w-full"
+            >
+              Continue with Google
+            </button>
 
             <div className="mt-8 pt-4 border-t text-center text-sm">
               <span className="opacity-70">Already have an account? </span>
