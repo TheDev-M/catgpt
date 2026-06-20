@@ -1,15 +1,19 @@
 package com.codecool.catgpt.cats.api;
 
 import com.codecool.catgpt.cats.api.dto.CatCreateRequest;
+import com.codecool.catgpt.cats.api.dto.CatRenameRequest;
 import com.codecool.catgpt.cats.api.dto.CatResponse;
 import com.codecool.catgpt.cats.app.CatService;
 import com.codecool.catgpt.items.domain.StatType;
 import com.codecool.catgpt.security.CurrentUser;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/cats")
@@ -36,24 +40,16 @@ public class CatController {
 
     @PostMapping("/{id}/stats/{stat}/decrement")
     public ResponseEntity<?> decrementStat(@PathVariable Long id, @PathVariable String stat) {
-
-        StatType type;
-        try {
-            type = StatType.valueOf(stat.toUpperCase());
-        } catch (IllegalArgumentException ex) {
-            return ResponseEntity.badRequest().body(
-                    Map.of("error", "Invalid stat: " + stat)
-            );
-        }
+        StatType type = StatType.valueOf(stat.toUpperCase());
 
         var result = cats.decrementStat(id, type, currentUser.get());
 
-        if (result == null) {
+        if (result.isEmpty()) {
             return ResponseEntity.ok(Map.of("status", "released"));
         }
 
         return ResponseEntity.ok(
-                Map.of("status", "ok", "cat", CatResponse.from(result))
+                Map.of("status", "ok", "cat", CatResponse.from(result.get()))
         );
     }
 
@@ -65,8 +61,8 @@ public class CatController {
 
 
     @PatchMapping("/{id}")
-    public CatResponse update(@PathVariable Long id, @RequestBody Map<String, String> body) {
-        return CatResponse.from(cats.rename(id, body.get("name"), currentUser.get()));
+    public CatResponse update(@PathVariable Long id, @Valid @RequestBody CatRenameRequest req) {
+        return CatResponse.from(cats.rename(id, req.name(), currentUser.get()));
     }
 
     @DeleteMapping("/{id}")

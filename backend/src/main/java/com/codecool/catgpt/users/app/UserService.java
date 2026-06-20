@@ -9,6 +9,7 @@ import com.codecool.catgpt.users.domain.User;
 import com.codecool.catgpt.users.infra.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.Instant;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -28,13 +30,6 @@ public class UserService {
     private final CatService catService;
 
     public User register(UserRegisterRequest req) {
-        if (req.username() == null || req.username().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username is required");
-        }
-        if (req.password() == null || req.password().isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Password is required");
-        }
-
         if (users.existsByUsername(req.username())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already taken");
         }
@@ -115,25 +110,15 @@ public class UserService {
     private void recordVisit(User user) {
         Instant now = Instant.now();
         Instant lastVisit = user.getLastVisit();
-        boolean shouldLoseHealth = false;
+        boolean missedVisit = lastVisit == null || Duration.between(lastVisit, now).toHours() >= 1;
 
-        if (lastVisit == null) {
-            shouldLoseHealth = true;
-        } else {
-            var hours = Duration.between(lastVisit, now).toHours();
-            if (hours >= 1) {
-                shouldLoseHealth = true;
-            }
-        }
-
-        if (shouldLoseHealth) {
+        if (missedVisit) {
             Long selectedCatId = user.getSelectedCatId();
-
             if (selectedCatId != null) {
                 try {
-                    catService.decrementStat(selectedCatId, StatType.HEALTH, user);
+                    catService.decrementStat(selectedCatId, StatType.HEALTH, user); // return value intentionally ignored
                 } catch (Exception e) {
-                    System.err.println("Failed to decrease cat health on login: " + e);
+                    log.warn("Failed to decrease cat health on login for user {}: {}", user.getUsername(), e.getMessage());
                 }
             }
         }

@@ -27,7 +27,7 @@ export function useInventory(selectedCatId, onCatUpdated) {
         }
       } catch (e) {
         if (!cancelled) {
-          console.error(e);
+          console.error("Failed to load items:", e);
           setError("Failed to load items.");
           setItems([]);
         }
@@ -57,7 +57,7 @@ export function useInventory(selectedCatId, onCatUpdated) {
       setItems(Array.isArray(data) ? data : []);
       onCatUpdated?.(updatedCat);
     } catch (e) {
-      console.error(e);
+      console.error("Failed to use item:", e);
       setError("Failed to use item.");
     } finally {
       setUsingId(null);

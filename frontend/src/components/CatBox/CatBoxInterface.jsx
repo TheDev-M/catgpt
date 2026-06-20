@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import useCats from "@/hooks/useCats.js";
+import { useCats } from "@/hooks/useCats.js";
 import { getBreedsFromCats } from "@/services/catApi.js";
 
 import CatBoxHeader from "@/components/CatBoxHeader/CatBoxHeader.jsx";

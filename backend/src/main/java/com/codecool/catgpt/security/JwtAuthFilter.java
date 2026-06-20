@@ -1,6 +1,6 @@
 package com.codecool.catgpt.security;
 
-import com.codecool.catgpt.users.app.AppUserDetailsService;
+import com.codecool.catgpt.security.AppUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

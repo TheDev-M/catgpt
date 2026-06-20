@@ -3,8 +3,10 @@ package com.codecool.catgpt.breeds.app;
 import com.codecool.catgpt.breeds.api.dto.BreedResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class BreedService {
             .body(new ParameterizedTypeReference<>() {});
 
         if (breeds == null || breeds.isEmpty()) {
-            throw new RuntimeException("BREEDS_LOAD_FAILED");
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Breed data unavailable");
         }
 
         CatApiBreed breed = breeds.get((int) (Math.random() * breeds.size()));

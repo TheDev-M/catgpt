@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.TreeSet;
 
 @Service
@@ -84,25 +85,22 @@ public class CatService {
     }
 
 
-    public Cat decrementStat(Long id, StatType stat, User owner) {
+    public Optional<Cat> decrementStat(Long id, StatType stat, User owner) {
         var cat = getOwnedCat(id, owner);
 
-        if (stat == StatType.HEALTH
-                && cat.isDefaultCat()
-                && cat.getStats().getHealth() <= 5) {
-            return cat;
+        if (stat == StatType.HEALTH && cat.isDefaultCat() && cat.getStats().getHealth() <= 5) {
+            return Optional.of(cat);
         }
 
         var newStats = cat.getStats().decrement(stat);
         cat.setStats(newStats);
 
         if (newStats.getHealth() <= 0) {
-
             cats.delete(cat);
-            return null;
+            return Optional.empty();
         }
 
-        return cat;
+        return Optional.of(cat);
     }
 
     public Long createDefaultCatForUser(User owner) {
@@ -136,9 +134,7 @@ public class CatService {
     }
 
     private void validateUniqueNameForOwner(String name, User owner) {
-        boolean exists = cats.findAllByOwner(owner).stream()
-                .anyMatch(cat -> cat.getName().equalsIgnoreCase(name));
-        if (exists) {
+        if (cats.existsByOwnerAndNameIgnoreCase(owner, name)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You already have a cat named " + name + ".");
         }
     }

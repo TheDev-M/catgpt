@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useCat } from "@/hooks/useCat.js";
-import useCats from "@/hooks/useCats.js";
+import { useCats } from "@/hooks/useCats.js";
 import { useSelectedCat } from "@/contexts/SelectedCatContext.jsx";
 import { useRenameForm } from "@/hooks/useRenameForm.js";
 import { deleteCatById } from "@/services/catApi.js";

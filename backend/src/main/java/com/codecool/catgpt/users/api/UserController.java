@@ -3,6 +3,7 @@ package com.codecool.catgpt.users.api;
 import com.codecool.catgpt.security.JwtService;
 import com.codecool.catgpt.users.api.dto.*;
 import com.codecool.catgpt.users.app.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@RequestBody UserRegisterRequest req) {
+    public ResponseEntity<UserResponse> register(@Valid @RequestBody UserRegisterRequest req) {
         var created = users.register(req);
         return ResponseEntity
                 .status(HttpStatus.CREATED)

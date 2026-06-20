@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="17fd8388-8f8d-43d9-9219-b19815c89a31" name="Changes" comment="Add PasswordEncoder bean to CorsConfig to resolve circular dependency">
+      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/breeds/app/BreedService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/breeds/app/BreedService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/cats/api/CatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/cats/api/CatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/cats/app/CatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/cats/app/CatService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/cats/infra/CatRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/cats/infra/CatRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/config/CorsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/config/CorsConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/security/CurrentUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/security/CurrentUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/security/JwtAuthFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/security/JwtAuthFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/security/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/security/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/users/api/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/users/api/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/users/api/dto/UserRegisterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/users/api/dto/UserRegisterRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/users/app/AppUserDetails.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/users/app/AppUserDetailsService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/users/app/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/users/app/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/codecool/catgpt/cats/api/CatControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/com/codecool/catgpt/cats/api/CatControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/codecool/catgpt/cats/app/CatServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/com/codecool/catgpt/cats/app/CatServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/codecool/catgpt/cats/domain/StatsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/com/codecool/catgpt/cats/domain/StatsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/CatBox/CatBoxInterface.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/CatBox/CatBoxInterface.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/CatDetails/CatDetailsInterface.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/CatDetails/CatDetailsInterface.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/CaughtCatPopup/CaughtCatPopup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/CaughtCatPopup/CaughtCatPopup.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/hooks/useCats.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/hooks/useCats.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/hooks/useInventory.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/hooks/useInventory.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_D:/CodeCool/Projektek/CV/CatGPT/catgpt" value="3FPDdnRTRtnK2G9hyeUUaNAeGVw" />
+    </persistenceIdMap>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "TheDev-M"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/TheDev-M/catgpt.git",
+    "accountId": "546aecff-ffca-4830-961d-922884493a48"
+  }
+}]]></component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.001939633781446" />
+      <entry key="MS500" value="1.2919786099201096" />
+      <entry key="S2" value="2.348893976307806" />
+      <entry key="S5" value="3.7342572837494212" />
+      <entry key="S10" value="4.650422398797533" />
+      <entry key="S30" value="5.48990528568443" />
+      <entry key="S60" value="5.73650625555745" />
+      <entry key="M2" value="5.866065568462867" />
+      <entry key="M5" value="5.945891161380276" />
+      <entry key="M10" value="5.97285555128275" />
+      <entry key="M15" value="5.981883630718511" />
+      <entry key="M30" value="5.990931764341132" />
+      <entry key="H1" value="5.9954633664208075" />
+      <entry key="H2" value="5.997731053898154" />
+      <entry key="H4" value="5.998865369574139" />
+      <entry key="D1" value="5.999810873067413" />
+      <entry key="W1" value="5.999972981331335" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="0.0" />
+      <entry key="M5" value="0.0" />
+      <entry key="M10" value="0.0" />
+      <entry key="M15" value="0.0" />
+      <entry key="M30" value="0.0" />
+      <entry key="H1" value="0.0" />
+      <entry key="H2" value="0.0" />
+      <entry key="H4" value="0.0" />
+      <entry key="D1" value="0.0" />
+      <entry key="W1" value="0.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.9219973929344634" />
+      <entry key="MS500" value="1.2714535806433895" />
+      <entry key="S2" value="2.3367199776834235" />
+      <entry key="S5" value="3.7226222225851435" />
+      <entry key="S10" value="4.641907849227022" />
+      <entry key="S30" value="5.486175061025515" />
+      <entry key="S60" value="5.734505097985316" />
+      <entry key="M2" value="5.865028842475123" />
+      <entry key="M5" value="5.9454675083232855" />
+      <entry key="M10" value="5.972642206428447" />
+      <entry key="M15" value="5.981741061569491" />
+      <entry key="M30" value="5.990860309681312" />
+      <entry key="H1" value="5.995427596482698" />
+      <entry key="H2" value="5.997713158266174" />
+      <entry key="H4" value="5.998856419091056" />
+      <entry key="D1" value="5.999809380949688" />
+      <entry key="W1" value="5.999972768162585" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1,
+  "fromUser": false
+}]]></component>
+  <component name="ProjectId" id="3FPDdnRTRtnK2G9hyeUUaNAeGVw" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.25134.95" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.25134.95" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="17fd8388-8f8d-43d9-9219-b19815c89a31" name="Changes" comment="" />
+      <created>1781967912065</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1781967912065</updated>
+      <workItem from="1781967917301" duration="3525000" />
+    </task>
+    <task id="LOCAL-00001" summary="Add Google OAuth2 configuration and update security settings">
+      <option name="closed" value="true" />
+      <created>1781968079444</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1781968079444</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Remove .idea folder">
+      <option name="closed" value="true" />
+      <created>1781968211451</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1781968211451</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Add OAuthCallbackPage component for handling Google sign-in callback">
+      <option name="closed" value="true" />
+      <created>1781968998172</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1781968998172</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Add OAuth2 login success and failure handlers for Google authentication">
+      <option name="closed" value="true" />
+      <created>1781969392545</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1781969392546</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Add PasswordEncoder bean to CorsConfig to resolve circular dependency">
+      <option name="closed" value="true" />
+      <created>1781971365160</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1781971365160</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add Google OAuth2 configuration and update security settings" />
+    <MESSAGE value="Remove .idea folder" />
+    <MESSAGE value="Add OAuthCallbackPage component for handling Google sign-in callback" />
+    <MESSAGE value="Add OAuth2 login success and failure handlers for Google authentication" />
+    <MESSAGE value="Add PasswordEncoder bean to CorsConfig to resolve circular dependency" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add PasswordEncoder bean to CorsConfig to resolve circular dependency" />
+  </component>
+</project>

@@ -9,4 +9,6 @@ import java.util.List;
 public interface CatRepository extends JpaRepository<Cat, Long> {
 
     List<Cat> findAllByOwner(User owner);
+
+    boolean existsByOwnerAndNameIgnoreCase(User owner, String name);
 }

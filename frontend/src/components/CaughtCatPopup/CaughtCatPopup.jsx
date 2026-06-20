@@ -1,6 +1,6 @@
 import { useRandomBreedCat } from "@/hooks/useRandomBreedCat.js";
 import { useCaughtCatForm } from "@/hooks/useCaughtCatForm.js";
-import useCats from "@/hooks/useCats.js";
+import { useCats } from "@/hooks/useCats.js";
 
 import ModalFrame from "./ModalFrame.jsx";
 import LoadingSkeleton from "./LoadingSkeleton.jsx";

@@ -1,4 +1,4 @@
-package com.codecool.catgpt.users.app;
+package com.codecool.catgpt.security;
 
 import com.codecool.catgpt.users.domain.User;
 import org.springframework.security.core.GrantedAuthority;
