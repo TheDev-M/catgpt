@@ -47,7 +47,7 @@ public class ItemService {
         var item = items.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found"));
 
-        if (!item.getOwner().equals(owner)) {
+        if (!item.getOwner().getId().equals(owner.getId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Item does not belong to you");
         }
 

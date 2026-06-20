@@ -126,7 +126,7 @@ public class CatService {
         var cat = cats.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Cat not found"));
 
-        if (!cat.getOwner().equals(owner)) {
+        if (!cat.getOwner().getId().equals(owner.getId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "This cat does not belong to you");
         }
 
