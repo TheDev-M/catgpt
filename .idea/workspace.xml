@@ -4,29 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17fd8388-8f8d-43d9-9219-b19815c89a31" name="Changes" comment="Add PasswordEncoder bean to CorsConfig to resolve circular dependency">
-      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/breeds/app/BreedService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/breeds/app/BreedService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/cats/api/CatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/cats/api/CatController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/cats/app/CatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/cats/app/CatService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/cats/infra/CatRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/cats/infra/CatRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/config/CorsConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/config/CorsConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/security/CurrentUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/security/CurrentUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/security/JwtAuthFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/security/JwtAuthFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/security/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/security/JwtService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/users/api/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/users/api/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/users/api/dto/UserRegisterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/users/api/dto/UserRegisterRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/users/app/AppUserDetails.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/users/app/AppUserDetailsService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/users/app/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/users/app/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/codecool/catgpt/cats/api/CatControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/com/codecool/catgpt/cats/api/CatControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/codecool/catgpt/cats/app/CatServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/com/codecool/catgpt/cats/app/CatServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/codecool/catgpt/cats/domain/StatsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/com/codecool/catgpt/cats/domain/StatsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/CatBox/CatBoxInterface.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/CatBox/CatBoxInterface.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/CatDetails/CatDetailsInterface.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/CatDetails/CatDetailsInterface.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/CaughtCatPopup/CaughtCatPopup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/CaughtCatPopup/CaughtCatPopup.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/hooks/useCats.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/hooks/useCats.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/hooks/useInventory.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/hooks/useInventory.js" afterDir="false" />
+    <list default="true" id="17fd8388-8f8d-43d9-9219-b19815c89a31" name="Changes" comment="Add CatRenameRequest DTO, update CatRepository with existsByOwnerAndNameIgnoreCase method, and enhance validation in UserRegisterRequest">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,18 +20,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "TheDev-M"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;TheDev-M&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/TheDev-M/catgpt.git",
-    "accountId": "546aecff-ffca-4830-961d-922884493a48"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/TheDev-M/catgpt.git&quot;,
+    &quot;accountId&quot;: &quot;546aecff-ffca-4830-961d-922884493a48&quot;
   }
-}]]></component>
+}</component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -116,10 +95,10 @@
       <entry key="W1" value="5.999972768162585" />
     </decayedShown>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1,
-  "fromUser": false
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3FPDdnRTRtnK2G9hyeUUaNAeGVw" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -137,6 +116,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "copilot.chat.legacySessionMetadata.migrated": "true",
     "git-widget-placeholder": "main",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
@@ -162,7 +142,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1781967912065</updated>
-      <workItem from="1781967917301" duration="3525000" />
+      <workItem from="1781967917301" duration="3690000" />
+      <workItem from="1781978017302" duration="426000" />
     </task>
     <task id="LOCAL-00001" summary="Add Google OAuth2 configuration and update security settings">
       <option name="closed" value="true" />
@@ -204,7 +185,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781971365160</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Add CatRenameRequest DTO, update CatRepository with existsByOwnerAndNameIgnoreCase method, and enhance validation in UserRegisterRequest">
+      <option name="closed" value="true" />
+      <created>1781972896665</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1781972896665</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -227,6 +216,7 @@
     <MESSAGE value="Add OAuthCallbackPage component for handling Google sign-in callback" />
     <MESSAGE value="Add OAuth2 login success and failure handlers for Google authentication" />
     <MESSAGE value="Add PasswordEncoder bean to CorsConfig to resolve circular dependency" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add PasswordEncoder bean to CorsConfig to resolve circular dependency" />
+    <MESSAGE value="Add CatRenameRequest DTO, update CatRepository with existsByOwnerAndNameIgnoreCase method, and enhance validation in UserRegisterRequest" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add CatRenameRequest DTO, update CatRepository with existsByOwnerAndNameIgnoreCase method, and enhance validation in UserRegisterRequest" />
   </component>
 </project>
