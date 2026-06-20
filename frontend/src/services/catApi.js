@@ -70,7 +70,14 @@ export async function applyItem(catId, itemId) {
     method: "POST"
   });
 
-  if (!res.ok) throw new Error("APPLY_ITEM_FAILED");
+  if (!res.ok) {
+    let serverMsg = "Failed to apply item.";
+    try {
+      const data = await res.json();
+      serverMsg = data.message || data.error || serverMsg;
+    } catch { /* ignore parse errors */ }
+    throw new Error(serverMsg);
+  }
   return res.json();
 }
 

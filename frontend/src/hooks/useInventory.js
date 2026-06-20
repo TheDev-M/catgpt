@@ -58,7 +58,7 @@ export function useInventory(selectedCatId, onCatUpdated) {
       onCatUpdated?.(updatedCat);
     } catch (e) {
       console.error("Failed to use item:", e);
-      setError("Failed to use item.");
+      setError(e?.message || "Failed to use item.");
     } finally {
       setUsingId(null);
     }
