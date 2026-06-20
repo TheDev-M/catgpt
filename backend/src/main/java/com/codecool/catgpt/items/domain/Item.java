@@ -33,7 +33,7 @@ public class Item extends BaseEntity {
 
     public void consumeOne() {
         if (availableAmount <= 0)
-            throw new IllegalStateException("Item out of stock");
+            throw new IllegalStateException("Item out of stock.");
         availableAmount--;
     }
 }

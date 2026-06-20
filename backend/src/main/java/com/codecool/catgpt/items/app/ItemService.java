@@ -36,7 +36,7 @@ public class ItemService {
         var template = ItemTemplate.fromName(itemName)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
-                        "Unknown item: " + itemName
+                        "Unknown item: " + itemName + "."
                 ));
 
         var newItem = template.createOwnedItem(owner);
@@ -45,10 +45,10 @@ public class ItemService {
 
     public Item getOwnedItem(Long id, User owner) {
         var item = items.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found"));
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found."));
 
         if (!item.getOwner().getId().equals(owner.getId())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Item does not belong to you");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Item does not belong to you.");
         }
 
         return item;

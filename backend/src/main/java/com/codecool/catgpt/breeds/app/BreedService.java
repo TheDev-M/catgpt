@@ -31,7 +31,7 @@ public class BreedService {
             .body(new ParameterizedTypeReference<>() {});
 
         if (breeds == null || breeds.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Breed data unavailable");
+            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Breed data unavailable.");
         }
 
         CatApiBreed breed = breeds.get((int) (Math.random() * breeds.size()));

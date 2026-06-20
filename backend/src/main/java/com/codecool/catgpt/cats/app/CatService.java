@@ -33,7 +33,7 @@ public class CatService {
 
     public Cat get(Long id) {
         return cats.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Cat not found"));
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Cat not found."));
     }
 
     public Cat create(CatCreateRequest req, User owner) {
@@ -75,7 +75,7 @@ public class CatService {
         var item = items.getOwnedItem(itemId, owner);
 
         if (item.getAvailableAmount() <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Item out of stock");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Item out of stock.");
         }
 
         cat.apply(item, limits);
@@ -124,10 +124,10 @@ public class CatService {
 
     private Cat getOwnedCat(Long id, User owner) {
         var cat = cats.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Cat not found"));
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Cat not found."));
 
         if (!cat.getOwner().getId().equals(owner.getId())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "This cat does not belong to you");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "This cat does not belong to you.");
         }
 
         return cat;

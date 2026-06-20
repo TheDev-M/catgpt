@@ -31,7 +31,7 @@ public class UserService {
 
     public User register(UserRegisterRequest req) {
         if (users.existsByUsername(req.username())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already taken");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already taken.");
         }
 
         var user = User.builder()
@@ -52,7 +52,7 @@ public class UserService {
     public User authenticate(UserLoginRequest req) {
         var user = users.findByUsername(req.username())
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.UNAUTHORIZED, "Invalid username or password"
+                        HttpStatus.UNAUTHORIZED, "Invalid username or password."
                 ));
 
         if (user.getPasswordHash() == null) {
@@ -64,7 +64,7 @@ public class UserService {
 
         if (!passwordEncoder.matches(req.password(), user.getPasswordHash())) {
             throw new ResponseStatusException(
-                    HttpStatus.UNAUTHORIZED, "Invalid username or password"
+                    HttpStatus.UNAUTHORIZED, "Invalid username or password."
             );
         }
 
@@ -79,7 +79,7 @@ public class UserService {
      */
     public User processOAuthLogin(String email, String displayName) {
         if (email == null || email.isBlank()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Google account has no email");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Google account has no email.");
         }
 
         var existing = users.findByEmail(email);
