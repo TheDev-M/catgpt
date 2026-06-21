@@ -15,7 +15,7 @@ export default function CatBoxButton() {
         src="/imgs/catbox.png"
         alt="Cat Box"
         draggable="false"
-        className="theme-icon w-full h-full object-contain select-none scale-120 -translate-y-1"
+        className="w-full h-full object-contain select-none scale-120 -translate-y-1"
       />
     </button>
   );

@@ -12,7 +12,7 @@ export default function ItemPopup({ icon, name, onClose }) {
         <img
           src={icon}
           alt={name}
-          className="theme-icon w-8 h-8 object-contain select-none"
+          className="w-8 h-8 object-contain select-none"
           draggable="false"
         />
         <span className="font-semibold text-sm">+1 {name}</span>

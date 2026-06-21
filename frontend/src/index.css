@@ -2,8 +2,3 @@
 @plugin "daisyui" {
   themes: caramellatte, valentine --default, synthwave, autumn, abyss;
 }
-
-[data-theme="synthwave"] .theme-icon,
-[data-theme="abyss"] .theme-icon {
-  filter: invert(1);
-}
