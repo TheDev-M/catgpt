@@ -4,6 +4,33 @@ import { useAuth } from "@/hooks/useAuth.js";
 import { updateNickname, changePassword } from "@/services/userApi.js";
 import LayoutBackground from "@/components/Layouts/LayoutBackground.jsx";
 
+function Avatar({ user }) {
+    const letter = (user?.nickname ?? user?.username ?? "?")[0].toUpperCase();
+    return (
+        <div className="w-20 h-20 rounded-full bg-primary/20 border-4 border-primary/30 flex items-center justify-center shrink-0">
+            <span className="text-3xl font-bold text-primary">{letter}</span>
+        </div>
+    );
+}
+
+function StatusBadge({ isGoogle }) {
+    return (
+        <span className={`badge badge-sm font-medium ${isGoogle ? "badge-warning" : "badge-ghost border border-base-300"}`}>
+            {isGoogle ? "Google account" : "Local account"}
+        </span>
+    );
+}
+
+function FieldLabel({ children }) {
+    return <label className="text-xs font-semibold uppercase tracking-wider opacity-50">{children}</label>;
+}
+
+function FeedbackMessage({ status }) {
+    if (!status || status === "saving") return null;
+    if (status === "saved") return <p className="text-xs text-success font-medium">Saved.</p>;
+    return <p className="text-xs text-error">{status}</p>;
+}
+
 export default function ProfilePage() {
     const { user, refreshUser } = useAuth();
     const navigate = useNavigate();
@@ -52,111 +79,131 @@ export default function ProfilePage() {
 
     return (
         <LayoutBackground variant="warm">
-            <div className="min-h-screen flex flex-col items-center justify-center p-4">
-                <div className="w-full max-w-md space-y-6">
-                    <div className="flex items-center gap-3 mb-2">
-                        <button
-                            type="button"
-                            className="btn btn-ghost btn-sm"
-                            onClick={() => navigate(-1)}
-                        >
-                            ← Back
-                        </button>
-                        <h1 className="text-2xl font-bold">Profile</h1>
-                    </div>
+            <div className="min-h-screen flex flex-col items-center py-10 px-4">
 
-                    <div className="text-sm opacity-60">
-                        Username: <span className="font-mono font-semibold">{user?.username}</span>
-                    </div>
+                {/* Back */}
+                <div className="w-full max-w-lg mb-6">
+                    <button
+                        type="button"
+                        className="btn btn-ghost btn-sm gap-1 pl-0 hover:pl-1 transition-all"
+                        onClick={() => navigate(-1)}
+                    >
+                        ← Back
+                    </button>
+                </div>
 
-                    <div className="card bg-base-200 shadow-md rounded-2xl">
-                        <div className="card-body space-y-3">
-                            <h2 className="card-title text-lg">Display name</h2>
-                            <p className="text-sm opacity-60">
-                                This is shown in the app. Duplicates are allowed.
-                            </p>
-                            <form onSubmit={handleNicknameSubmit} className="space-y-3">
-                                <input
-                                    type="text"
-                                    className="input input-bordered w-full"
-                                    placeholder="Leave blank to use your username"
-                                    value={nickname}
-                                    maxLength={64}
-                                    onChange={(e) => setNickname(e.target.value)}
-                                />
-                                {nicknameStatus && nicknameStatus !== "saving" && nicknameStatus !== "saved" && (
-                                    <p className="text-sm text-error">{nicknameStatus}</p>
-                                )}
-                                {nicknameStatus === "saved" && (
-                                    <p className="text-sm text-success">Display name saved.</p>
-                                )}
-                                <button
-                                    type="submit"
-                                    className="btn btn-primary w-full"
-                                    disabled={nicknameStatus === "saving"}
-                                >
-                                    {nicknameStatus === "saving" ? (
-                                        <span className="loading loading-spinner loading-sm" />
-                                    ) : (
-                                        "Save"
-                                    )}
-                                </button>
-                            </form>
+                {/* Header */}
+                <div className="w-full max-w-lg flex items-center gap-5 mb-8 px-1">
+                    <Avatar user={user} />
+                    <div className="flex flex-col gap-1 min-w-0">
+                        <h1 className="text-2xl font-bold truncate">
+                            {user?.nickname ?? user?.username}
+                        </h1>
+                        <span className="text-sm opacity-50 font-mono truncate">@{user?.username}</span>
+                        <StatusBadge isGoogle={isGoogleUser} />
+                    </div>
+                </div>
+
+                {/* Display name */}
+                <div className="w-full max-w-lg bg-base-200 rounded-2xl shadow-sm mb-4 overflow-hidden">
+                    <div className="px-6 py-4 border-b border-base-300">
+                        <h2 className="font-semibold text-base">Display name</h2>
+                        <p className="text-xs opacity-50 mt-0.5">Shown in the app. Duplicates are allowed.</p>
+                    </div>
+                    <form onSubmit={handleNicknameSubmit} className="px-6 py-5 space-y-4">
+                        <div className="space-y-1.5">
+                            <FieldLabel>Nickname</FieldLabel>
+                            <input
+                                type="text"
+                                className="input input-bordered w-full"
+                                placeholder={user?.username ?? "Enter a display name…"}
+                                value={nickname}
+                                maxLength={64}
+                                onChange={(e) => setNickname(e.target.value)}
+                            />
+                            <p className="text-xs opacity-40">Leave blank to display your username instead.</p>
                         </div>
+                        <div className="flex items-center justify-between">
+                            <FeedbackMessage status={nicknameStatus} />
+                            <button
+                                type="submit"
+                                className="btn btn-primary btn-sm ml-auto"
+                                disabled={nicknameStatus === "saving"}
+                            >
+                                {nicknameStatus === "saving"
+                                    ? <span className="loading loading-spinner loading-xs" />
+                                    : "Save"}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                {/* Password */}
+                <div className="w-full max-w-lg bg-base-200 rounded-2xl shadow-sm overflow-hidden">
+                    <div className="px-6 py-4 border-b border-base-300">
+                        <h2 className="font-semibold text-base">Password</h2>
+                        <p className="text-xs opacity-50 mt-0.5">
+                            {isGoogleUser
+                                ? "Not available for Google accounts."
+                                : "Minimum 6 characters."}
+                        </p>
                     </div>
 
-                    <div className="card bg-base-200 shadow-md rounded-2xl">
-                        <div className="card-body space-y-3">
-                            <h2 className="card-title text-lg">Change password</h2>
-                            {isGoogleUser ? (
-                                <p className="text-sm opacity-60">
-                                    Your account uses Google sign-in. Password change is not available.
-                                </p>
-                            ) : (
-                                <form onSubmit={handlePasswordSubmit} className="space-y-3">
+                    {isGoogleUser ? (
+                        <div className="px-6 py-5 flex items-center gap-3 opacity-50">
+                            <span className="text-2xl">🔒</span>
+                            <p className="text-sm">Your sign-in is managed by Google.</p>
+                        </div>
+                    ) : (
+                        <form onSubmit={handlePasswordSubmit} className="px-6 py-5 space-y-4">
+                            <div className="space-y-1.5">
+                                <FieldLabel>Current password</FieldLabel>
+                                <input
+                                    type="password"
+                                    className="input input-bordered w-full"
+                                    placeholder="••••••••"
+                                    value={currentPassword}
+                                    onChange={(e) => setCurrentPassword(e.target.value)}
+                                />
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="space-y-1.5">
+                                    <FieldLabel>New password</FieldLabel>
                                     <input
                                         type="password"
                                         className="input input-bordered w-full"
-                                        placeholder="Current password"
-                                        value={currentPassword}
-                                        onChange={(e) => setCurrentPassword(e.target.value)}
-                                    />
-                                    <input
-                                        type="password"
-                                        className="input input-bordered w-full"
-                                        placeholder="New password"
+                                        placeholder="••••••••"
                                         value={newPassword}
                                         onChange={(e) => setNewPassword(e.target.value)}
                                     />
+                                </div>
+                                <div className="space-y-1.5">
+                                    <FieldLabel>Confirm</FieldLabel>
                                     <input
                                         type="password"
                                         className="input input-bordered w-full"
-                                        placeholder="Confirm new password"
+                                        placeholder="••••••••"
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                     />
-                                    {passwordStatus && passwordStatus !== "saving" && passwordStatus !== "saved" && (
-                                        <p className="text-sm text-error">{passwordStatus}</p>
-                                    )}
-                                    {passwordStatus === "saved" && (
-                                        <p className="text-sm text-success">Password changed successfully.</p>
-                                    )}
-                                    <button
-                                        type="submit"
-                                        className="btn btn-primary w-full"
-                                        disabled={passwordStatus === "saving"}
-                                    >
-                                        {passwordStatus === "saving" ? (
-                                            <span className="loading loading-spinner loading-sm" />
-                                        ) : (
-                                            "Change password"
-                                        )}
-                                    </button>
-                                </form>
-                            )}
-                        </div>
-                    </div>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <FeedbackMessage status={passwordStatus} />
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary btn-sm ml-auto"
+                                    disabled={passwordStatus === "saving"}
+                                >
+                                    {passwordStatus === "saving"
+                                        ? <span className="loading loading-spinner loading-xs" />
+                                        : "Update password"}
+                                </button>
+                            </div>
+                        </form>
+                    )}
                 </div>
+
             </div>
         </LayoutBackground>
     );

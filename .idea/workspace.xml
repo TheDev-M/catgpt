@@ -5,7 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="17fd8388-8f8d-43d9-9219-b19815c89a31" name="Changes" comment="Refactor CaughtCatPopup to improve loading state handling and conditional rendering">
+      <change afterPath="$PROJECT_DIR$/frontend/public/imgs/sleepy_cat.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ServerWakeupPopup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ServerWakeupPopup.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/HomePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/HomePage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/ProfilePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/ProfilePage.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,23 +42,23 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.001939633781446" />
-      <entry key="MS500" value="1.2919786099201096" />
-      <entry key="S2" value="2.348893976307806" />
-      <entry key="S5" value="3.7342572837494212" />
-      <entry key="S10" value="4.650422398797533" />
-      <entry key="S30" value="5.48990528568443" />
-      <entry key="S60" value="5.73650625555745" />
-      <entry key="M2" value="5.866065568462867" />
-      <entry key="M5" value="5.945891161380276" />
-      <entry key="M10" value="5.97285555128275" />
-      <entry key="M15" value="5.981883630718511" />
-      <entry key="M30" value="5.990931764341132" />
-      <entry key="H1" value="5.9954633664208075" />
-      <entry key="H2" value="5.997731053898154" />
-      <entry key="H4" value="5.998865369574139" />
-      <entry key="D1" value="5.999810873067413" />
-      <entry key="W1" value="5.999972981331335" />
+      <entry key="MS100" value="1.3770415937129394" />
+      <entry key="MS500" value="2.0625878965038282" />
+      <entry key="S2" value="3.236870280688759" />
+      <entry key="S5" value="4.661973446889002" />
+      <entry key="S10" value="5.6051934553777105" />
+      <entry key="S30" value="6.472049418684378" />
+      <entry key="S60" value="6.7271696903954155" />
+      <entry key="M2" value="6.861289908488591" />
+      <entry key="M5" value="6.943954429354505" />
+      <entry key="M10" value="6.971882714540852" />
+      <entry key="M15" value="6.981234074949992" />
+      <entry key="M30" value="6.990606486370803" />
+      <entry key="H1" value="6.995300602204497" />
+      <entry key="H2" value="6.997649640455973" />
+      <entry key="H4" value="6.998824655016259" />
+      <entry key="D1" value="6.999804086219045" />
+      <entry key="W1" value="6.9999720117549025" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
@@ -76,23 +80,23 @@
       <entry key="W1" value="0.0" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9219973929344634" />
-      <entry key="MS500" value="1.2714535806433895" />
-      <entry key="S2" value="2.3367199776834235" />
-      <entry key="S5" value="3.7226222225851435" />
-      <entry key="S10" value="4.641907849227022" />
-      <entry key="S30" value="5.486175061025515" />
-      <entry key="S60" value="5.734505097985316" />
-      <entry key="M2" value="5.865028842475123" />
-      <entry key="M5" value="5.9454675083232855" />
-      <entry key="M10" value="5.972642206428447" />
-      <entry key="M15" value="5.981741061569491" />
-      <entry key="M30" value="5.990860309681312" />
-      <entry key="H1" value="5.995427596482698" />
-      <entry key="H2" value="5.997713158266174" />
-      <entry key="H4" value="5.998856419091056" />
-      <entry key="D1" value="5.999809380949688" />
-      <entry key="W1" value="5.999972768162585" />
+      <entry key="MS100" value="0.7232700810617879" />
+      <entry key="MS500" value="1.8681571534773287" />
+      <entry key="S2" value="3.1775847817502467" />
+      <entry key="S5" value="4.631206653610747" />
+      <entry key="S10" value="5.587035945341792" />
+      <entry key="S30" value="6.465078835644226" />
+      <entry key="S60" value="6.723544219903735" />
+      <entry key="M2" value="6.85943991015198" />
+      <entry key="M5" value="6.943205188177789" />
+      <entry key="M10" value="6.971506528113731" />
+      <entry key="M15" value="6.980982934119877" />
+      <entry key="M30" value="6.990480740535504" />
+      <entry key="H1" value="6.995237685341405" />
+      <entry key="H2" value="6.99761817102675" />
+      <entry key="H4" value="6.998808917550813" />
+      <entry key="D1" value="6.999801462925957" />
+      <entry key="W1" value="6.999971636989386" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -147,6 +151,7 @@
       <workItem from="1781967917301" duration="3690000" />
       <workItem from="1781978017302" duration="3459000" />
       <workItem from="1781985112751" duration="404000" />
+      <workItem from="1782052588530" duration="908000" />
     </task>
     <task id="LOCAL-00001" summary="Add Google OAuth2 configuration and update security settings">
       <option name="closed" value="true" />

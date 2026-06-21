@@ -24,7 +24,7 @@ export default function ServerWakeupPopup({ status }) {
           </>
         ) : (
           <>
-            <span className="text-5xl">🐱</span>
+            <img src="/imgs/sleepy_cat.png" alt="Sleeping cat" className="w-24 h-24 object-contain" />
             <p className="text-lg font-semibold">Waking up the server…</p>
             <p className="text-sm opacity-60 text-center">
               The server was sleeping on the free tier.

@@ -61,18 +61,17 @@ export default function HomePage() {
         )}
 
         <div className="flex-1 relative">
-          <div className="absolute top-3 left-3 z-1000">
+          <div className="absolute top-3 left-3 z-10">
             <StatusPanel cat={cat} loading={catLoading} error={catError} />
           </div>
 
           <div className="absolute top-3 right-3 z-1000 flex items-center gap-2">
-            {user?.username && (
+            {user && (
               <span
                 id="home-username-display"
                 className="text-xs sm:text-sm opacity-80"
               >
-                Logged in as{" "}
-                <span className="font-semibold">{user.nickname ?? user.username}</span>
+                Hi, <span className="font-semibold">{user.nickname ?? user.username}</span>
               </span>
             )}
 
