@@ -159,6 +159,7 @@ public class UserService {
 
     public void updateNickname(User user, String nickname) {
         user.setNickname(nickname == null || nickname.isBlank() ? null : nickname.trim());
+        users.save(user);
     }
 
     public void changePassword(User user, String currentPassword, String newPassword) {
@@ -169,6 +170,7 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Current password is incorrect.");
         }
         user.setPasswordHash(passwordEncoder.encode(newPassword));
+        users.save(user);
     }
 }
 

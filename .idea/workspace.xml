@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17fd8388-8f8d-43d9-9219-b19815c89a31" name="Changes" comment="Refactor CaughtCatPopup to improve loading state handling and conditional rendering">
-      <change afterPath="$PROJECT_DIR$/frontend/public/imgs/sleepy_cat.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/ServerWakeupPopup.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ServerWakeupPopup.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/HomePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/HomePage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/ProfilePage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/ProfilePage.jsx" afterDir="false" />
-    </list>
+    <list default="true" id="17fd8388-8f8d-43d9-9219-b19815c89a31" name="Changes" comment="Enhance ProfilePage with avatar display, status badge, and improved layout; update HomePage greeting message" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -151,7 +145,7 @@
       <workItem from="1781967917301" duration="3690000" />
       <workItem from="1781978017302" duration="3459000" />
       <workItem from="1781985112751" duration="404000" />
-      <workItem from="1782052588530" duration="908000" />
+      <workItem from="1782052588530" duration="1226000" />
     </task>
     <task id="LOCAL-00001" summary="Add Google OAuth2 configuration and update security settings">
       <option name="closed" value="true" />
@@ -257,7 +251,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781982028481</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Enhance ProfilePage with avatar display, status badge, and improved layout; update HomePage greeting message">
+      <option name="closed" value="true" />
+      <created>1782053515035</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1782053515035</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -286,6 +288,7 @@
     <MESSAGE value="Refactor ownership checks in CatService and ItemService to compare owner IDs" />
     <MESSAGE value="Fix response messages in services to ensure consistent punctuation" />
     <MESSAGE value="Refactor CaughtCatPopup to improve loading state handling and conditional rendering" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor CaughtCatPopup to improve loading state handling and conditional rendering" />
+    <MESSAGE value="Enhance ProfilePage with avatar display, status badge, and improved layout; update HomePage greeting message" />
+    <option name="LAST_COMMIT_MESSAGE" value="Enhance ProfilePage with avatar display, status badge, and improved layout; update HomePage greeting message" />
   </component>
 </project>
