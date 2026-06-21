@@ -12,7 +12,7 @@ export default function InventoryButton({ open, onToggle }) {
         src="/imgs/inventory.png"
         alt="Inventory"
         draggable="false"
-        className="w-full h-full object-contain p-1"
+        className="theme-icon w-full h-full object-contain p-1"
       />
     </button>
   );

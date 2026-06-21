@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17fd8388-8f8d-43d9-9219-b19815c89a31" name="Changes" comment="Enhance ProfilePage with avatar display, status badge, and improved layout; update HomePage greeting message" />
+    <list default="true" id="17fd8388-8f8d-43d9-9219-b19815c89a31" name="Changes" comment="Implement user data persistence in updateNickname and changePassword methods" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -145,7 +145,7 @@
       <workItem from="1781967917301" duration="3690000" />
       <workItem from="1781978017302" duration="3459000" />
       <workItem from="1781985112751" duration="404000" />
-      <workItem from="1782052588530" duration="1226000" />
+      <workItem from="1782052588530" duration="1943000" />
     </task>
     <task id="LOCAL-00001" summary="Add Google OAuth2 configuration and update security settings">
       <option name="closed" value="true" />
@@ -259,7 +259,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782053515035</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Implement user data persistence in updateNickname and changePassword methods">
+      <option name="closed" value="true" />
+      <created>1782053943541</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1782053943541</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -289,6 +297,7 @@
     <MESSAGE value="Fix response messages in services to ensure consistent punctuation" />
     <MESSAGE value="Refactor CaughtCatPopup to improve loading state handling and conditional rendering" />
     <MESSAGE value="Enhance ProfilePage with avatar display, status badge, and improved layout; update HomePage greeting message" />
-    <option name="LAST_COMMIT_MESSAGE" value="Enhance ProfilePage with avatar display, status badge, and improved layout; update HomePage greeting message" />
+    <MESSAGE value="Implement user data persistence in updateNickname and changePassword methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement user data persistence in updateNickname and changePassword methods" />
   </component>
 </project>

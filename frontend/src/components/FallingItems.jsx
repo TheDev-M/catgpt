@@ -14,7 +14,7 @@ export default function FallingItems({ onItemCaught }) {
         <div
           id="falling-item"
           key={falling.key}
-          className="fixed z-1200 w-14 h-14 cursor-pointer bg-no-repeat bg-contain pointer-events-auto"
+          className="theme-icon fixed z-1200 w-14 h-14 cursor-pointer bg-no-repeat bg-contain pointer-events-auto"
           style={{
             top: `${falling.top}px`,
             left: `${falling.left}px`,

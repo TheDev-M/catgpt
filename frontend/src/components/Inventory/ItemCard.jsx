@@ -49,7 +49,7 @@ export default function ItemCard({ item, loading, onUse }) {
               id={`item-icon-${id}`}
               src={icon}
               alt={name}
-              className="w-14 h-14 object-contain select-none"
+              className="theme-icon w-14 h-14 object-contain select-none"
               draggable="false"
               loading="lazy"
             />
