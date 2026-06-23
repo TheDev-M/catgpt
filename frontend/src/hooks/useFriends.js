@@ -8,6 +8,7 @@ import {
     declineRequest,
     removeFriend
 } from "@/services/friendApi.js";
+import { useFriendUpdates } from "@/hooks/useFriendUpdates.js";
 
 export function useFriends(open) {
     const [friends, setFriends] = useState([]);
@@ -38,6 +39,9 @@ export function useFriends(open) {
     useEffect(() => {
         if (open) fetchAll();
     }, [open, fetchAll]);
+
+    // Re-fetch whenever the server pushes a friend-update event
+    useFriendUpdates(fetchAll);
 
     const sendRequest = useCallback(async (username) => {
         const newEntry = await sendFriendRequest(username);

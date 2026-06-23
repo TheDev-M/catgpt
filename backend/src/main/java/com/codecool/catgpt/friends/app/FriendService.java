@@ -4,6 +4,7 @@ import com.codecool.catgpt.friends.api.dto.FriendResponse;
 import com.codecool.catgpt.friends.domain.Friendship;
 import com.codecool.catgpt.friends.domain.FriendshipRepository;
 import com.codecool.catgpt.friends.domain.FriendshipStatus;
+import com.codecool.catgpt.sse.SseService;
 import com.codecool.catgpt.users.domain.User;
 import com.codecool.catgpt.users.infra.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class FriendService {
 
     private final FriendshipRepository friendships;
     private final UserRepository users;
+    private final SseService sse;
 
     public List<FriendResponse> getFriends(User me) {
         return friendships.findApprovedFriendships(me).stream()
@@ -61,7 +63,12 @@ public class FriendService {
                 .receiver(target)
                 .build();
 
-        return FriendResponse.from(friendships.save(friendship), me);
+        FriendResponse saved = FriendResponse.from(friendships.save(friendship), me);
+
+        // Notify the receiver that they have a new incoming request
+        sse.send(target.getId(), "friend-update", "request");
+
+        return saved;
     }
 
     @Transactional
@@ -71,7 +78,12 @@ public class FriendService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This request is no longer pending.");
         }
         f.setStatus(FriendshipStatus.APPROVED);
-        return FriendResponse.from(friendships.save(f), me);
+        FriendResponse saved = FriendResponse.from(friendships.save(f), me);
+
+        // Notify the original requester that their request was approved
+        sse.send(f.getRequester().getId(), "friend-update", "approved");
+
+        return saved;
     }
 
     @Transactional
@@ -82,6 +94,9 @@ public class FriendService {
         }
         f.setStatus(FriendshipStatus.DECLINED);
         friendships.save(f);
+
+        // Notify the original requester that their request was declined
+        sse.send(f.getRequester().getId(), "friend-update", "declined");
     }
 
     @Transactional
@@ -93,7 +108,13 @@ public class FriendService {
         if (!involved) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not part of this friendship.");
         }
+
+        // Notify the other party
+        Long otherId = f.getRequester().getId().equals(me.getId())
+                ? f.getReceiver().getId()
+                : f.getRequester().getId();
         friendships.delete(f);
+        sse.send(otherId, "friend-update", "removed");
     }
 
     private Friendship getAndValidateReceiver(User me, Long friendshipId) {
