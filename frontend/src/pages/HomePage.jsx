@@ -69,15 +69,8 @@ export default function HomePage() {
     navigate("/login", { replace: true });
   };
 
-  const toggleInventory = () => {
-    setInventoryOpen(o => !o);
-    setFriendListOpen(false);
-  };
-
-  const toggleFriendList = () => {
-    setFriendListOpen(o => !o);
-    setInventoryOpen(false);
-  };
+  const toggleInventory = () => setInventoryOpen(o => !o);
+  const toggleFriendList = () => setFriendListOpen(o => !o);
 
   const handleBorrowed = useCallback(async (catId) => {
     // Borrow API already set selectedCatId on the server; sync local state
