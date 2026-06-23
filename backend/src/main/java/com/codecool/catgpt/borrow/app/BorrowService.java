@@ -88,7 +88,15 @@ public class BorrowService {
         cats.save(cat);
 
         if (catId.equals(me.getSelectedCatId())) {
-            me.setSelectedCatId(null);
+            Long fallback = cats.findAllByOwner(me).stream()
+                    .filter(c -> c.isDefaultCat())
+                    .map(Cat::getId)
+                    .findFirst()
+                    .or(() -> cats.findAllByOwner(me).stream()
+                            .map(Cat::getId)
+                            .findFirst())
+                    .orElse(null);
+            me.setSelectedCatId(fallback);
             users.save(me);
         }
 
@@ -112,7 +120,15 @@ public class BorrowService {
         cats.save(cat);
 
         if (catId.equals(borrower.getSelectedCatId())) {
-            borrower.setSelectedCatId(null);
+            Long fallback = cats.findAllByOwner(borrower).stream()
+                    .filter(c -> c.isDefaultCat())
+                    .map(Cat::getId)
+                    .findFirst()
+                    .or(() -> cats.findAllByOwner(borrower).stream()
+                            .map(Cat::getId)
+                            .findFirst())
+                    .orElse(null);
+            borrower.setSelectedCatId(fallback);
             users.save(borrower);
         }
 

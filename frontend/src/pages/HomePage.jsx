@@ -88,8 +88,10 @@ export default function HomePage() {
   const handleReturnCat = useCallback(async (catId) => {
     try {
       await returnBorrowed(catId);
-      setSelectedCatId(null);
-      await refreshUser();
+      // Server picks the fallback cat; re-fetch user then sync context
+      const updated = await refreshUser();
+      const fallbackId = updated?.selectedCatId ?? null;
+      await setSelectedCatId(fallbackId ? Number(fallbackId) : null);
     } catch { /* ignore */ }
   }, [returnBorrowed, setSelectedCatId, refreshUser]);
 
@@ -151,22 +153,22 @@ export default function HomePage() {
             <ThemePicker />
           </div>
 
-          {/* Bottom-left: Inventory + Friend List */}
-          <div className="absolute bottom-3 left-3 z-10 flex gap-2">
+          {/* Bottom-left: Inventory */}
+          <div className="absolute bottom-3 left-3 z-10">
             <InventoryButton
               open={inventoryOpen}
               onToggle={toggleInventory}
             />
+          </div>
+
+          {/* Bottom-right: Cat Box + Friend List */}
+          <div className="absolute bottom-3 right-3 z-10 flex gap-2">
+            <CatBoxButton />
             <FriendListButton
               open={friendListOpen}
               onToggle={toggleFriendList}
               pendingCount={incoming.length}
             />
-          </div>
-
-          {/* Bottom-right: Cat Box */}
-          <div className="absolute bottom-3 right-3 z-10">
-            <CatBoxButton />
           </div>
 
           <div className="h-full">
@@ -182,19 +184,19 @@ export default function HomePage() {
         {friendListOpen && (
           <div className="h-full w-72 sm:w-80 md:w-96 border-l border-base-300 bg-base-200/90 shadow-xl shrink-0">
             <FriendListDrawer
-              onClose={() => setFriendListOpen(false)}
-              friends={friends}
-              incoming={incoming}
-              outgoing={outgoing}
-              loading={friendsLoading}
-              error={friendsError}
-              onSendRequest={sendRequest}
-              onApprove={approve}
-              onDecline={decline}
-              onRemove={remove}
-              onBorrowed={handleBorrowed}
-              borrowedCatId={borrowedCatId}
-              onReturnCat={handleReturnCat}
+                onClose={() => setFriendListOpen(false)}
+                friends={friends}
+                incoming={incoming}
+                outgoing={outgoing}
+                loading={friendsLoading}
+                error={friendsError}
+                onSendRequest={sendRequest}
+                onApprove={approve}
+                onDecline={decline}
+                onRemove={remove}
+                onBorrowed={handleBorrowed}
+                borrowedCatId={borrowedCatId}
+                onReturnCat={handleReturnCat}
             />
           </div>
         )}

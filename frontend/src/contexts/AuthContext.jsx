@@ -69,6 +69,7 @@ export function AuthProvider({ children }) {
         const parsed = JSON.parse(stored);
         localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...parsed, user: me }));
       }
+      return me;
     } catch {
       // ignore — stale user data is acceptable
     }
