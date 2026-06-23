@@ -5,7 +5,10 @@ export default function StatBar({
   variantClass = "progress-primary"
 }) {
   const safeValue = Math.max(0, Math.min(10, Number(value) || 0));
-  const fillClass = variantClass.replace("progress-", "bg-");
+  const fillClass =
+    variantClass === "progress-success" ? "bg-success" :
+    variantClass === "progress-warning" ? "bg-warning" :
+    variantClass === "progress-error"   ? "bg-error"   : "bg-primary";
 
   return (
     <div className={`space-y-0.5 sm:space-y-1 ${className}`}>
