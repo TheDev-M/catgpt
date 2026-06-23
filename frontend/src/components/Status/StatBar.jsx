@@ -5,20 +5,28 @@ export default function StatBar({
   variantClass = "progress-primary"
 }) {
   const safeValue = Math.max(0, Math.min(10, Number(value) || 0));
+  const fillClass = variantClass.replace("progress-", "bg-");
 
   return (
     <div className={`space-y-0.5 sm:space-y-1 ${className}`}>
-      {/* Mobile: compact single-line label */}
-      <p className="sm:hidden text-xs font-semibold opacity-80">{label}: {safeValue}/10</p>
-      {/* Desktop: label left, value right */}
+      {/* Mobile: custom bar with text overlaid on it */}
+      <div className="sm:hidden relative h-4 w-full rounded-full bg-base-300 overflow-hidden">
+        <div
+          className={`h-full rounded-full ${fillClass}`}
+          style={{ width: `${(safeValue / 10) * 100}%` }}
+        />
+        <span className="absolute inset-0 flex items-center px-2 text-[9px] font-bold text-base-content leading-none">
+          {label}: {safeValue}/10
+        </span>
+      </div>
+
+      {/* Desktop: label row + native progress element */}
       <div className="hidden sm:flex items-center justify-between text-xs">
         <span className="font-semibold">{label}</span>
         <span className="opacity-70">{safeValue}/10</span>
       </div>
-
       <progress
-        className={`progress ${variantClass} w-full h-1.5 sm:h-2`}
-        title={`${label}: ${safeValue}/10`}
+        className={`hidden sm:block progress ${variantClass} w-full h-2`}
         value={safeValue}
         max="10"
       />
