@@ -112,7 +112,6 @@ export default function ProfilePage() {
                     </div>
                     <form onSubmit={handleNicknameSubmit} className="px-6 py-5 space-y-4">
                         <div className="space-y-1.5">
-                            <FieldLabel>Nickname</FieldLabel>
                             <input
                                 type="text"
                                 className="input input-bordered w-full"
