@@ -4,6 +4,7 @@ import com.codecool.catgpt.friends.api.dto.FriendResponse;
 import com.codecool.catgpt.friends.domain.Friendship;
 import com.codecool.catgpt.friends.domain.FriendshipRepository;
 import com.codecool.catgpt.friends.domain.FriendshipStatus;
+import com.codecool.catgpt.sse.SseService;
 import com.codecool.catgpt.users.domain.User;
 import com.codecool.catgpt.users.infra.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +29,7 @@ class FriendServiceTest {
 
     @Mock private FriendshipRepository friendships;
     @Mock private UserRepository users;
+    @Mock private SseService sse;
     @InjectMocks private FriendService service;
 
     private User me;

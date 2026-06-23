@@ -14,7 +14,7 @@ Spring Boot 3.5.7 / Java 21 REST API for the CatGPT virtual pet simulator.
 | Breed Data | The Cat API |
 | Validation | Jakarta Bean Validation (`@Valid`, `@NotBlank`, `@Min`/`@Max`) |
 | Logging | Lombok `@Slf4j` |
-| Testing | JUnit 5 + Mockito (108 unit tests) |
+| Testing | JUnit 5 + Mockito (140 unit tests) |
 | Build | Maven Wrapper |
 
 ## Architecture
@@ -26,6 +26,9 @@ com.codecool.catgpt/
 ├── cats/       api · app · domain · infra
 ├── items/      api · app · domain · infra
 ├── users/      api · app · domain · infra
+├── friends/    api · app · domain          # friend requests + relationships
+├── borrow/     api · app                  # cat borrowing between friends
+├── sse/        SseService · SseController # Server-Sent Events push notifications
 ├── chat/       api · app
 ├── breeds/     api · app
 ├── security/   JwtService · JwtAuthFilter · AppUserDetails(Service) ·
@@ -69,8 +72,22 @@ Tests use Mockito strict mode (`@ExtendWith(MockitoExtension.class)`) — any un
 | PATCH | `/api/cats/{id}` | ✓ | Rename a cat |
 | POST | `/api/cats/{id}/decrement/{stat}` | ✓ | Decrement a stat (`hunger`/`mood`/`health`) |
 | POST | `/api/cats/{id}/items/{itemId}` | ✓ | Apply an item to a cat |
+| POST | `/api/cats/{id}/borrow` | ✓ | Borrow a friend's cat as active companion |
+| DELETE | `/api/cats/{id}/borrow` | ✓ | Return a borrowed cat |
 | GET | `/api/items` | ✓ | List owned items |
 | POST | `/api/items/catch` | ✓ | Catch a randomly generated item |
+| GET | `/api/friends` | ✓ | List approved friends |
+| POST | `/api/friends/request` | ✓ | Send a friend request by username |
+| GET | `/api/friends/requests/incoming` | ✓ | List incoming pending requests |
+| GET | `/api/friends/requests/outgoing` | ✓ | List outgoing pending requests |
+| PATCH | `/api/friends/{id}/approve` | ✓ | Approve a friend request |
+| PATCH | `/api/friends/{id}/decline` | ✓ | Decline a friend request |
+| DELETE | `/api/friends/{id}` | ✓ | Remove a friend |
+| GET | `/api/friends/{id}/cats` | ✓ | List a friend's cats (with borrow availability) |
+| GET | `/api/user/me` | ✓ | Get current user profile |
+| PATCH | `/api/user/me/nickname` | ✓ | Update display name |
+| PATCH | `/api/user/me/password` | ✓ | Change password |
+| GET | `/api/sse/events` | ✓ | Subscribe to real-time push events (SSE) |
 | POST | `/api/chat/{catId}` | ✓ | Send a chat message to a cat |
 | GET | `/api/breeds` | ✓ | List available breeds |
 | GET | `/actuator/health` | ✗ | Health check (used by frontend wakeup probe) |

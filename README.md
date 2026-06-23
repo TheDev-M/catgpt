@@ -14,7 +14,7 @@
   <h3 align="center">CatGPT</h3>
 
   <p align="center">
-    A virtual cat companion with AI-powered conversations, real-time stat management, and a collectible item system.
+    A virtual cat companion with AI-powered conversations, real-time stat management, a collectible item system, and a social friend system with cat borrowing.
     <br />
     <br />
     <a href="https://catgpt-demo.netlify.app">🌐 Live Demo</a>
@@ -52,7 +52,7 @@
 
 [![CatGPT Screenshot][product-screenshot]](https://i.imgur.com/qOl223V.png)
 
-CatGPT is a full-stack virtual pet simulator that combines Tamagotchi-style care mechanics with an LLM chat interface. Adopt cats of different breeds, maintain their hunger, mood, and health, collect items that fall from the sky, and have real AI-powered conversations where each cat's personality is shaped by its breed temperament and current stats.
+CatGPT is a full-stack virtual pet simulator that combines Tamagotchi-style care mechanics with an LLM chat interface. Adopt cats of different breeds, maintain their hunger, mood, and health, collect items that fall from the sky, and have real AI-powered conversations where each cat's personality is shaped by its breed temperament and current stats. Add friends, send and accept friend requests in real time, and borrow each other's cats as your active companion.
 
 The project is built with a Spring Boot REST API, a React + Vite frontend, and a PostgreSQL database, all containerised with Docker Compose for easy local setup or self-hosted deployment.
 
@@ -95,9 +95,12 @@ The project is built with a Spring Boot REST API, a React + Vite frontend, and a
 - **Stat System** — Hunger decreases on a timer; mood decreases when you chat with your cat; health decreases if you go more than an hour without logging in.
 - **Item System** — Items randomly fall onto the screen. Click to catch them; use them from inventory to restore stats. Twelve item templates across food, toys, and hygiene.
 - **Cat Collection** — Catch the running nyan-cat to adopt a new breed. Each cat is assigned stats based on the breed's energy, grooming, and health data from The Cat API.
+- **Friend System** — Send and receive friend requests by username. Accept or decline via the friend list drawer. Real-time updates via Server-Sent Events — both users see changes instantly without refreshing.
+- **Cat Borrowing** — Borrow a friend's cat as your active companion. Owner always has priority: selecting their own cat automatically returns it from any borrower. First-come-first-served among multiple friends. SSE pushes notifications to all affected users in real time.
+- **Profile Page** — Set a display name (nickname) shown throughout the app. Change password for local accounts.
 - **Google OAuth** — Sign in with Google in addition to email/password.
 - **Server Wake-Up Popup** — The backend is hosted on Render's free tier and sleeps when idle. A non-blocking popup appears automatically if the first request takes more than 1.5 s, with a spinner and estimated wait time.
-- **Multiple Themes** — UI themes switchable via the theme picker, built with DaisyUI.
+- **Multiple Themes** — Five DaisyUI themes switchable via the theme picker: Valentine (default), Caramellatte, Synthwave, Autumn, Abyss.
 - **Responsive** — Works on mobile and desktop.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -149,6 +152,21 @@ Type anything in the chat box. Responses vary by breed temperament and current s
 - **Cat Box** (bottom-right) — browse all your cats, filter by name or breed
 - Click a cat card to open its detail page — rename, select as active, or release
 - Select a cat to make it your active companion on the home screen
+
+### Friends & Cat Borrowing
+
+- Open the **Friend List** drawer (bottom-right, next to Cat Box) to manage your social connections
+- Type a friend's username in the input field and click **Add** to send a request
+- Switch to the **Requests** tab to accept or decline incoming requests
+- On the **Friends** tab, click 🐱 on any friend to see their cats
+- Click **Borrow** to make a friend's cat your active companion — a "Borrowing" strip appears at the top of the drawer with a **Return** button
+- The owner can reclaim their cat at any time by selecting it in their own Cat Box
+
+### Profile
+
+- Click **Profile** (top-right) to open your profile page
+- Set a display name that appears in place of your username throughout the app
+- Change your password (local accounts only — Google accounts show a locked state)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -270,7 +288,7 @@ Nginx proxies `/api/*` to the backend, so there are no CORS issues in the Docker
 
 ## Running Tests
 
-The backend has 108 unit tests covering services, controllers, domain logic, security, and validation.
+The backend has 140 unit tests covering services, controllers, domain logic, security, and validation.
 
 ```bash
 cd backend
@@ -283,14 +301,15 @@ Test coverage includes:
 |---|---|
 | `CatService` | create, get, delete, rename, applyItem, decrementStat, default cat creation |
 | `ItemService` | getAllForOwner, create, catchItemForUser, getOwnedItem (ownership + 404) |
-| `UserService` | register, authenticate, OAuth login, visit recording, health decrement on login |
+| `UserService` | register, authenticate, OAuth login, visit recording, health decrement on login, nickname + password update |
+| `FriendService` | send/approve/decline/remove friendships, conflict and ownership checks |
 | `JwtService` | generate, extract, valid/expired/tampered/garbage token, short-secret guard |
 | `CurrentUser` | resolves user from security context, returns null without auth |
 | `GlobalExceptionHandler` | all handled exception types produce correct status and body |
 | `Stats` domain | apply/decrement for each stat type, floor/cap clamping |
 | `Item` domain | increaseOne, consumeOne, out-of-stock guard |
 | `ItemTemplate` | fromName (case-insensitive, null, unknown), createOwnedItem |
-| DTO validation | `UserRegisterRequest`, `CatRenameRequest`, `SourceMetrics` `@NotBlank`/`@Min`/`@Max` |
+| DTO validation | `UserRegisterRequest`, `CatRenameRequest`, `SourceMetrics`, `ChangePasswordRequest`, `FriendRequestDto` — `@NotBlank`/`@Min`/`@Max`/`@Size` |
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -317,6 +336,16 @@ catgpt/
 │       │   ├── app/        # UserService
 │       │   ├── domain/     # User, AuthProvider
 │       │   └── infra/      # UserRepository
+│       ├── friends/        # Friend requests and relationships
+│       │   ├── api/        # FriendController + DTOs
+│       │   ├── app/        # FriendService
+│       │   └── domain/     # Friendship, FriendshipStatus, FriendshipRepository
+│       ├── borrow/         # Cat borrowing between friends
+│       │   ├── api/        # BorrowController + BorrowableCatResponse DTO
+│       │   └── app/        # BorrowService
+│       ├── sse/            # Server-Sent Events push notifications
+│       │   ├── SseService  # Per-user emitter registry
+│       │   └── SseController
 │       ├── chat/           # AI chat via Groq API
 │       ├── breeds/         # Breed data from The Cat API
 │       ├── security/       # JWT, filters, OAuth handlers, AppUserDetails
@@ -328,8 +357,8 @@ catgpt/
         ├── components/     # UI components (ChatInterface, Inventory, Status, …)
         ├── hooks/          # Custom React hooks (useCat, useInventory, useServerWakeup, …)
         ├── contexts/       # AuthContext, SelectedCatContext
-        ├── services/       # API clients (apiClient, catApi, itemsApi, userApi)
-        ├── pages/          # HomePage, CatBoxPage, CatDetailsPage, LoginPage, SignupPage
+        ├── services/       # API clients (apiClient, catApi, itemsApi, userApi, friendApi, borrowApi)
+        ├── pages/          # HomePage, CatBoxPage, CatDetailsPage, LoginPage, SignupPage, ProfilePage
         ├── constants/      # Item definitions, themes, cat thinking phrases
         ├── config/         # gameConfig (timers and intervals)
         └── utils/          # validation, sorting, random, theme helpers
@@ -348,9 +377,12 @@ catgpt/
 - [x] Multi-cat management and cat box
 - [x] Real-time stat decay
 - [x] Server wake-up popup (Render free tier)
-- [x] Full backend unit test suite (108 tests)
+- [x] Full backend unit test suite (140 tests)
+- [x] Profile page (display name + password change)
+- [x] Friend system (send/accept/decline requests, real-time SSE updates)
+- [x] Cat borrowing (borrow a friend's cat as active companion, owner priority, SSE notifications)
 - [ ] Achievement / badge system
-- [ ] Social features (friend list, cat trading)
+- [ ] Cat trading
 - [ ] Mini-games for earning items
 - [ ] Push notifications for critical stat levels
 - [ ] Mobile app (React Native)
