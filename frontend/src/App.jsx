@@ -5,6 +5,7 @@ import { useServerWakeup } from "@/hooks/useServerWakeup.js";
 import ServerWakeupPopup from "@/components/ServerWakeupPopup.jsx";
 
 import RequireAuth from "@/routes/RequireAuth.jsx";
+import LandscapeBlocker from "@/components/LandscapeBlocker.jsx";
 
 import HomePage from "@/pages/HomePage.jsx";
 import CatBoxPage from "@/pages/CatBoxPage.jsx";
@@ -19,6 +20,7 @@ function AppShell() {
 
     return (
         <>
+            <LandscapeBlocker />
             <ServerWakeupPopup status={wakeupStatus} />
             <BrowserRouter>
                 <Routes>

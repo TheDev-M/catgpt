@@ -8,6 +8,9 @@ export default function StatBar({
 
   return (
     <div className={`space-y-0.5 sm:space-y-1 ${className}`}>
+      {/* Mobile: compact single-line label */}
+      <p className="sm:hidden text-xs font-semibold opacity-80">{label}: {safeValue}/10</p>
+      {/* Desktop: label left, value right */}
       <div className="hidden sm:flex items-center justify-between text-xs">
         <span className="font-semibold">{label}</span>
         <span className="opacity-70">{safeValue}/10</span>
