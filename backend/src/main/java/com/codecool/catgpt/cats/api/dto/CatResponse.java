@@ -11,10 +11,10 @@ public record CatResponse(
         List<String> temperaments,
         StatsResponse stats,
         Boolean isDefaultCat,
-        String image
+        String image,
+        String borrowedByUsername
 ) {
     public static CatResponse from(Cat c) {
-
         return new CatResponse(
                 c.getId(),
                 c.getName(),
@@ -26,7 +26,8 @@ public record CatResponse(
                         c.getStats().getHealth()
                 ),
                 c.isDefaultCat(),
-                c.getImage()
+                c.getImage(),
+                c.getBorrowedBy() != null ? c.getBorrowedBy().getUsername() : null
         );
     }
 

@@ -17,12 +17,14 @@ import { useInventory } from "@/hooks/useInventory.js";
 import { useHungerDecay } from "@/hooks/useHungerDecay.js";
 import { useAuth } from "@/hooks/useAuth.js";
 import { useFriends } from "@/hooks/useFriends.js";
+import { useSseEvent } from "@/hooks/useSseEvent.js";
+import { useCallback } from "react";
 
 export default function HomePage() {
   const [inventoryOpen, setInventoryOpen] = useState(false);
   const [friendListOpen, setFriendListOpen] = useState(false);
-  const { selectedCatId } = useSelectedCat();
-  const { user, logout } = useAuth();
+  const { selectedCatId, setSelectedCatId } = useSelectedCat();
+  const { user, logout, refreshUser } = useAuth();
   const navigate = useNavigate();
 
   const {
@@ -50,10 +52,17 @@ export default function HomePage() {
     sendRequest,
     approve,
     decline,
-    remove
+    remove,
+    returnBorrowed
   } = useFriends(friendListOpen);
 
   useHungerDecay(selectedCatId, updateCat);
+
+  // If the server tells us the borrowed cat was reclaimed, refresh user so selectedCatId updates
+  const handleBorrowUpdate = useCallback(async () => {
+    await refreshUser();
+  }, [refreshUser]);
+  useSseEvent("cat-borrow-update", handleBorrowUpdate);
 
   const handleLogout = () => {
     logout();
@@ -69,6 +78,26 @@ export default function HomePage() {
     setFriendListOpen(o => !o);
     setInventoryOpen(false);
   };
+
+  const handleBorrowed = useCallback(async (catId) => {
+    // Borrow API already set selectedCatId on the server; sync local state
+    await setSelectedCatId(catId);
+    await refreshUser();
+  }, [setSelectedCatId, refreshUser]);
+
+  const handleReturnCat = useCallback(async (catId) => {
+    try {
+      await returnBorrowed(catId);
+      setSelectedCatId(null);
+      await refreshUser();
+    } catch { /* ignore */ }
+  }, [returnBorrowed, setSelectedCatId, refreshUser]);
+
+  // borrowedCatId = the selected cat id if the user is borrowing it
+  // We detect this by checking if the loaded cat has a borrowedByUsername matching the current user
+  const borrowedCatId = cat && user && cat.borrowedByUsername === user.username
+    ? selectedCatId
+    : null;
 
   return (
     <LayoutBackground variant="warm">
@@ -122,19 +151,21 @@ export default function HomePage() {
             <ThemePicker />
           </div>
 
-          <div className="absolute bottom-3 left-3 z-10">
+          {/* Bottom-left: Inventory + Friend List */}
+          <div className="absolute bottom-3 left-3 z-10 flex gap-2">
             <InventoryButton
               open={inventoryOpen}
               onToggle={toggleInventory}
             />
-          </div>
-
-          <div className="absolute bottom-3 right-3 z-10 flex gap-2">
             <FriendListButton
               open={friendListOpen}
               onToggle={toggleFriendList}
               pendingCount={incoming.length}
             />
+          </div>
+
+          {/* Bottom-right: Cat Box */}
+          <div className="absolute bottom-3 right-3 z-10">
             <CatBoxButton />
           </div>
 
@@ -161,6 +192,9 @@ export default function HomePage() {
               onApprove={approve}
               onDecline={decline}
               onRemove={remove}
+              onBorrowed={handleBorrowed}
+              borrowedCatId={borrowedCatId}
+              onReturnCat={handleReturnCat}
             />
           </div>
         )}

@@ -1,5 +1,6 @@
 package com.codecool.catgpt.users.api;
 
+import com.codecool.catgpt.borrow.app.BorrowService;
 import com.codecool.catgpt.security.CurrentUser;
 import com.codecool.catgpt.users.api.dto.ChangePasswordRequest;
 import com.codecool.catgpt.users.api.dto.SelectedCatUpdateRequest;
@@ -19,6 +20,7 @@ public class UserProfileController {
 
     private final CurrentUser currentUser;
     private final UserService users;
+    private final BorrowService borrowService;
 
     @GetMapping
     public UserResponse getCurrentUser() {
@@ -29,6 +31,10 @@ public class UserProfileController {
     @PatchMapping("/selected-cat")
     public UserResponse updateSelectedCat(@RequestBody SelectedCatUpdateRequest req) {
         User user = currentUser.get();
+        // Owner priority: if this cat is currently borrowed by a friend, reclaim it first
+        if (req.selectedCatId() != null) {
+            borrowService.releaseBorrowIfOwner(user, req.selectedCatId());
+        }
         users.updateSelectedCat(user, req.selectedCatId());
         return UserResponse.from(user);
     }

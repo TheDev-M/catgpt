@@ -1,38 +1,61 @@
 import { useState } from "react";
+import BorrowCatPanel from "./BorrowCatPanel.jsx";
 
-export default function FriendEntry({ friend, onRemove, pending = false }) {
-    const [loading, setLoading] = useState(false);
+export default function FriendEntry({ friend, onRemove, onBorrowed, pending = false }) {
+    const [removeLoading, setRemoveLoading] = useState(false);
+    const [catsOpen, setCatsOpen] = useState(false);
     const displayName = friend.nickname || friend.username;
 
     const handleRemove = async () => {
-        setLoading(true);
+        setRemoveLoading(true);
         try {
             await onRemove(friend.friendshipId);
         } finally {
-            setLoading(false);
+            setRemoveLoading(false);
         }
     };
 
     return (
-        <div className="flex items-center justify-between gap-2 bg-base-200 rounded-xl px-3 py-2">
-            <div className="min-w-0">
-                <p className="font-semibold text-sm truncate">{displayName}</p>
-                {friend.nickname && (
-                    <p className="text-xs opacity-60 truncate font-mono">@{friend.username}</p>
-                )}
-                {pending && (
-                    <span className="badge badge-xs badge-warning mt-0.5">Pending</span>
-                )}
+        <div className="bg-base-200 rounded-xl px-3 py-2 space-y-1">
+            <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                    <p className="font-semibold text-sm truncate">{displayName}</p>
+                    {friend.nickname && (
+                        <p className="text-xs opacity-60 truncate font-mono">@{friend.username}</p>
+                    )}
+                    {pending && (
+                        <span className="badge badge-xs badge-warning mt-0.5">Pending</span>
+                    )}
+                </div>
+                <div className="flex gap-1 shrink-0">
+                    {!pending && (
+                        <button
+                            type="button"
+                            onClick={() => setCatsOpen(o => !o)}
+                            className={`btn btn-xs ${catsOpen ? "btn-primary" : "btn-ghost"}`}
+                            title="Borrow a cat"
+                        >
+                            🐱
+                        </button>
+                    )}
+                    <button
+                        type="button"
+                        onClick={handleRemove}
+                        disabled={removeLoading}
+                        className="btn btn-ghost btn-xs text-error"
+                        title={pending ? "Cancel request" : "Remove friend"}
+                    >
+                        {removeLoading ? <span className="loading loading-spinner loading-xs" /> : "✕"}
+                    </button>
+                </div>
             </div>
-            <button
-                type="button"
-                onClick={handleRemove}
-                disabled={loading}
-                className="btn btn-ghost btn-xs text-error shrink-0"
-                title={pending ? "Cancel request" : "Remove friend"}
-            >
-                {loading ? <span className="loading loading-spinner loading-xs" /> : "✕"}
-            </button>
+
+            {catsOpen && !pending && (
+                <BorrowCatPanel
+                    friendshipId={friend.friendshipId}
+                    onBorrowed={onBorrowed}
+                />
+            )}
         </div>
     );
 }

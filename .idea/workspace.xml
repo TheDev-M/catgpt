@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="17fd8388-8f8d-43d9-9219-b19815c89a31" name="Changes" comment="Add unit tests for FriendRequestDto validation and FriendService methods">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/friends/app/FriendService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/friends/app/FriendService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/security/JwtAuthFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/codecool/catgpt/security/JwtAuthFilter.java" afterDir="false" />
-    </list>
+    <list default="true" id="17fd8388-8f8d-43d9-9219-b19815c89a31" name="Changes" comment="Implement SSE for friend updates and refactor JWT token handling" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -166,7 +162,7 @@
       <workItem from="1781978017302" duration="3459000" />
       <workItem from="1781985112751" duration="404000" />
       <workItem from="1782052588530" duration="1226000" />
-      <workItem from="1782236748038" duration="890000" />
+      <workItem from="1782236748038" duration="1292000" />
     </task>
     <task id="LOCAL-00001" summary="Add Google OAuth2 configuration and update security settings">
       <option name="closed" value="true" />
@@ -304,7 +300,15 @@
       <option name="project" value="LOCAL" />
       <updated>1782237125886</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Implement SSE for friend updates and refactor JWT token handling">
+      <option name="closed" value="true" />
+      <created>1782237898573</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1782237898573</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -337,6 +341,7 @@
     <MESSAGE value="Implement friend management features with API for sending, approving, declining, and removing friend requests" />
     <MESSAGE value="Implement friend management UI with friend list, requests handling, and add friend functionality" />
     <MESSAGE value="Add unit tests for FriendRequestDto validation and FriendService methods" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add unit tests for FriendRequestDto validation and FriendService methods" />
+    <MESSAGE value="Implement SSE for friend updates and refactor JWT token handling" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement SSE for friend updates and refactor JWT token handling" />
   </component>
 </project>

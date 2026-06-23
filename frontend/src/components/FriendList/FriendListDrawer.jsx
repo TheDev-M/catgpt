@@ -13,7 +13,10 @@ export default function FriendListDrawer({
     onSendRequest,
     onApprove,
     onDecline,
-    onRemove
+    onRemove,
+    onBorrowed,
+    borrowedCatId,
+    onReturnCat
 }) {
     const [tab, setTab] = useState("friends");
 
@@ -33,6 +36,19 @@ export default function FriendListDrawer({
             <div className="px-4 pt-3">
                 <AddFriendForm onSend={onSendRequest} />
             </div>
+
+            {borrowedCatId && (
+                <div className="mx-4 mt-3 flex items-center justify-between gap-2 bg-warning/20 border border-warning/40 rounded-xl px-3 py-2">
+                    <span className="text-xs font-semibold">Borrowing a friend's cat</span>
+                    <button
+                        type="button"
+                        onClick={() => onReturnCat(borrowedCatId)}
+                        className="btn btn-xs btn-warning"
+                    >
+                        Return
+                    </button>
+                </div>
+            )}
 
             <div className="px-4 pt-3 flex gap-1">
                 <TabButton active={tab === "friends"} onClick={() => setTab("friends")}>
@@ -56,7 +72,12 @@ export default function FriendListDrawer({
                         <Empty>No friends yet. Send a request above!</Empty>
                     ) : (
                         friends.map(f => (
-                            <FriendEntry key={f.friendshipId} friend={f} onRemove={onRemove} />
+                            <FriendEntry
+                                key={f.friendshipId}
+                                friend={f}
+                                onRemove={onRemove}
+                                onBorrowed={onBorrowed}
+                            />
                         ))
                     )
                 ) : tab === "requests" ? (

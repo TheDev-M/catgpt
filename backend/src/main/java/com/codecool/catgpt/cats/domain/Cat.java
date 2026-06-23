@@ -7,6 +7,7 @@ import com.codecool.catgpt.users.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -40,6 +41,12 @@ public class Cat extends BaseEntity {
 
     @Column(nullable = false)
     private boolean defaultCat;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "borrowed_by_id")
+    private User borrowedBy;
+
+    private Instant borrowedAt;
 
     public void apply(Item item, StatsLimits limits) {
         this.stats = this.stats.apply(item.getEffect(), limits);

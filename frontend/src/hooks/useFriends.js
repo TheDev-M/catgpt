@@ -8,7 +8,9 @@ import {
     declineRequest,
     removeFriend
 } from "@/services/friendApi.js";
+import { returnCat } from "@/services/borrowApi.js";
 import { useFriendUpdates } from "@/hooks/useFriendUpdates.js";
+import { useSseEvent } from "@/hooks/useSseEvent.js";
 
 export function useFriends(open) {
     const [friends, setFriends] = useState([]);
@@ -40,8 +42,9 @@ export function useFriends(open) {
         if (open) fetchAll();
     }, [open, fetchAll]);
 
-    // Re-fetch whenever the server pushes a friend-update event
     useFriendUpdates(fetchAll);
+    // Also refetch when a borrow state changes (owner reclaims, etc.)
+    useSseEvent("cat-borrow-update", fetchAll);
 
     const sendRequest = useCallback(async (username) => {
         const newEntry = await sendFriendRequest(username);
@@ -65,5 +68,9 @@ export function useFriends(open) {
         setOutgoing(prev => prev.filter(f => f.friendshipId !== friendshipId));
     }, []);
 
-    return { friends, incoming, outgoing, loading, error, sendRequest, approve, decline, remove };
+    const returnBorrowed = useCallback(async (catId) => {
+        await returnCat(catId);
+    }, []);
+
+    return { friends, incoming, outgoing, loading, error, sendRequest, approve, decline, remove, returnBorrowed };
 }

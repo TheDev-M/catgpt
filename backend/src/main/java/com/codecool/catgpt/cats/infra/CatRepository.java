@@ -5,10 +5,15 @@ import com.codecool.catgpt.users.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CatRepository extends JpaRepository<Cat, Long> {
 
     List<Cat> findAllByOwner(User owner);
 
     boolean existsByOwnerAndNameIgnoreCase(User owner, String name);
+
+    List<Cat> findAllByBorrowedBy(User borrower);
+
+    Optional<Cat> findByIdAndBorrowedBy(Long id, User borrower);
 }
