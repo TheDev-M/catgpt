@@ -124,7 +124,7 @@ export default function HomePage() {
                 title="Go to your profile"
                 className="text-xs sm:text-sm opacity-80 hover:opacity-100 cursor-pointer btn btn-ghost btn-xs px-2"
               >
-                Hi, <span className="font-semibold ml-1">{user.nickname ?? user.username}</span>
+                Hi, <span className="font-semibold">{user.nickname ?? user.username}</span>
               </button>
             )}
 
