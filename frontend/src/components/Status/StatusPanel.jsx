@@ -5,18 +5,18 @@ import HealthBar from "./HealthBar.jsx";
 export default function StatusPanel({ cat, loading, error }) {
   if (loading) {
     return (
-      <div className="card bg-base-200/80 shadow rounded-2xl p-3 w-44 sm:w-56">
-        <div className="skeleton h-4 w-2/3 mb-2" />
-        <div className="skeleton h-2 w-full mb-2" />
-        <div className="skeleton h-2 w-full mb-2" />
-        <div className="skeleton h-2 w-full" />
+      <div className="card bg-base-200/80 shadow rounded-2xl p-2 sm:p-3 w-44 sm:w-56">
+        <div className="skeleton hidden sm:block h-4 w-2/3 mb-2" />
+        <div className="skeleton h-1.5 sm:h-2 w-full mb-1.5 sm:mb-2" />
+        <div className="skeleton h-1.5 sm:h-2 w-full mb-1.5 sm:mb-2" />
+        <div className="skeleton h-1.5 sm:h-2 w-full" />
       </div>
     );
   }
 
   if (error || !cat) {
     return (
-      <div className="card bg-base-200/80 shadow rounded-2xl p-3 w-44 sm:w-56 text-xs">
+      <div className="card bg-base-200/80 shadow rounded-2xl p-2 sm:p-3 w-44 sm:w-56 text-xs">
         <p className="opacity-70">Failed to load status.</p>
       </div>
     );
@@ -27,10 +27,10 @@ export default function StatusPanel({ cat, loading, error }) {
   const health = cat.stats?.health ?? 0;
 
   return (
-    <div className="card bg-base-200/80 shadow rounded-2xl p-3 w-44 sm:w-56 text-xs">
-      <p className="font-semibold mb-2 truncate">{cat.name || "Current cat"}</p>
+    <div className="card bg-base-200/80 shadow rounded-2xl p-2 sm:p-3 w-44 sm:w-56 text-xs">
+      <p className="hidden sm:block font-semibold mb-2 truncate">{cat.name || "Current cat"}</p>
 
-      <div className="space-y-2">
+      <div className="space-y-1 sm:space-y-2">
         <HungerBar value={hunger} />
         <MoodBar value={mood} />
         <HealthBar value={health} />
