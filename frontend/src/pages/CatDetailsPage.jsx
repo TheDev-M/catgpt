@@ -4,7 +4,7 @@ import CatDetailsInterface from "@/components/CatDetails/CatDetailsInterface.jsx
 export default function CatDetailsPage() {
   return (
     <LayoutBackground variant="neutral">
-      <div className="h-screen overflow-y-auto">
+      <div className="h-dvh overflow-y-auto">
         <CatDetailsInterface />
       </div>
     </LayoutBackground>

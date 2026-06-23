@@ -26,7 +26,7 @@ export default function LoginPage() {
 
   return (
     <LayoutBackground variant="neutral">
-      <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="min-h-dvh flex items-center justify-center px-4">
         <div className="card bg-base-100/95 backdrop-blur shadow-xl w-full max-w-md">
           <div className="card-body py-8 px-6">
             <h1
@@ -60,7 +60,7 @@ export default function LoginPage() {
                 <input
                   id="login-username"
                   type="text"
-                  className="input input-bordered w-full focus:mt-1"
+                  className="input input-bordered w-full "
                   value={form.username}
                   onChange={(e) => form.setUsername(e.target.value)}
                   required
@@ -76,7 +76,7 @@ export default function LoginPage() {
                 <input
                   id="login-password"
                   type="password"
-                  className="input input-bordered w-full focus:mt-1"
+                  className="input input-bordered w-full "
                   value={form.password}
                   onChange={(e) => form.setPassword(e.target.value)}
                   required

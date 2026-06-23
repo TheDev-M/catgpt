@@ -23,7 +23,7 @@ export default function SignupPage() {
 
   return (
     <LayoutBackground variant="neutral">
-      <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="min-h-dvh flex items-center justify-center px-4">
         <div className="card bg-base-100/95 backdrop-blur shadow-xl w-full max-w-md">
           <div className="card-body py-8 px-6">
             <h1
@@ -51,7 +51,7 @@ export default function SignupPage() {
                 <input
                   id="signup-username"
                   type="text"
-                  className="input input-bordered w-full focus:mt-1"
+                  className="input input-bordered w-full "
                   value={form.username}
                   onChange={(e) => form.setUsername(e.target.value)}
                   required
@@ -71,7 +71,7 @@ export default function SignupPage() {
                 </label>
                 <textarea
                   id="signup-description"
-                  className="textarea textarea-bordered rounded-md w-full resize-none focus:mt-1"
+                  className="textarea textarea-bordered rounded-md w-full resize-none "
                   rows={3}
                   value={form.description}
                   onChange={(e) => form.setDescription(e.target.value)}
@@ -91,7 +91,7 @@ export default function SignupPage() {
                 <input
                   id="signup-password"
                   type="password"
-                  className="input input-bordered w-full focus:mt-1"
+                  className="input input-bordered w-full "
                   value={form.password}
                   onChange={(e) => form.setPassword(e.target.value)}
                   required
@@ -108,7 +108,7 @@ export default function SignupPage() {
                 <input
                   id="signup-confirm-password"
                   type="password"
-                  className="input input-bordered w-full focus:mt-1"
+                  className="input input-bordered w-full "
                   value={form.confirm}
                   onChange={(e) => form.setConfirm(e.target.value)}
                   required

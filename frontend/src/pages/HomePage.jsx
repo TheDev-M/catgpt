@@ -110,24 +110,48 @@ export default function HomePage() {
           </div>
         )}
 
-        <div className="flex-1 relative min-w-0">
-          <div className="absolute top-3 left-3 z-10">
+        <div className="flex-1 relative min-w-0 flex flex-col">
+          {/* Mobile top bar — in document flow so it doesn't overlay the cat */}
+          <div className="md:hidden flex items-center justify-between gap-2 px-3 py-2 shrink-0 z-10">
             <StatusPanel cat={cat} loading={catLoading} error={catError} />
+            <div className="flex items-center gap-1.5 shrink-0">
+              {user && (
+                <button
+                  type="button"
+                  onClick={() => navigate("/profile")}
+                  title={`Go to your profile — ${user.nickname ?? user.username}`}
+                  className="btn btn-ghost btn-xs px-2 text-xs opacity-80 hover:opacity-100 max-w-24"
+                >
+                  <span className="truncate">Hi, {user.nickname ?? user.username}</span>
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="btn btn-xs btn-outline"
+              >
+                Log out
+              </button>
+              <ThemePicker />
+            </div>
           </div>
 
-          <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
+          {/* Desktop overlays — hidden on mobile */}
+          <div className="hidden md:block absolute top-3 left-3 z-10">
+            <StatusPanel cat={cat} loading={catLoading} error={catError} />
+          </div>
+          <div className="hidden md:flex absolute top-3 right-3 z-10 items-center gap-2">
             {user && (
               <button
                 id="home-username-display"
                 type="button"
                 onClick={() => navigate("/profile")}
                 title="Go to your profile"
-                className="text-xs sm:text-sm opacity-80 hover:opacity-100 cursor-pointer btn btn-ghost btn-xs px-2"
+                className="text-sm opacity-80 hover:opacity-100 cursor-pointer btn btn-ghost btn-xs px-2"
               >
                 Hi, <span className="font-semibold">{user.nickname ?? user.username}</span>
               </button>
             )}
-
             <button
               id="home-logout-button"
               type="button"
@@ -136,7 +160,6 @@ export default function HomePage() {
             >
               Log out
             </button>
-
             <ThemePicker />
           </div>
 
@@ -158,7 +181,7 @@ export default function HomePage() {
             />
           </div>
 
-          <div className="h-full">
+          <div className="flex-1 min-h-0">
             <ChatInterface
               cat={cat}
               loading={catLoading}

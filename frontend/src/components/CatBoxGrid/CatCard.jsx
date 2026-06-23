@@ -10,7 +10,7 @@ export default function CatCard({ cat }) {
   return (
     <div 
       id={`cat-card-${id}`}
-      className="card bg-base-200 shadow-lg rounded-2xl overflow-hidden relative transition-transform duration-200 hover:scale-[1.02] hover:shadow-xl"
+      className="card bg-base-200 shadow-lg rounded-2xl overflow-hidden relative transition duration-200 hover:scale-[1.02] hover:shadow-xl"
       data-cat-id={id}
       data-cat-name={name}
     >

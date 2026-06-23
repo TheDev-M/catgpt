@@ -88,7 +88,6 @@ export default function CatDetailsInterface() {
         <RenameSection
           newName={renameForm.name}
           setNewName={renameForm.setName}
-          hint={renameForm.error}
           error={renameForm.error}
           onSubmit={renameForm.handleSubmit}
           onCancel={renameForm.close}

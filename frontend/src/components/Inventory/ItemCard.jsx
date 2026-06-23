@@ -1,18 +1,10 @@
 import {ITEM_ICONS} from "@/constants/itemDrops.js";
 
 const categoryStyles = {
-  FOOD: {
-    badge: "bg-green-100 text-green-700 border-green-500"
-  },
-  HYGIENE: {
-    badge: "bg-rose-100 text-rose-700 border-rose-500"
-  },
-  TOY: {
-    badge: "bg-amber-100 text-amber-700 border-amber-500"
-  },
-  default: {
-    badge: "bg-gray-100 text-gray-700 border-gray-500"
-  }
+  FOOD:    { badge: "bg-success/15 text-success border-success/40" },
+  HYGIENE: { badge: "bg-error/15 text-error border-error/40" },
+  TOY:     { badge: "bg-warning/15 text-warning border-warning/40" },
+  default: { badge: "bg-base-300 text-base-content/70 border-base-300" }
 };
 
 export default function ItemCard({ item, loading, onUse }) {
