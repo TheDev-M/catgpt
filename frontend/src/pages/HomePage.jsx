@@ -117,22 +117,16 @@ export default function HomePage() {
 
           <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
             {user && (
-              <span
+              <button
                 id="home-username-display"
-                className="text-xs sm:text-sm opacity-80"
-              >
-                Hi, <span className="font-semibold">{user.nickname ?? user.username}</span>
-              </span>
-            )}
-
-            <button
-                id="home-profile-button"
                 type="button"
                 onClick={() => navigate("/profile")}
-                className="btn btn-xs btn-ghost"
-            >
-                Profile
-            </button>
+                title="Go to your profile"
+                className="text-xs sm:text-sm opacity-80 hover:opacity-100 cursor-pointer btn btn-ghost btn-xs px-2"
+              >
+                Hi, <span className="font-semibold ml-1">{user.nickname ?? user.username}</span>
+              </button>
+            )}
 
             <button
               id="home-logout-button"
