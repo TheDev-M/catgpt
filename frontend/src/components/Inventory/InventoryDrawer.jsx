@@ -20,7 +20,7 @@ export default function InventoryDrawer({
         <button
           id="inventory-close-button"
           type="button"
-          className="btn btn-ghost btn-xs"
+          className="btn btn-ghost btn-sm"
           onClick={onClose}
         >
           ✕

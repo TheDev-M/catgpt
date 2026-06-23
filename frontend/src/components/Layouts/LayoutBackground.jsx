@@ -9,7 +9,7 @@ export default function LayoutBackground({ children, variant = "default" }) {
   return (
     <div
       className={`
-        relative min-h-screen text-base-content
+        relative min-h-dvh text-base-content
         bg-linear-to-br ${variants[variant]}
         overflow-hidden
       `}

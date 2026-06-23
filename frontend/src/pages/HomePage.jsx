@@ -96,9 +96,9 @@ export default function HomePage() {
 
   return (
     <LayoutBackground variant="warm">
-      <div className="h-screen flex">
+      <div className="h-dvh flex">
         {inventoryOpen && (
-          <div className="h-full w-72 sm:w-80 md:w-96 border-r border-base-300 bg-base-200/90 shadow-xl shrink-0">
+          <div className="fixed inset-0 z-50 bg-base-200 md:static md:inset-auto md:z-auto md:h-full md:w-80 md:border-r md:border-base-300 md:bg-base-200/90 md:shadow-xl md:shrink-0">
             <InventoryDrawer
               onClose={() => setInventoryOpen(false)}
               items={items}
@@ -169,7 +169,7 @@ export default function HomePage() {
         </div>
 
         {friendListOpen && (
-          <div className="h-full w-72 sm:w-80 md:w-96 border-l border-base-300 bg-base-200/90 shadow-xl shrink-0">
+          <div className="fixed inset-0 z-50 bg-base-200 md:static md:inset-auto md:z-auto md:h-full md:w-80 md:border-l md:border-base-300 md:bg-base-200/90 md:shadow-xl md:shrink-0">
             <FriendListDrawer
                 onClose={() => setFriendListOpen(false)}
                 friends={friends}

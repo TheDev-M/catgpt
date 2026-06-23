@@ -26,7 +26,7 @@ export default function FriendListDrawer({
                 <h2 className="font-bold text-lg">Friends</h2>
                 <button
                     type="button"
-                    className="btn btn-ghost btn-xs"
+                    className="btn btn-ghost btn-sm"
                     onClick={onClose}
                 >
                     ✕

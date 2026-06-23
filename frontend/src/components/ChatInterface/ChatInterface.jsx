@@ -38,7 +38,7 @@ export default function ChatInterface({ cat, loading, error, onCatUpdated }) {
   };
 
   return (
-    <div className="h-full flex flex-col items-center justify-center p-4">
+    <div className="h-full flex flex-col items-center justify-center pt-4 px-4 pb-20 sm:pb-4">
       <div className="w-full flex justify-center">
         <CatProfileCard catName={cat?.name} catImage={cat?.image} />
       </div>

@@ -5,13 +5,13 @@ export default function CatProfileCard({ catName, catImage }) {
         <img
           src={catImage}
           alt={catName}
-          className="w-full h-[48vh] object-cover object-[50%_22%] select-none"
+          className="w-full h-[38vh] sm:h-[48vh] object-cover object-[50%_22%] select-none"
           draggable="false"
           loading="eager"
         />
       </div>
 
-      <h2 className="text-4xl lg:text-5xl font-extrabold mt-4 text-base-content text-center">
+      <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold mt-3 sm:mt-4 text-base-content text-center">
         {catName}
       </h2>
     </div>
