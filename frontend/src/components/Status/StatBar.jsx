@@ -15,7 +15,7 @@ export default function StatBar({
     <div className={`space-y-0.5 sm:space-y-1 ${className}`}>
       {/* Mobile */}
       <div className="sm:hidden">
-        <div className={`flex justify-between text-[9px] font-semibold mb-0.5 ${textClass}`}>
+        <div className={`flex justify-between text-[8px] font-semibold ${textClass}`}>
           <span>{label}</span>
           <span>{safeValue}/10</span>
         </div>
