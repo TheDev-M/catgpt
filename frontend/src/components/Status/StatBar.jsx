@@ -6,11 +6,6 @@ export default function StatBar({
 }) {
   const safeValue = Math.max(0, Math.min(10, Number(value) || 0));
 
-  const fillClass =
-    variantClass === "progress-success" ? "bg-success" :
-    variantClass === "progress-warning" ? "bg-warning" :
-    variantClass === "progress-error"   ? "bg-error"   : "bg-primary";
-
   const textClass =
     variantClass === "progress-success" ? "text-success" :
     variantClass === "progress-warning" ? "text-warning" :
@@ -19,19 +14,12 @@ export default function StatBar({
   return (
     <div className={`space-y-0.5 sm:space-y-1 ${className}`}>
       {/* Mobile */}
-      <div className="sm:hidden relative">
-        <div
-          className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1.5 rounded-full bg-base-300 overflow-hidden pointer-events-none"
-          aria-hidden="true"
-        >
-          <div
-            className={`h-full rounded-full ${fillClass}`}
-            style={{ width: `${(safeValue / 10) * 100}%` }}
-          />
+      <div className="sm:hidden">
+        <div className={`flex justify-between text-[9px] font-semibold mb-0.5 ${textClass}`}>
+          <span>{label}</span>
+          <span>{safeValue}/10</span>
         </div>
-        <p className={`relative text-[9px] font-bold leading-none py-0.5 px-1.5 ${textClass}`}>
-          {label}: {safeValue}/10
-        </p>
+        <progress className={`progress ${variantClass} w-full h-1`} value={safeValue} max="10" />
       </div>
 
       {/* Desktop */}
