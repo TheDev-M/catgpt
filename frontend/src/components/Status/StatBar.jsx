@@ -19,16 +19,19 @@ export default function StatBar({
   return (
     <div className={`space-y-0.5 sm:space-y-1 ${className}`}>
       {/* Mobile */}
-      <div className="sm:hidden relative h-3">
-        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1.5 rounded-full bg-base-300 overflow-hidden">
+      <div className="sm:hidden relative">
+        <div
+          className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1.5 rounded-full bg-base-300 overflow-hidden pointer-events-none"
+          aria-hidden="true"
+        >
           <div
             className={`h-full rounded-full ${fillClass}`}
             style={{ width: `${(safeValue / 10) * 100}%` }}
           />
         </div>
-        <span className={`absolute inset-0 flex items-center px-1.5 text-[9px] font-bold leading-none z-10 ${textClass}`}>
+        <p className={`relative text-[9px] font-bold leading-none py-0.5 px-1.5 ${textClass}`}>
           {label}: {safeValue}/10
-        </span>
+        </p>
       </div>
 
       {/* Desktop */}
