@@ -23,6 +23,7 @@ import { useCallback } from "react";
 export default function HomePage() {
   const [inventoryOpen, setInventoryOpen] = useState(false);
   const [friendListOpen, setFriendListOpen] = useState(false);
+  const [statusPeek, setStatusPeek] = useState(false);
   const { selectedCatId, setSelectedCatId } = useSelectedCat();
   const { user, logout, refreshUser } = useAuth();
   const navigate = useNavigate();
@@ -113,7 +114,23 @@ export default function HomePage() {
         <div className="flex-1 relative min-w-0 flex flex-col">
           {/* Mobile top bar — in document flow so it doesn't overlay the cat */}
           <div className="md:hidden flex items-center justify-between gap-2 px-3 py-2 shrink-0 z-10">
-            <StatusPanel cat={cat} loading={catLoading} error={catError} />
+            {/* Hold-to-peek status button */}
+            <div className="relative shrink-0">
+              <button
+                type="button"
+                className="btn btn-xs btn-ghost opacity-70"
+                onPointerDown={() => setStatusPeek(true)}
+                onPointerUp={() => setStatusPeek(false)}
+                onPointerLeave={() => setStatusPeek(false)}
+              >
+                📊 Stats
+              </button>
+              {statusPeek && (
+                <div className="absolute top-full left-0 mt-1 z-50">
+                  <StatusPanel cat={cat} loading={catLoading} error={catError} />
+                </div>
+              )}
+            </div>
             <div className="flex items-center gap-1.5 shrink-0">
               {user && (
                 <button
