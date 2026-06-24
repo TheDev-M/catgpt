@@ -59,7 +59,6 @@ export default function HomePage() {
 
   useHungerDecay(selectedCatId, updateCat);
 
-  // If the server tells us the borrowed cat was reclaimed, refresh user so selectedCatId updates
   const handleBorrowUpdate = useCallback(async () => {
     await refreshUser();
   }, [refreshUser]);
@@ -74,7 +73,6 @@ export default function HomePage() {
   const toggleFriendList = () => setFriendListOpen(o => !o);
 
   const handleBorrowed = useCallback(async (catId) => {
-    // Borrow API already set selectedCatId on the server; sync local state
     await setSelectedCatId(catId);
     await refreshUser();
   }, [setSelectedCatId, refreshUser]);
@@ -82,15 +80,12 @@ export default function HomePage() {
   const handleReturnCat = useCallback(async (catId) => {
     try {
       await returnBorrowed(catId);
-      // Server picks the fallback cat; re-fetch user then sync context
       const updated = await refreshUser();
       const fallbackId = updated?.selectedCatId ?? null;
       await setSelectedCatId(fallbackId ? Number(fallbackId) : null);
     } catch { /* ignore */ }
   }, [returnBorrowed, setSelectedCatId, refreshUser]);
 
-  // borrowedCatId = the selected cat id if the user is borrowing it
-  // We detect this by checking if the loaded cat has a borrowedByUsername matching the current user
   const borrowedCatId = cat && user && cat.borrowedByUsername === user.username
     ? selectedCatId
     : null;
@@ -123,7 +118,7 @@ export default function HomePage() {
                 onPointerUp={() => setStatusPeek(false)}
                 onPointerLeave={() => setStatusPeek(false)}
               >
-                📊 Stats
+                Stats
               </button>
               {statusPeek && (
                 <div className="absolute top-full left-0 mt-1 z-50">
