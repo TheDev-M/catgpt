@@ -5,24 +5,22 @@ export default function StatBar({
   variantClass = "progress-primary"
 }) {
   const safeValue = Math.max(0, Math.min(10, Number(value) || 0));
-
-  const textClass =
-    variantClass === "progress-success" ? "text-success" :
-    variantClass === "progress-warning" ? "text-warning" :
-    variantClass === "progress-error"   ? "text-error"   : "text-primary";
+  const fillClass = variantClass.replace("progress-", "bg-");
 
   return (
     <div className={`space-y-0.5 sm:space-y-1 ${className}`}>
-      {/* Mobile */}
-      <div className="sm:hidden">
-        <div className={`flex justify-between text-[8px] font-semibold ${textClass}`}>
-          <span>{label}</span>
-          <span>{safeValue}/10</span>
-        </div>
-        <progress className={`progress ${variantClass} w-full h-1`} value={safeValue} max="10" />
+      {/* Mobile: custom bar with text overlaid on it */}
+      <div className="sm:hidden relative h-4 w-full rounded-full bg-base-300 overflow-hidden">
+        <div
+          className={`h-full rounded-full ${fillClass}`}
+          style={{ width: `${(safeValue / 10) * 100}%` }}
+        />
+        <span className="absolute inset-0 flex items-center px-2 text-[9px] font-bold text-base-content leading-none">
+          {label}: {safeValue}/10
+        </span>
       </div>
 
-      {/* Desktop */}
+      {/* Desktop: label row + native progress element */}
       <div className="hidden sm:flex items-center justify-between text-xs">
         <span className="font-semibold">{label}</span>
         <span className="opacity-70">{safeValue}/10</span>
