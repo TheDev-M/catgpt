@@ -19,7 +19,7 @@ public class CorsConfig {
                 "http://localhost:3000",
                 "http://localhost:5173",
                 "https://catgpt-demo.netlify.app",
-                "https://catgpt-a7w.pages.dev"
+                "https://catgpt-avhz.onrender.com"
         ));
 
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
