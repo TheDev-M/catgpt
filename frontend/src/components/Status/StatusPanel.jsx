@@ -30,7 +30,7 @@ export default function StatusPanel({ cat, loading, error }) {
     <div className="card bg-base-200/80 shadow rounded-2xl p-2 sm:p-3 w-44 sm:w-56 text-xs">
       <p className="hidden sm:block font-semibold mb-2 truncate">{cat.name || "Current cat"}</p>
 
-      <div className="space-y-1 sm:space-y-2">
+      <div className="space-y-0.5 sm:space-y-2">
         <HungerBar value={hunger} />
         <MoodBar value={mood} />
         <HealthBar value={health} />
