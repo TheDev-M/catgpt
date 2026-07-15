@@ -10,7 +10,7 @@ Spring Boot 3.5.7 / Java 21 REST API for the CatGPT virtual pet simulator.
 | Language | Java 21 |
 | Database | PostgreSQL 16 via Spring Data JPA |
 | Auth | JWT (JJWT 0.13.0) + Google OAuth 2.0 |
-| AI Chat | Groq API — `llama-3.3-70b-versatile` |
+| AI Chat | Groq API — `qwen/qwen3.6-27b` |
 | Breed Data | The Cat API |
 | Validation | Jakarta Bean Validation (`@Valid`, `@NotBlank`, `@Min`/`@Max`) |
 | Logging | Lombok `@Slf4j` |

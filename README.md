@@ -81,7 +81,7 @@ The project is built with a Spring Boot REST API, a React + Vite frontend, and a
 
 | Service | Purpose |
 |---|---|
-| [Groq](https://groq.com) — `llama-3.3-70b-versatile` | Powers cat chat responses |
+| [Groq](https://groq.com) — `qwen/qwen3.6-27b` | Powers cat chat responses |
 | [The Cat API](https://thecatapi.com) | Breed info and images for new cats |
 | Google OAuth 2.0 | Social sign-in |
 
@@ -371,7 +371,7 @@ catgpt/
 ## Roadmap
 
 - [x] Core virtual pet mechanics (hunger, mood, health)
-- [x] AI-powered chat (Groq / llama-3.3-70b)
+- [x] AI-powered chat (Groq / qwen3.6-27b)
 - [x] JWT authentication + Google OAuth
 - [x] Item collection and inventory system
 - [x] Multi-cat management and cat box

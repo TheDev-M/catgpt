@@ -15,7 +15,7 @@ public class ChatService {
     private final RestClient restClient;
     private final String groqApiKey;
     private static final String GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-    private static final String MODEL = "llama-3.3-70b-versatile";
+    private static final String MODEL = "qwen/qwen3.6-27b";
 
     public ChatService(@Value("${groq.api-key}") String groqApiKey) {
         this.groqApiKey = groqApiKey;
