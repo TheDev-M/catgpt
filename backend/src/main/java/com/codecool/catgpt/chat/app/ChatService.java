@@ -27,6 +27,7 @@ public class ChatService {
 
         Map<String, Object> body = Map.of(
             "model", MODEL,
+            "reasoning_format", "hidden",
             "messages", List.of(
                 Map.of("role", "system", "content", systemPrompt),
                 Map.of("role", "user", "content", request.prompt())
