@@ -71,7 +71,7 @@ public class CatService {
 
 
     public Cat applyItem(Long catId, Long itemId, User owner) {
-        var cat = getOwnedCat(catId, owner);
+        var cat = getOwnedOrBorrowedCat(catId, owner);
         var item = items.getOwnedItem(itemId, owner);
 
         if (item.getAvailableAmount() <= 0) {
@@ -127,6 +127,20 @@ public class CatService {
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Cat not found."));
 
         if (!cat.getOwner().getId().equals(owner.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "This cat does not belong to you.");
+        }
+
+        return cat;
+    }
+
+    private Cat getOwnedOrBorrowedCat(Long id, User user) {
+        var cat = cats.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Cat not found."));
+
+        boolean isOwner = cat.getOwner().getId().equals(user.getId());
+        boolean isBorrower = cat.getBorrowedBy() != null && cat.getBorrowedBy().getId().equals(user.getId());
+
+        if (!isOwner && !isBorrower) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "This cat does not belong to you.");
         }
 

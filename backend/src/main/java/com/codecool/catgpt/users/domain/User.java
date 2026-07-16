@@ -35,5 +35,8 @@ public class User extends BaseEntity {
     @Column
     private Long selectedCatId;
 
+    @Column
+    private Long lastOwnCatId;
+
     private Instant lastVisit;
 }

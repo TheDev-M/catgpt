@@ -17,9 +17,9 @@ export function useRandomBreedCat() {
           name: data.name,
           description: data.description,
           temperaments: data.temperament ? data.temperament.split(", ") : [],
-          energy_level: data.energy_level,
+          energy_level: data.energyLevel,
           grooming: data.grooming,
-          health_issues: data.health_issues,
+          health_issues: data.healthIssues,
           image: data.image
         };
 

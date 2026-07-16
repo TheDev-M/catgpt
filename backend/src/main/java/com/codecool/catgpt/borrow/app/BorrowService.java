@@ -71,6 +71,10 @@ public class BorrowService {
         cat.setBorrowedAt(Instant.now());
         cats.save(cat);
 
+        // Remember the user's own selection before switching to the borrowed cat
+        if (me.getSelectedCatId() != null && !me.getSelectedCatId().equals(catId)) {
+            me.setLastOwnCatId(me.getSelectedCatId());
+        }
         me.setSelectedCatId(catId);
         users.save(me);
 
@@ -88,15 +92,8 @@ public class BorrowService {
         cats.save(cat);
 
         if (catId.equals(me.getSelectedCatId())) {
-            Long fallback = cats.findAllByOwner(me).stream()
-                    .filter(c -> c.isDefaultCat())
-                    .map(Cat::getId)
-                    .findFirst()
-                    .or(() -> cats.findAllByOwner(me).stream()
-                            .map(Cat::getId)
-                            .findFirst())
-                    .orElse(null);
-            me.setSelectedCatId(fallback);
+            me.setSelectedCatId(resolveFallback(me));
+            me.setLastOwnCatId(null);
             users.save(me);
         }
 
@@ -120,20 +117,26 @@ public class BorrowService {
         cats.save(cat);
 
         if (catId.equals(borrower.getSelectedCatId())) {
-            Long fallback = cats.findAllByOwner(borrower).stream()
-                    .filter(c -> c.isDefaultCat())
-                    .map(Cat::getId)
-                    .findFirst()
-                    .or(() -> cats.findAllByOwner(borrower).stream()
-                            .map(Cat::getId)
-                            .findFirst())
-                    .orElse(null);
-            borrower.setSelectedCatId(fallback);
+            borrower.setSelectedCatId(resolveFallback(borrower));
+            borrower.setLastOwnCatId(null);
             users.save(borrower);
         }
 
         // Notify the borrower that they lost the cat
         sse.send(borrower.getId(), "cat-borrow-update", "reclaimed");
+    }
+
+    private Long resolveFallback(User user) {
+        Long last = user.getLastOwnCatId();
+        if (last != null && cats.findById(last).map(c -> c.getOwner().getId().equals(user.getId())).orElse(false)) {
+            return last;
+        }
+        return cats.findAllByOwner(user).stream()
+                .filter(Cat::isDefaultCat)
+                .map(Cat::getId)
+                .findFirst()
+                .or(() -> cats.findAllByOwner(user).stream().map(Cat::getId).findFirst())
+                .orElse(null);
     }
 
     private Friendship getApprovedFriendship(User me, Long friendshipId) {
