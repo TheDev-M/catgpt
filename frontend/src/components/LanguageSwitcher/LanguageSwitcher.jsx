@@ -24,7 +24,7 @@ export default function LanguageSwitcher() {
               className={`btn btn-ghost btn-xs justify-start gap-2 ${current === code ? "btn-active" : ""}`}
               onClick={() => i18n.changeLanguage(code)}
             >
-              {flag} {code.toUpperCase()}
+              {flag}
             </button>
           </li>
         ))}

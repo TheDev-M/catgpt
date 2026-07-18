@@ -1,12 +1,11 @@
 {
-  "common": { "save": "Mentés", "cancel": "Mégse", "back": "Vissza", "done": "Kész", "tryAgain": "Újra", "or": "VAGY" },
+  "common": { "save": "Mentés", "cancel": "Mégse", "back": "Vissza", "done": "Kész", "tryAgain": "Próbáld újra", "or": "VAGY" },
   "nav": {
-    "catBox": "Macskadoboz", "goCatBox": "Macskadobozhoz",
-    "inventory": "Táska", "toggleInventory": "Táska váltása",
+    "catBox": "Macskásdoboz",
+    "inventory": "Táska",
     "openInventory": "Táska megnyitása", "closeInventory": "Táska bezárása",
-    "friends": "Barátok", "friendList": "Barátok", "toggleFriendList": "Barátlista váltása",
-    "openFriendList": "Barátlista megnyitása", "closeFriendList": "Barátlista bezárása",
-    "viewCat": "Megtekint", "viewCatDetails": "Macska megtekintése"
+    "friends": "Barátok",
+    "openFriendList": "Barátlista megnyitása", "closeFriendList": "Barátlista bezárása"
   },
   "login": {
     "title": "Üdv vissza 🐾",
@@ -29,7 +28,7 @@
     "google": "Folytatás Google-lal",
     "hasAccount": "Már van fiókod?", "loginLink": "Bejelentkezés"
   },
-  "home": { "stats": "Állapot", "greeting": "Szia, {{name}}", "logout": "Kijelentkezés", "logOut": "Kijelentkezés" },
+  "home": { "stats": "Állapot", "greeting": "Szia, {{name}}", "logout": "Kijelentkezés" },
   "profile": {
     "back": "← Vissza",
     "googleAccount": "Google fiók", "localAccount": "Helyi fiók",
@@ -58,24 +57,22 @@
   },
   "catDetails": {
     "notFound": "A macska nem található.", "backToCatBox": "Vissza a Macskadobozhoz",
-    "releaseError": "Nem sikerült elengedni a macskát. Kérlek próbáld újra.",
     "releaseFailed": "Nem sikerült elengedni a macskát. Kérlek próbáld újra.",
     "profileTitle": "Macskaprofil",
-    "profile": "🐾 Macskaprofil",
     "breed": "Fajta", "temperaments": "Jellemvonások", "stats": "Állapot",
-    "select": "Kiválaszt", "rename": "Átnevez", "release": "Elenged", "back": "Vissza",
-    "renameLabel": "Nevezd át a macskádat", "renamePlaceholder": "Új macskanév", "renameDone": "Kész",
+    "select": "Kiválaszt", "rename": "Átnevez", "release": "Elenged",
+    "renameLabel": "Nevezd át a macskádat", "renamePlaceholder": "Új macskanév",
     "releaseTitle": "Elengedje: {{name}}?",
     "releaseConfirm": "Biztosan el akarod engedni ezt a macskát? Visszahozni nem lehet.",
     "releaseYes": "Igen, elengedem",
     "renameError": "Átnevezés sikertelen. Kérlek próbáld újra."
   },
   "catBox": {
-    "loadError": "Nem sikerült betölteni a macskákat.", "loadErrorMessage": "Kérlek próbáld újra!", "tryAgain": "Kérlek próbáld újra!",
+    "loadError": "Nem sikerült betölteni a macskákat.", "loadErrorMessage": "Kérlek próbáld újra!",
     "noCats": "Nem találhatók macskák.", "allBreeds": "Összes fajta",
-    "searchPlaceholder": "Keresés név szerint…", "searchLabel": "Szűrés macska neve szerint", "searchAriaLabel": "Szűrés macska neve szerint",
-    "selectBreed": "Válassz fajtát", "breedAriaLabel": "Válassz fajtát",
-    "noImage": "Nincs kép", "selected": "Kiválasztva", "selectedBadge": "Kiválasztva",
+    "searchPlaceholder": "Keresés név szerint…", "searchLabel": "Szűrés macska neve szerint",
+    "selectBreed": "Válassz fajtát",
+    "noImage": "Nincs kép", "selected": "Kiválasztva",
     "view": "Megtekint", "viewDetails": "Macska megtekintése"
   },
   "status": {
@@ -102,7 +99,7 @@
     "borrowing": "Kölcsönzöd: {{name}}!", "inUse": "Használatban", "borrow": "Kölcsönöz"
   },
   "chat": {
-    "loadError": "Nem sikerült betölteni a macskádat.", "loadErrorMessage": "Kérlek próbáld újra!", "tryAgain": "Kérlek próbáld újra!",
+    "loadError": "Nem sikerült betölteni a macskádat.", "loadErrorMessage": "Kérlek próbáld újra!",
     "placeholder": "Kérdezd {{name}}-t…", "yourCat": "a macskád",
     "idle": "Türelmesen dorombol, amíg szólsz… 🐈",
     "send": "Küldés",
@@ -119,7 +116,7 @@
     "altSleep": "Alvó macska"
   },
   "landscape": { "title": "Forgasd el az eszközöd", "message": "A CatGPT portré módra van tervezve." },
-  "error": { "generic": "Valami hiba történt", "defaultTitle": "Valami hiba történt", "retry": "Újra" },
+  "error": { "generic": "Valami hiba történt" },
   "validation": {
     "nameRequired": "A név kötelező.",
     "nameInvalid": "Csak betűk, számok és szóközök engedélyezettek. Betűvel kell kezdődnie.",

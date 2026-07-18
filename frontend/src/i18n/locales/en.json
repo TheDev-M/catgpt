@@ -1,15 +1,14 @@
 {
   "common": { "save": "Save", "cancel": "Cancel", "back": "Back", "done": "Done", "tryAgain": "Try again", "or": "OR" },
   "nav": {
-    "catBox": "Cat Box", "goCatBox": "Go to Cat Box",
-    "inventory": "Inventory", "toggleInventory": "Toggle Inventory",
+    "catBox": "Cat Box",
+    "inventory": "Inventory",
     "openInventory": "Open Inventory", "closeInventory": "Close Inventory",
-    "friends": "Friends", "friendList": "Friend List", "toggleFriendList": "Toggle Friend List",
-    "openFriendList": "Open Friend List", "closeFriendList": "Close Friend List",
-    "viewCat": "View", "viewCatDetails": "View cat details"
+    "friends": "Friends",
+    "openFriendList": "Open Friend List", "closeFriendList": "Close Friend List"
   },
   "login": {
-    "title": "Welcome back 🐾",
+    "title": "Welcome back! 🐾",
     "subtitle": "Log in to chat with your cats.",
     "username": "Username", "password": "Password",
     "submitting": "Logging in…", "submit": "Log in",
@@ -29,7 +28,7 @@
     "google": "Continue with Google",
     "hasAccount": "Already have an account?", "loginLink": "Log in"
   },
-  "home": { "stats": "Stats", "greeting": "Hi, {{name}}", "logout": "Log out", "logOut": "Log out" },
+  "home": { "stats": "Stats", "greeting": "Hi, {{name}}", "logout": "Log out" },
   "profile": {
     "back": "← Back",
     "googleAccount": "Google account", "localAccount": "Local account",
@@ -58,24 +57,22 @@
   },
   "catDetails": {
     "notFound": "Cat not found.", "backToCatBox": "Back to CatBox",
-    "releaseError": "Failed to release cat. Please try again.",
     "releaseFailed": "Failed to release cat. Please try again.",
     "profileTitle": "Cat Profile",
-    "profile": "🐾 Cat Profile",
     "breed": "Breed", "temperaments": "Temperaments", "stats": "Stats",
-    "select": "Select", "rename": "Rename", "release": "Release", "back": "Back",
-    "renameLabel": "Rename your cat", "renamePlaceholder": "New cat name", "renameDone": "Done",
+    "select": "Select", "rename": "Rename", "release": "Release",
+    "renameLabel": "Rename your cat", "renamePlaceholder": "New cat name",
     "releaseTitle": "Release {{name}}?",
     "releaseConfirm": "Are you sure you want to release this cat? You won't be able to get it back.",
     "releaseYes": "Yes, release",
     "renameError": "Failed to rename. Please try again."
   },
   "catBox": {
-    "loadError": "Failed to load cats.", "loadErrorMessage": "Please try again!", "tryAgain": "Please try again!",
+    "loadError": "Failed to load cats.", "loadErrorMessage": "Please try again!",
     "noCats": "No cats found.", "allBreeds": "All Breeds",
-    "searchPlaceholder": "Search by name…", "searchLabel": "Filter cats by name", "searchAriaLabel": "Filter cats by name",
-    "selectBreed": "Select cat breed", "breedAriaLabel": "Select cat breed",
-    "noImage": "No image", "selected": "Selected", "selectedBadge": "Selected",
+    "searchPlaceholder": "Search by name…", "searchLabel": "Filter cats by name",
+    "selectBreed": "Select cat breed",
+    "noImage": "No image", "selected": "Selected",
     "view": "View", "viewDetails": "View cat details"
   },
   "status": {
@@ -102,7 +99,7 @@
     "borrowing": "Now borrowing {{name}}!", "inUse": "In use", "borrow": "Borrow"
   },
   "chat": {
-    "loadError": "Failed to load your cat.", "loadErrorMessage": "Please try again!", "tryAgain": "Please try again!",
+    "loadError": "Failed to load your cat.", "loadErrorMessage": "Please try again!",
     "placeholder": "Asking {{name}}…", "yourCat": "your cat",
     "idle": "Patiently purring until you speak… 🐈",
     "send": "Send",
@@ -119,7 +116,7 @@
     "altSleep": "Sleeping cat"
   },
   "landscape": { "title": "Please rotate your device", "message": "CatGPT is designed for portrait mode." },
-  "error": { "generic": "Something went wrong", "defaultTitle": "Something went wrong", "retry": "Try again" },
+  "error": { "generic": "Something went wrong" },
   "validation": {
     "nameRequired": "Name is required.",
     "nameInvalid": "Only letters, numbers, and spaces allowed. Must start with a letter.",

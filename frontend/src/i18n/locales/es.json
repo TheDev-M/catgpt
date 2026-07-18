@@ -1,12 +1,11 @@
 {
   "common": { "save": "Guardar", "cancel": "Cancelar", "back": "Volver", "done": "Listo", "tryAgain": "Intentar de nuevo", "or": "O" },
   "nav": {
-    "catBox": "Caja de gatos", "goCatBox": "Ir a la caja de gatos",
-    "inventory": "Inventario", "toggleInventory": "Alternar inventario",
+    "catBox": "Caja de gatos",
+    "inventory": "Inventario",
     "openInventory": "Abrir inventario", "closeInventory": "Cerrar inventario",
-    "friends": "Amigos", "friendList": "Lista de amigos", "toggleFriendList": "Alternar lista de amigos",
-    "openFriendList": "Abrir lista de amigos", "closeFriendList": "Cerrar lista de amigos",
-    "viewCat": "Ver", "viewCatDetails": "Ver detalles del gato"
+    "friends": "Amigos",
+    "openFriendList": "Abrir lista de amigos", "closeFriendList": "Cerrar lista de amigos"
   },
   "login": {
     "title": "Bienvenido de vuelta 🐾",
@@ -29,7 +28,7 @@
     "google": "Continuar con Google",
     "hasAccount": "¿Ya tienes cuenta?", "loginLink": "Iniciar sesión"
   },
-  "home": { "stats": "Estado", "greeting": "Hola, {{name}}", "logout": "Cerrar sesión", "logOut": "Cerrar sesión" },
+  "home": { "stats": "Estado", "greeting": "Hola, {{name}}", "logout": "Cerrar sesión" },
   "profile": {
     "back": "← Volver",
     "googleAccount": "Cuenta de Google", "localAccount": "Cuenta local",
@@ -58,24 +57,22 @@
   },
   "catDetails": {
     "notFound": "Gato no encontrado.", "backToCatBox": "Volver a la caja de gatos",
-    "releaseError": "No se pudo liberar al gato. Por favor, inténtalo de nuevo.",
     "releaseFailed": "No se pudo liberar al gato. Por favor, inténtalo de nuevo.",
     "profileTitle": "Perfil del gato",
-    "profile": "🐾 Perfil del gato",
     "breed": "Raza", "temperaments": "Temperamentos", "stats": "Estado",
-    "select": "Seleccionar", "rename": "Renombrar", "release": "Liberar", "back": "Volver",
-    "renameLabel": "Renombra tu gato", "renamePlaceholder": "Nuevo nombre", "renameDone": "Listo",
+    "select": "Seleccionar", "rename": "Renombrar", "release": "Liberar",
+    "renameLabel": "Renombra tu gato", "renamePlaceholder": "Nuevo nombre",
     "releaseTitle": "¿Liberar a {{name}}?",
     "releaseConfirm": "¿Estás seguro de que quieres liberar a este gato? No podrás recuperarlo.",
     "releaseYes": "Sí, liberar",
     "renameError": "Error al renombrar. Por favor, inténtalo de nuevo."
   },
   "catBox": {
-    "loadError": "No se pudieron cargar los gatos.", "loadErrorMessage": "¡Por favor, inténtalo de nuevo!", "tryAgain": "¡Por favor, inténtalo de nuevo!",
+    "loadError": "No se pudieron cargar los gatos.", "loadErrorMessage": "¡Por favor, inténtalo de nuevo!",
     "noCats": "No se encontraron gatos.", "allBreeds": "Todas las razas",
-    "searchPlaceholder": "Buscar por nombre…", "searchLabel": "Filtrar gatos por nombre", "searchAriaLabel": "Filtrar gatos por nombre",
-    "selectBreed": "Seleccionar raza de gato", "breedAriaLabel": "Seleccionar raza de gato",
-    "noImage": "Sin imagen", "selected": "Seleccionado", "selectedBadge": "Seleccionado",
+    "searchPlaceholder": "Buscar por nombre…", "searchLabel": "Filtrar gatos por nombre",
+    "selectBreed": "Seleccionar raza de gato",
+    "noImage": "Sin imagen", "selected": "Seleccionado",
     "view": "Ver", "viewDetails": "Ver detalles del gato"
   },
   "status": {
@@ -102,7 +99,7 @@
     "borrowing": "¡Ahora tienes prestado a {{name}}!", "inUse": "En uso", "borrow": "Pedir prestado"
   },
   "chat": {
-    "loadError": "No se pudo cargar tu gato.", "loadErrorMessage": "¡Por favor, inténtalo de nuevo!", "tryAgain": "¡Por favor, inténtalo de nuevo!",
+    "loadError": "No se pudo cargar tu gato.", "loadErrorMessage": "¡Por favor, inténtalo de nuevo!",
     "placeholder": "Preguntando a {{name}}…", "yourCat": "tu gato",
     "idle": "Ronroneando pacientemente hasta que hables… 🐈",
     "send": "Enviar",
@@ -119,7 +116,7 @@
     "altSleep": "Gato durmiendo"
   },
   "landscape": { "title": "Por favor, gira tu dispositivo", "message": "CatGPT está diseñado para modo vertical." },
-  "error": { "generic": "Algo salió mal", "defaultTitle": "Algo salió mal", "retry": "Intentar de nuevo" },
+  "error": { "generic": "Algo salió mal" },
   "validation": {
     "nameRequired": "El nombre es obligatorio.",
     "nameInvalid": "Solo se permiten letras, números y espacios. Debe comenzar con una letra.",

@@ -1,12 +1,11 @@
 {
   "common": { "save": "Speichern", "cancel": "Abbrechen", "back": "Zurück", "done": "Fertig", "tryAgain": "Erneut versuchen", "or": "ODER" },
   "nav": {
-    "catBox": "Katzenbox", "goCatBox": "Zur Katzenbox",
-    "inventory": "Inventar", "toggleInventory": "Inventar umschalten",
+    "catBox": "Katzenbox",
+    "inventory": "Inventar",
     "openInventory": "Inventar öffnen", "closeInventory": "Inventar schließen",
-    "friends": "Freunde", "friendList": "Freundesliste", "toggleFriendList": "Freundesliste umschalten",
-    "openFriendList": "Freundesliste öffnen", "closeFriendList": "Freundesliste schließen",
-    "viewCat": "Ansehen", "viewCatDetails": "Katzendetails ansehen"
+    "friends": "Freunde",
+    "openFriendList": "Freundesliste öffnen", "closeFriendList": "Freundesliste schließen"
   },
   "login": {
     "title": "Willkommen zurück 🐾",
@@ -29,7 +28,7 @@
     "google": "Mit Google fortfahren",
     "hasAccount": "Bereits ein Konto?", "loginLink": "Anmelden"
   },
-  "home": { "stats": "Status", "greeting": "Hallo, {{name}}", "logout": "Abmelden", "logOut": "Abmelden" },
+  "home": { "stats": "Status", "greeting": "Hallo, {{name}}", "logout": "Abmelden" },
   "profile": {
     "back": "← Zurück",
     "googleAccount": "Google-Konto", "localAccount": "Lokales Konto",
@@ -58,24 +57,22 @@
   },
   "catDetails": {
     "notFound": "Katze nicht gefunden.", "backToCatBox": "Zurück zur Katzenbox",
-    "releaseError": "Katze konnte nicht freigelassen werden. Bitte versuche es erneut.",
     "releaseFailed": "Katze konnte nicht freigelassen werden. Bitte versuche es erneut.",
     "profileTitle": "Katzenprofil",
-    "profile": "🐾 Katzenprofil",
     "breed": "Rasse", "temperaments": "Temperament", "stats": "Status",
-    "select": "Auswählen", "rename": "Umbenennen", "release": "Freilassen", "back": "Zurück",
-    "renameLabel": "Katze umbenennen", "renamePlaceholder": "Neuer Katzenname", "renameDone": "Fertig",
+    "select": "Auswählen", "rename": "Umbenennen", "release": "Freilassen",
+    "renameLabel": "Katze umbenennen", "renamePlaceholder": "Neuer Katzenname",
     "releaseTitle": "{{name}} freilassen?",
     "releaseConfirm": "Bist du sicher, dass du diese Katze freilassen möchtest? Du bekommst sie nicht zurück.",
     "releaseYes": "Ja, freilassen",
     "renameError": "Umbenennen fehlgeschlagen. Bitte versuche es erneut."
   },
   "catBox": {
-    "loadError": "Katzen konnten nicht geladen werden.", "loadErrorMessage": "Bitte versuche es erneut!", "tryAgain": "Bitte versuche es erneut!",
+    "loadError": "Katzen konnten nicht geladen werden.", "loadErrorMessage": "Bitte versuche es erneut!",
     "noCats": "Keine Katzen gefunden.", "allBreeds": "Alle Rassen",
-    "searchPlaceholder": "Nach Name suchen…", "searchLabel": "Katzen nach Name filtern", "searchAriaLabel": "Katzen nach Name filtern",
-    "selectBreed": "Katzenrasse auswählen", "breedAriaLabel": "Katzenrasse auswählen",
-    "noImage": "Kein Bild", "selected": "Ausgewählt", "selectedBadge": "Ausgewählt",
+    "searchPlaceholder": "Nach Name suchen…", "searchLabel": "Katzen nach Name filtern",
+    "selectBreed": "Katzenrasse auswählen",
+    "noImage": "Kein Bild", "selected": "Ausgewählt",
     "view": "Ansehen", "viewDetails": "Katzendetails ansehen"
   },
   "status": {
@@ -102,7 +99,7 @@
     "borrowing": "Du leihst jetzt {{name}}!", "inUse": "In Benutzung", "borrow": "Ausleihen"
   },
   "chat": {
-    "loadError": "Deine Katze konnte nicht geladen werden.", "loadErrorMessage": "Bitte versuche es erneut!", "tryAgain": "Bitte versuche es erneut!",
+    "loadError": "Deine Katze konnte nicht geladen werden.", "loadErrorMessage": "Bitte versuche es erneut!",
     "placeholder": "{{name}} fragen…", "yourCat": "deine Katze",
     "idle": "Schnurrt geduldig, bis du sprichst… 🐈",
     "send": "Senden",
@@ -119,7 +116,7 @@
     "altSleep": "Schlafende Katze"
   },
   "landscape": { "title": "Bitte drehe dein Gerät", "message": "CatGPT ist für den Hochformatmodus konzipiert." },
-  "error": { "generic": "Etwas ist schiefgelaufen", "defaultTitle": "Etwas ist schiefgelaufen", "retry": "Erneut versuchen" },
+  "error": { "generic": "Etwas ist schiefgelaufen" },
   "validation": {
     "nameRequired": "Name ist erforderlich.",
     "nameInvalid": "Nur Buchstaben, Zahlen und Leerzeichen erlaubt. Muss mit einem Buchstaben beginnen.",
