@@ -1,34 +1,30 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { createCat } from "@/services/catApi.js";
 
 const NICKNAME_PATTERN = /^[A-Za-z][A-Za-z0-9 ]*$/;
 
 function validateNickname(name, hasDuplicateName) {
   const trimmed = name.trim();
-
-  if (!trimmed) return "Nickname is required.";
-  if (trimmed.length < 3) return "Must be at least 3 characters.";
-  if (trimmed.length > 16) return "Must be less than 16 characters.";
-  if (!NICKNAME_PATTERN.test(trimmed)) {
-    return "Only letters, numbers and spaces allowed. Must start with a letter.";
-  }
-  if (hasDuplicateName(trimmed)) {
-    return `You already have a cat named "${trimmed}"`;
-  }
-
-  return "";
+  if (!trimmed) return { key: "validation.nicknameRequired" };
+  if (trimmed.length < 3) return { key: "validation.nicknameTooShort" };
+  if (trimmed.length > 16) return { key: "validation.nicknameTooLong" };
+  if (!NICKNAME_PATTERN.test(trimmed)) return { key: "validation.nicknameInvalid" };
+  if (hasDuplicateName(trimmed)) return { key: "validation.nicknameDuplicate", options: { name: trimmed } };
+  return null;
 }
 
 export function useCaughtCatForm(cat, hasDuplicateName, onSuccess) {
+  const { t } = useTranslation();
   const [nickname, setNickname] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const validationError = validateNickname(nickname, hasDuplicateName);
-    if (validationError) {
-      setError(validationError);
+    const result = validateNickname(nickname, hasDuplicateName);
+    if (result) {
+      setError(t(result.key, result.options));
       return;
     }
 
@@ -46,16 +42,13 @@ export function useCaughtCatForm(cat, hasDuplicateName, onSuccess) {
       });
       onSuccess();
     } catch (err) {
-      setError(err.message || "Failed to save cat. Please try again.");
+      setError(err.message || t("validation.nicknameSaveError"));
     }
   };
 
   return {
     nickname,
-    setNickname: (val) => {
-      setNickname(val);
-      setError("");
-    },
+    setNickname: (val) => { setNickname(val); setError(""); },
     error,
     handleSubmit
   };

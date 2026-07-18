@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export function useLoginForm(login, onSuccess) {
+  const { t } = useTranslation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -15,18 +17,10 @@ export function useLoginForm(login, onSuccess) {
       await login(username.trim(), password);
       onSuccess();
     } catch {
-      setError("Invalid username or password.");
+      setError(t("validation.loginFailed"));
       setLoading(false);
     }
   };
 
-  return {
-    username,
-    setUsername,
-    password,
-    setPassword,
-    error,
-    loading,
-    handleSubmit
-  };
+  return { username, setUsername, password, setPassword, error, loading, handleSubmit };
 }

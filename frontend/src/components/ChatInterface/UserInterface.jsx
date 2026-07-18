@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function UserInterface({ onSend, disabled, placeholder }) {
+  const { t } = useTranslation();
   const [val, setVal] = useState("");
 
   const send = () => {
@@ -20,13 +22,9 @@ export default function UserInterface({ onSend, disabled, placeholder }) {
         readOnly={disabled}
         className="input input-bordered w-4/5 max-w-md"
       />
-      <button
-        onClick={send}
-        disabled={disabled}
-        className="btn btn-primary rounded-full gap-2"
-      >
+      <button onClick={send} disabled={disabled} className="btn btn-primary rounded-full gap-2">
         <span>🐾</span>
-        <span>Send</span>
+        <span>{t("chat.send")}</span>
         <span>🐾</span>
       </button>
     </div>

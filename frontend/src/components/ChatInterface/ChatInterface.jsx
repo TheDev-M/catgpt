@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useSelectedCat } from "@/contexts/SelectedCatContext.jsx";
 import { useCatChat } from "@/hooks/useCatChat.js";
 import { useMoodDecay } from "@/hooks/useMoodDecay.js";
@@ -9,6 +10,7 @@ import UserInterface from "./UserInterface.jsx";
 import ChatAnswer from "./ChatAnswer.jsx";
 
 export default function ChatInterface({ cat, loading, error, onCatUpdated }) {
+  const { t } = useTranslation();
   const { selectedCatId } = useSelectedCat();
   const { answer, thinking, sendPrompt } = useCatChat(cat);
   const decreaseMood = useMoodDecay(selectedCatId, onCatUpdated);
@@ -24,10 +26,7 @@ export default function ChatInterface({ cat, loading, error, onCatUpdated }) {
   if (error) {
     return (
       <div className="h-full flex items-center justify-center p-4">
-        <ErrorMessage
-          title="Failed to load your cat."
-          message="Please try again!"
-        />
+        <ErrorMessage title={t("chat.loadError")} message={t("chat.loadErrorMessage")} />
       </div>
     );
   }
@@ -42,15 +41,13 @@ export default function ChatInterface({ cat, loading, error, onCatUpdated }) {
       <div className="w-full flex justify-center">
         <CatProfileCard catName={cat?.name} catImage={cat?.image} />
       </div>
-
       <div className="w-full flex-1 flex items-center justify-center">
         <ChatAnswer text={answer} thinking={thinking} />
       </div>
-
       <div className="w-full flex justify-center">
         <UserInterface
           disabled={thinking || !cat}
-          placeholder={`Asking ${cat?.name || "Your cat"}…`}
+          placeholder={t("chat.placeholder", { name: cat?.name ?? t("chat.yourCat") })}
           onSend={handleSend}
         />
       </div>

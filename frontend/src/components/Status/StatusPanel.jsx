@@ -1,8 +1,11 @@
+import { useTranslation } from "react-i18next";
 import HungerBar from "./HungerBar.jsx";
 import MoodBar from "./MoodBar.jsx";
 import HealthBar from "./HealthBar.jsx";
 
 export default function StatusPanel({ cat, loading, error }) {
+  const { t } = useTranslation();
+
   if (loading) {
     return (
       <div className="card bg-base-200/80 shadow rounded-2xl p-2 sm:p-3 w-44 sm:w-56">
@@ -17,7 +20,7 @@ export default function StatusPanel({ cat, loading, error }) {
   if (error || !cat) {
     return (
       <div className="card bg-base-200/80 shadow rounded-2xl p-2 sm:p-3 w-44 sm:w-56 text-xs">
-        <p className="opacity-70">Failed to load status.</p>
+        <p className="opacity-70">{t("status.loadError")}</p>
       </div>
     );
   }
@@ -28,8 +31,7 @@ export default function StatusPanel({ cat, loading, error }) {
 
   return (
     <div className="card bg-base-200/80 shadow rounded-2xl p-2 sm:p-3 w-44 sm:w-56 text-xs">
-      <p className="hidden sm:block font-semibold mb-2 truncate">{cat.name || "Current cat"}</p>
-
+      <p className="hidden sm:block font-semibold mb-2 truncate">{cat.name || t("status.currentCat")}</p>
       <div className="space-y-0.5 sm:space-y-2">
         <HungerBar value={hunger} />
         <MoodBar value={mood} />

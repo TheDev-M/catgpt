@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useCats } from "@/hooks/useCats.js";
 import { getBreedsFromCats } from "@/services/catApi.js";
 
@@ -8,6 +9,7 @@ import SkeletonGrid from "@/components/CatBoxGrid/SkeletonGrid.jsx";
 import ErrorMessage from "@/components/Errors/ErrorMessage.jsx";
 
 export default function CatBoxInterface() {
+  const { t } = useTranslation();
   const { cats, loading, error, refetch } = useCats();
   const [nameQuery, setNameQuery] = useState("");
   const [breed, setBreed] = useState("");
@@ -16,17 +18,14 @@ export default function CatBoxInterface() {
 
   const filteredCats = useMemo(() => {
     let list = cats;
-
     if (nameQuery.trim()) {
       const q = nameQuery.toLowerCase();
       list = list.filter((c) => c.name?.toLowerCase().includes(q));
     }
-
     if (breed) {
       const b = breed.toLowerCase();
       list = list.filter((c) => c.breed?.toLowerCase() === b);
     }
-
     return list.sort((a, b) => a.name.localeCompare(b.name));
   }, [cats, nameQuery, breed]);
 
@@ -39,20 +38,15 @@ export default function CatBoxInterface() {
         setBreed={setBreed}
         breeds={breeds}
       />
-
       <main className="flex-1 px-4 py-6">
         {loading ? (
           <SkeletonGrid />
         ) : error ? (
           <div className="flex justify-center">
-            <ErrorMessage
-              title="Failed to load cats."
-              message="Please try again!"
-              onRetry={refetch}
-            />
+            <ErrorMessage title={t("catBox.loadError")} message={t("catBox.loadErrorMessage")} onRetry={refetch} />
           </div>
         ) : filteredCats.length === 0 ? (
-          <p className="opacity-70 text-center">No cats found.</p>
+          <p className="opacity-70 text-center">{t("catBox.noCats")}</p>
         ) : (
           <CatBoxGrid cats={filteredCats} />
         )}

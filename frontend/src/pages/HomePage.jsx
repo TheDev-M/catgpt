@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import LayoutBackground from "@/components/Layouts/LayoutBackground.jsx";
 import ThemePicker from "@/components/ThemePicker/ThemePicker.jsx";
+import LanguageSwitcher from "@/components/LanguageSwitcher/LanguageSwitcher.jsx";
 import RunningCat from "@/components/RunningCat.jsx";
 import FallingItems from "@/components/FallingItems.jsx";
 import ChatInterface from "@/components/ChatInterface/ChatInterface.jsx";
@@ -21,6 +23,7 @@ import { useSseEvent } from "@/hooks/useSseEvent.js";
 import { useCallback } from "react";
 
 export default function HomePage() {
+  const { t } = useTranslation();
   const [inventoryOpen, setInventoryOpen] = useState(false);
   const [friendListOpen, setFriendListOpen] = useState(false);
   const [statusPeek, setStatusPeek] = useState(false);
@@ -28,47 +31,16 @@ export default function HomePage() {
   const { user, logout, refreshUser } = useAuth();
   const navigate = useNavigate();
 
-  const {
-    cat,
-    loading: catLoading,
-    error: catError,
-    updateCat
-  } = useCat(selectedCatId);
-
-  const {
-    items,
-    loading: invLoading,
-    error: invError,
-    usingId,
-    useItem,
-    refetchItems
-  } = useInventory(selectedCatId, updateCat);
-
-  const {
-    friends,
-    incoming,
-    outgoing,
-    loading: friendsLoading,
-    error: friendsError,
-    sendRequest,
-    approve,
-    decline,
-    remove,
-    returnBorrowed
-  } = useFriends(friendListOpen);
+  const { cat, loading: catLoading, error: catError, updateCat } = useCat(selectedCatId);
+  const { items, loading: invLoading, error: invError, usingId, useItem, refetchItems } = useInventory(selectedCatId, updateCat);
+  const { friends, incoming, outgoing, loading: friendsLoading, error: friendsError, sendRequest, approve, decline, remove, returnBorrowed } = useFriends(friendListOpen);
 
   useHungerDecay(selectedCatId, updateCat);
 
-  const handleBorrowUpdate = useCallback(async () => {
-    await refreshUser();
-  }, [refreshUser]);
+  const handleBorrowUpdate = useCallback(async () => { await refreshUser(); }, [refreshUser]);
   useSseEvent("cat-borrow-update", handleBorrowUpdate);
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login", { replace: true });
-  };
-
+  const handleLogout = () => { logout(); navigate("/login", { replace: true }); };
   const toggleInventory = () => setInventoryOpen(o => !o);
   const toggleFriendList = () => setFriendListOpen(o => !o);
 
@@ -86,9 +58,7 @@ export default function HomePage() {
     } catch { /* ignore */ }
   }, [returnBorrowed, setSelectedCatId, refreshUser]);
 
-  const borrowedCatId = cat && user && cat.borrowedByUsername === user.username
-    ? selectedCatId
-    : null;
+  const borrowedCatId = cat && user && cat.borrowedByUsername === user.username ? selectedCatId : null;
 
   return (
     <LayoutBackground variant="warm">
@@ -107,9 +77,8 @@ export default function HomePage() {
         )}
 
         <div className="flex-1 relative min-w-0 flex flex-col">
-          {/* Mobile top bar — in document flow so it doesn't overlay the cat */}
+          {/* Mobile top bar */}
           <div className="md:hidden flex items-center justify-between gap-2 px-3 py-2 shrink-0 z-10">
-            {/* Hold-to-peek status button */}
             <div className="relative shrink-0">
               <button
                 type="button"
@@ -118,7 +87,7 @@ export default function HomePage() {
                 onPointerUp={() => setStatusPeek(false)}
                 onPointerLeave={() => setStatusPeek(false)}
               >
-                Stats
+                {t("home.stats")}
               </button>
               {statusPeek && (
                 <div className="absolute top-full left-0 mt-1 z-50">
@@ -134,21 +103,18 @@ export default function HomePage() {
                   title={`Go to your profile — ${user.nickname ?? user.username}`}
                   className="btn btn-ghost btn-xs px-2 text-xs opacity-80 hover:opacity-100 max-w-24"
                 >
-                  <span className="truncate">Hi, {user.nickname ?? user.username}</span>
+                  <span className="truncate">{t("home.greeting", { name: user.nickname ?? user.username })}</span>
                 </button>
               )}
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="btn btn-xs btn-outline"
-              >
-                Log out
+              <button type="button" onClick={handleLogout} className="btn btn-xs btn-outline">
+                {t("home.logout")}
               </button>
+              <LanguageSwitcher />
               <ThemePicker />
             </div>
           </div>
 
-          {/* Desktop overlays — hidden on mobile */}
+          {/* Desktop overlays */}
           <div className="hidden md:block absolute top-3 left-3 z-10">
             <StatusPanel cat={cat} loading={catLoading} error={catError} />
           </div>
@@ -161,64 +127,48 @@ export default function HomePage() {
                 title="Go to your profile"
                 className="text-sm opacity-80 hover:opacity-100 cursor-pointer btn btn-ghost btn-xs px-2"
               >
-                Hi, <span className="font-semibold">{user.nickname ?? user.username}</span>
+                {t("home.greeting", { name: user.nickname ?? user.username })}
               </button>
             )}
-            <button
-              id="home-logout-button"
-              type="button"
-              onClick={handleLogout}
-              className="btn btn-xs btn-outline"
-            >
-              Log out
+            <button id="home-logout-button" type="button" onClick={handleLogout} className="btn btn-xs btn-outline">
+              {t("home.logout")}
             </button>
+            <LanguageSwitcher />
             <ThemePicker />
           </div>
 
           {/* Bottom-left: Inventory */}
           <div className="absolute bottom-3 left-3 z-10">
-            <InventoryButton
-              open={inventoryOpen}
-              onToggle={toggleInventory}
-            />
+            <InventoryButton open={inventoryOpen} onToggle={toggleInventory} />
           </div>
 
           {/* Bottom-right: Cat Box + Friend List */}
           <div className="absolute bottom-3 right-3 z-10 flex gap-2">
             <CatBoxButton />
-            <FriendListButton
-              open={friendListOpen}
-              onToggle={toggleFriendList}
-              pendingCount={incoming.length}
-            />
+            <FriendListButton open={friendListOpen} onToggle={toggleFriendList} pendingCount={incoming.length} />
           </div>
 
           <div className="flex-1 min-h-0">
-            <ChatInterface
-              cat={cat}
-              loading={catLoading}
-              error={catError}
-              onCatUpdated={updateCat}
-            />
+            <ChatInterface cat={cat} loading={catLoading} error={catError} onCatUpdated={updateCat} />
           </div>
         </div>
 
         {friendListOpen && (
           <div className="fixed inset-0 z-50 bg-base-200 md:static md:inset-auto md:z-auto md:h-full md:w-80 md:border-l md:border-base-300 md:bg-base-200/90 md:shadow-xl md:shrink-0">
             <FriendListDrawer
-                onClose={() => setFriendListOpen(false)}
-                friends={friends}
-                incoming={incoming}
-                outgoing={outgoing}
-                loading={friendsLoading}
-                error={friendsError}
-                onSendRequest={sendRequest}
-                onApprove={approve}
-                onDecline={decline}
-                onRemove={remove}
-                onBorrowed={handleBorrowed}
-                borrowedCatId={borrowedCatId}
-                onReturnCat={handleReturnCat}
+              onClose={() => setFriendListOpen(false)}
+              friends={friends}
+              incoming={incoming}
+              outgoing={outgoing}
+              loading={friendsLoading}
+              error={friendsError}
+              onSendRequest={sendRequest}
+              onApprove={approve}
+              onDecline={decline}
+              onRemove={remove}
+              onBorrowed={handleBorrowed}
+              borrowedCatId={borrowedCatId}
+              onReturnCat={handleReturnCat}
             />
           </div>
         )}

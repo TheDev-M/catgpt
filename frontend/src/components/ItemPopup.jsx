@@ -1,9 +1,11 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function ItemPopup({ icon, name, onClose }) {
+  const { t } = useTranslation();
   useEffect(() => {
-    const t = setTimeout(onClose, 2000);
-    return () => clearTimeout(t);
+    const timer = setTimeout(onClose, 2000);
+    return () => clearTimeout(timer);
   }, [onClose]);
 
   return (
@@ -15,7 +17,7 @@ export default function ItemPopup({ icon, name, onClose }) {
           className="w-8 h-8 object-contain select-none"
           draggable="false"
         />
-        <span className="font-semibold text-sm">+1 {name}</span>
+        <span className="font-semibold text-sm">{t("inventory.itemGained", { name })}</span>
       </div>
     </div>
   );

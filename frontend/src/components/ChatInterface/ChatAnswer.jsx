@@ -1,13 +1,18 @@
-import { getRandomCatThinking } from "@/constants/getRandomCatThinking.js";
+import { useTranslation } from "react-i18next";
 
 export default function ChatAnswer({ text, thinking = false }) {
+  const { t } = useTranslation();
   const hasText = Boolean(text?.trim());
-  const thinkingText = getRandomCatThinking();
+
+  const thinkingTexts = t("chat.thinking", { returnObjects: true });
+  const thinkingText = Array.isArray(thinkingTexts)
+    ? thinkingTexts[Math.floor(Math.random() * thinkingTexts.length)]
+    : thinkingTexts;
 
   if (!hasText && !thinking) {
     return (
       <p className="mt-2 mb-4 md:mb-6 text-base italic text-base-content/70 text-center">
-        Patiently purring until you speak… 🐈
+        {t("chat.idle")}
       </p>
     );
   }

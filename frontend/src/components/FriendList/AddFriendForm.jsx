@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function AddFriendForm({ onSend }) {
+    const { t } = useTranslation();
     const [username, setUsername] = useState("");
     const [loading, setLoading] = useState(false);
     const [feedback, setFeedback] = useState(null);
@@ -14,7 +16,7 @@ export default function AddFriendForm({ onSend }) {
         try {
             await onSend(trimmed);
             setUsername("");
-            setFeedback({ ok: true, msg: "Request sent!" });
+            setFeedback({ ok: true, msg: t("friends.requestSent") });
         } catch (err) {
             setFeedback({ ok: false, msg: err.message });
         } finally {
@@ -26,27 +28,14 @@ export default function AddFriendForm({ onSend }) {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-1">
             <div className="flex gap-2">
-                <input
-                    type="text"
-                    placeholder="Username…"
-                    value={username}
+                <input type="text" placeholder={t("friends.usernamePlaceholder")} value={username}
                     onChange={e => setUsername(e.target.value)}
-                    className="input input-sm input-bordered flex-1"
-                    disabled={loading}
-                />
-                <button
-                    type="submit"
-                    disabled={loading || !username.trim()}
-                    className="btn btn-sm btn-primary"
-                >
-                    {loading ? <span className="loading loading-spinner loading-xs" /> : "Add"}
+                    className="input input-sm input-bordered flex-1" disabled={loading} />
+                <button type="submit" disabled={loading || !username.trim()} className="btn btn-sm btn-primary">
+                    {loading ? <span className="loading loading-spinner loading-xs" /> : t("friends.add")}
                 </button>
             </div>
-            {feedback && (
-                <p className={`text-xs ${feedback.ok ? "text-success" : "text-error"}`}>
-                    {feedback.msg}
-                </p>
-            )}
+            {feedback && <p className={`text-xs ${feedback.ok ? "text-success" : "text-error"}`}>{feedback.msg}</p>}
         </form>
     );
 }

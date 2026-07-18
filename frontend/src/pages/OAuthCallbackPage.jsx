@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth.js";
 import LayoutBackground from "@/components/Layouts/LayoutBackground.jsx";
 
 export default function OAuthCallbackPage() {
+    const { t } = useTranslation();
     const { loginWithOAuthToken } = useAuth();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -15,16 +17,12 @@ export default function OAuthCallbackPage() {
         hasRun.current = true;
 
         const token = searchParams.get("token");
-
-        if (!token) {
-            setError("Google sign-in failed. Please try again.");
-            return;
-        }
+        if (!token) { setError(t("oauth.error")); return; }
 
         loginWithOAuthToken(token)
             .then(() => navigate("/", { replace: true }))
-            .catch(() => setError("Google sign-in failed. Please try again."));
-    }, [searchParams, loginWithOAuthToken, navigate]);
+            .catch(() => setError(t("oauth.error")));
+    }, [searchParams, loginWithOAuthToken, navigate, t]);
 
     return (
         <LayoutBackground variant="neutral">
@@ -34,17 +32,14 @@ export default function OAuthCallbackPage() {
                         {error ? (
                             <>
                                 <p className="text-error text-sm mb-4">{error}</p>
-                                <button
-                                    className="btn btn-primary"
-                                    onClick={() => navigate("/login", { replace: true })}
-                                >
-                                    Back to login
+                                <button className="btn btn-primary" onClick={() => navigate("/login", { replace: true })}>
+                                    {t("oauth.backToLogin")}
                                 </button>
                             </>
                         ) : (
                             <>
                                 <span className="loading loading-spinner loading-lg mb-4" />
-                                <p className="text-sm opacity-70">Signing you in…</p>
+                                <p className="text-sm opacity-70">{t("oauth.loading")}</p>
                             </>
                         )}
                     </div>

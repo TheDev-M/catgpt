@@ -1,42 +1,25 @@
+import { useTranslation } from "react-i18next";
 import ItemGrid from "./ItemGrid.jsx";
 import InventoryEmptyState from "./InventoryEmptyState.jsx";
 import InventorySkeletonList from "./InventorySkeletonList.jsx";
 
-export default function InventoryDrawer({
-  onClose,
-  items,
-  loading,
-  error,
-  usingId,
-  onUse
-}) {
+export default function InventoryDrawer({ onClose, items, loading, error, usingId, onUse }) {
+  const { t } = useTranslation();
   const filtered = items.filter((i) => (i.availableAmount ?? 0) > 0);
   const hasItems = filtered.length > 0;
 
   return (
     <div id="inventory-drawer" className="h-full flex flex-col">
       <div className="px-4 py-3 border-b border-base-300 flex items-center justify-between">
-        <h2 id="inventory-title" className="font-bold text-lg">Inventory</h2>
-        <button
-          id="inventory-close-button"
-          type="button"
-          className="btn btn-ghost btn-sm"
-          onClick={onClose}
-        >
-          ✕
-        </button>
+        <h2 id="inventory-title" className="font-bold text-lg">{t("inventory.title")}</h2>
+        <button id="inventory-close-button" type="button" className="btn btn-ghost btn-sm" onClick={onClose}>✕</button>
       </div>
 
       <div id="inventory-content" className="flex-1 overflow-y-auto px-4 py-4">
-        {loading ? (
-          <InventorySkeletonList />
-        ) : error ? (
-          <p id="inventory-error" className="opacity-70 text-center text-sm">{error}</p>
-        ) : !hasItems ? (
-          <InventoryEmptyState />
-        ) : (
-          <ItemGrid items={filtered} usingId={usingId} onUse={onUse} />
-        )}
+        {loading ? <InventorySkeletonList />
+          : error ? <p id="inventory-error" className="opacity-70 text-center text-sm">{error}</p>
+          : !hasItems ? <InventoryEmptyState />
+          : <ItemGrid items={filtered} usingId={usingId} onUse={onUse} />}
       </div>
     </div>
   );

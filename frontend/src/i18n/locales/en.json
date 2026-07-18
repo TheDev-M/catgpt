@@ -1,0 +1,139 @@
+{
+  "common": { "save": "Save", "cancel": "Cancel", "back": "Back", "done": "Done", "tryAgain": "Try again", "or": "OR" },
+  "nav": {
+    "catBox": "Cat Box", "goCatBox": "Go to Cat Box",
+    "inventory": "Inventory", "toggleInventory": "Toggle Inventory",
+    "openInventory": "Open Inventory", "closeInventory": "Close Inventory",
+    "friends": "Friends", "friendList": "Friend List", "toggleFriendList": "Toggle Friend List",
+    "openFriendList": "Open Friend List", "closeFriendList": "Close Friend List",
+    "viewCat": "View", "viewCatDetails": "View cat details"
+  },
+  "login": {
+    "title": "Welcome back 🐾",
+    "subtitle": "Log in to chat with your cats.",
+    "username": "Username", "password": "Password",
+    "submitting": "Logging in…", "submit": "Log in",
+    "google": "Continue with Google",
+    "googleError": "Google sign-in failed. Please try again.",
+    "noAccount": "Don't have an account?", "signupLink": "Sign up"
+  },
+  "signup": {
+    "title": "Create your account 😺",
+    "subtitle": "You'll get your own Bob as my gift.",
+    "username": "Username",
+    "aboutLabel": "Tell me about yourself", "aboutOptional": "(optional)",
+    "aboutPlaceholder": "Write something fun for the dev to read…",
+    "aboutHint": "This is just a note for the dev, not visible to others.",
+    "password": "Password", "confirmPassword": "Confirm password",
+    "submitting": "Signing you up…", "submit": "Sign up",
+    "google": "Continue with Google",
+    "hasAccount": "Already have an account?", "loginLink": "Log in"
+  },
+  "home": { "stats": "Stats", "greeting": "Hi, {{name}}", "logout": "Log out", "logOut": "Log out" },
+  "profile": {
+    "back": "← Back",
+    "googleAccount": "Google account", "localAccount": "Local account",
+    "saved": "Saved.",
+    "displayName": "Display name",
+    "displayNameHint": "Shown in the app. Duplicates are allowed.",
+    "displayNameHint2": "Leave blank to display your username instead.",
+    "password": "Password",
+    "passwordHintGoogle": "Not available for Google accounts.",
+    "passwordHintMin": "Minimum 6 characters.",
+    "googleManaged": "Your sign-in is managed by Google.",
+    "currentPassword": "Current password", "newPassword": "New password", "confirm": "Confirm",
+    "updatePassword": "Update password",
+    "passwordMismatch": "New passwords do not match."
+  },
+  "oauth": {
+    "error": "Google sign-in failed. Please try again.",
+    "backToLogin": "Back to login", "loading": "Signing you in…"
+  },
+  "caughtCat": {
+    "heading": "You caught {{article}} {{name}}!",
+    "article_a": "a", "article_an": "an",
+    "nicknameLabel": "Give it a nickname:",
+    "nicknamePlaceholder": "Type a nickname",
+    "descError": "Failed to load breed info. You can still save it."
+  },
+  "catDetails": {
+    "notFound": "Cat not found.", "backToCatBox": "Back to CatBox",
+    "releaseError": "Failed to release cat. Please try again.",
+    "releaseFailed": "Failed to release cat. Please try again.",
+    "profileTitle": "Cat Profile",
+    "profile": "🐾 Cat Profile",
+    "breed": "Breed", "temperaments": "Temperaments", "stats": "Stats",
+    "select": "Select", "rename": "Rename", "release": "Release", "back": "Back",
+    "renameLabel": "Rename your cat", "renamePlaceholder": "New cat name", "renameDone": "Done",
+    "releaseTitle": "Release {{name}}?",
+    "releaseConfirm": "Are you sure you want to release this cat? You won't be able to get it back.",
+    "releaseYes": "Yes, release",
+    "renameError": "Failed to rename. Please try again."
+  },
+  "catBox": {
+    "loadError": "Failed to load cats.", "loadErrorMessage": "Please try again!", "tryAgain": "Please try again!",
+    "noCats": "No cats found.", "allBreeds": "All Breeds",
+    "searchPlaceholder": "Search by name…", "searchLabel": "Filter cats by name", "searchAriaLabel": "Filter cats by name",
+    "selectBreed": "Select cat breed", "breedAriaLabel": "Select cat breed",
+    "noImage": "No image", "selected": "Selected", "selectedBadge": "Selected",
+    "view": "View", "viewDetails": "View cat details"
+  },
+  "status": {
+    "hunger": "Hunger", "mood": "Mood", "health": "Health",
+    "loadError": "Failed to load status.", "currentCat": "Current cat"
+  },
+  "inventory": {
+    "title": "Inventory",
+    "empty": "No items available.", "emptyHint": "Earn or buy items to see them here.",
+    "available": "Available: {{amount}}", "use": "Use", "noIcon": "No icon",
+    "itemGained": "+1 {{name}}"
+  },
+  "friends": {
+    "title": "Friends",
+    "borrowingBanner": "Borrowing a friend's cat", "return": "Return",
+    "friendsTab": "Friends", "requestsTab": "Requests", "sentTab": "Sent",
+    "noFriends": "No friends yet. Send a request above!",
+    "noIncoming": "No incoming requests.", "noOutgoing": "No outgoing requests.",
+    "pending": "Pending", "borrowCat": "Borrow a cat",
+    "cancelRequest": "Cancel request", "removeFriend": "Remove friend",
+    "approve": "Approve", "decline": "Decline",
+    "usernamePlaceholder": "Username…", "add": "Add", "requestSent": "Request sent!",
+    "noCats": "This friend has no cats.",
+    "borrowing": "Now borrowing {{name}}!", "inUse": "In use", "borrow": "Borrow"
+  },
+  "chat": {
+    "loadError": "Failed to load your cat.", "loadErrorMessage": "Please try again!", "tryAgain": "Please try again!",
+    "placeholder": "Asking {{name}}…", "yourCat": "your cat",
+    "idle": "Patiently purring until you speak… 🐈",
+    "send": "Send",
+    "thinking": [
+      "Thinking… 🐾", "Mrrrp… let me think 🐱", "Sniffing for answers… 🐾",
+      "Hold your tuna… I'm thinking 🐟", "Plotting my next purrfect answer… 😼",
+      "*slow blink of concentration* 🐈", "*tail twitching in deep thought* 🐾"
+    ]
+  },
+  "server": {
+    "awake": "Server is awake!", "awakeSubtext": "Loading your cats…",
+    "waking": "Waking up the server…",
+    "wakingSubtext": "The server was sleeping on the free tier. This usually takes 30–60 seconds.",
+    "altSleep": "Sleeping cat"
+  },
+  "landscape": { "title": "Please rotate your device", "message": "CatGPT is designed for portrait mode." },
+  "error": { "generic": "Something went wrong", "defaultTitle": "Something went wrong", "retry": "Try again" },
+  "validation": {
+    "nameRequired": "Name is required.",
+    "nameInvalid": "Only letters, numbers, and spaces allowed. Must start with a letter.",
+    "nameTooShort": "Name must be at least 3 characters.",
+    "nameTooLong": "Name must be less than 16 characters.",
+    "nameDuplicate": "You already have a cat named \"{{name}}\"",
+    "nicknameRequired": "Nickname is required.",
+    "nicknameTooShort": "Must be at least 3 characters.",
+    "nicknameTooLong": "Must be less than 16 characters.",
+    "nicknameInvalid": "Only letters, numbers and spaces allowed. Must start with a letter.",
+    "nicknameDuplicate": "You already have a cat named \"{{name}}\"",
+    "nicknameSaveError": "Failed to save cat. Please try again.",
+    "passwordMismatch": "Passwords do not match.",
+    "loginFailed": "Invalid username or password.",
+    "signupFailed": "Failed to register. Try a different username?"
+  }
+}

@@ -1,7 +1,17 @@
+import { useTranslation } from "react-i18next";
+
 export default function BreedHeader({ name }) {
+  const { t, i18n } = useTranslation();
   if (!name) return null;
-  const article = /^[aeiou]/i.test(name) ? "an" : "a";
+
+  const isEnglish = i18n.language?.startsWith("en");
+  const article = isEnglish
+    ? (/^[aeiou]/i.test(name) ? t("caughtCat.article_an") : t("caughtCat.article_a"))
+    : "";
+
   return (
-    <h2 className="text-2xl font-semibold text-center">You caught {article} {name}!</h2>
+    <h2 className="text-2xl font-semibold text-center">
+      {t("caughtCat.heading", { article, name })}
+    </h2>
   );
 }

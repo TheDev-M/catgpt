@@ -1,0 +1,139 @@
+{
+  "common": { "save": "Guardar", "cancel": "Cancelar", "back": "Volver", "done": "Listo", "tryAgain": "Intentar de nuevo", "or": "O" },
+  "nav": {
+    "catBox": "Caja de gatos", "goCatBox": "Ir a la caja de gatos",
+    "inventory": "Inventario", "toggleInventory": "Alternar inventario",
+    "openInventory": "Abrir inventario", "closeInventory": "Cerrar inventario",
+    "friends": "Amigos", "friendList": "Lista de amigos", "toggleFriendList": "Alternar lista de amigos",
+    "openFriendList": "Abrir lista de amigos", "closeFriendList": "Cerrar lista de amigos",
+    "viewCat": "Ver", "viewCatDetails": "Ver detalles del gato"
+  },
+  "login": {
+    "title": "Bienvenido de vuelta 🐾",
+    "subtitle": "Inicia sesión y chatea con tus gatos.",
+    "username": "Usuario", "password": "Contraseña",
+    "submitting": "Iniciando sesión…", "submit": "Iniciar sesión",
+    "google": "Continuar con Google",
+    "googleError": "Error al iniciar sesión con Google. Por favor, inténtalo de nuevo.",
+    "noAccount": "¿No tienes cuenta?", "signupLink": "Regístrate"
+  },
+  "signup": {
+    "title": "Crea tu cuenta 😺",
+    "subtitle": "Te regalamos tu propio Bob.",
+    "username": "Usuario",
+    "aboutLabel": "Cuéntame sobre ti", "aboutOptional": "(opcional)",
+    "aboutPlaceholder": "Escribe algo divertido para el desarrollador…",
+    "aboutHint": "Es solo una nota para el desarrollador, no es visible para otros.",
+    "password": "Contraseña", "confirmPassword": "Confirmar contraseña",
+    "submitting": "Registrando…", "submit": "Registrarse",
+    "google": "Continuar con Google",
+    "hasAccount": "¿Ya tienes cuenta?", "loginLink": "Iniciar sesión"
+  },
+  "home": { "stats": "Estado", "greeting": "Hola, {{name}}", "logout": "Cerrar sesión", "logOut": "Cerrar sesión" },
+  "profile": {
+    "back": "← Volver",
+    "googleAccount": "Cuenta de Google", "localAccount": "Cuenta local",
+    "saved": "Guardado.",
+    "displayName": "Nombre visible",
+    "displayNameHint": "Visible en la app. Se permiten duplicados.",
+    "displayNameHint2": "Déjalo en blanco para mostrar tu nombre de usuario.",
+    "password": "Contraseña",
+    "passwordHintGoogle": "No disponible para cuentas de Google.",
+    "passwordHintMin": "Mínimo 6 caracteres.",
+    "googleManaged": "Tu inicio de sesión está gestionado por Google.",
+    "currentPassword": "Contraseña actual", "newPassword": "Nueva contraseña", "confirm": "Confirmar",
+    "updatePassword": "Actualizar contraseña",
+    "passwordMismatch": "Las nuevas contraseñas no coinciden."
+  },
+  "oauth": {
+    "error": "Error al iniciar sesión con Google. Por favor, inténtalo de nuevo.",
+    "backToLogin": "Volver al inicio de sesión", "loading": "Iniciando sesión…"
+  },
+  "caughtCat": {
+    "heading": "¡Atrapaste a un {{name}}!",
+    "article_a": "", "article_an": "",
+    "nicknameLabel": "Dale un apodo:",
+    "nicknamePlaceholder": "Escribe un apodo",
+    "descError": "No se pudo cargar la info de la raza. Aún puedes guardarlo."
+  },
+  "catDetails": {
+    "notFound": "Gato no encontrado.", "backToCatBox": "Volver a la caja de gatos",
+    "releaseError": "No se pudo liberar al gato. Por favor, inténtalo de nuevo.",
+    "releaseFailed": "No se pudo liberar al gato. Por favor, inténtalo de nuevo.",
+    "profileTitle": "Perfil del gato",
+    "profile": "🐾 Perfil del gato",
+    "breed": "Raza", "temperaments": "Temperamentos", "stats": "Estado",
+    "select": "Seleccionar", "rename": "Renombrar", "release": "Liberar", "back": "Volver",
+    "renameLabel": "Renombra tu gato", "renamePlaceholder": "Nuevo nombre", "renameDone": "Listo",
+    "releaseTitle": "¿Liberar a {{name}}?",
+    "releaseConfirm": "¿Estás seguro de que quieres liberar a este gato? No podrás recuperarlo.",
+    "releaseYes": "Sí, liberar",
+    "renameError": "Error al renombrar. Por favor, inténtalo de nuevo."
+  },
+  "catBox": {
+    "loadError": "No se pudieron cargar los gatos.", "loadErrorMessage": "¡Por favor, inténtalo de nuevo!", "tryAgain": "¡Por favor, inténtalo de nuevo!",
+    "noCats": "No se encontraron gatos.", "allBreeds": "Todas las razas",
+    "searchPlaceholder": "Buscar por nombre…", "searchLabel": "Filtrar gatos por nombre", "searchAriaLabel": "Filtrar gatos por nombre",
+    "selectBreed": "Seleccionar raza de gato", "breedAriaLabel": "Seleccionar raza de gato",
+    "noImage": "Sin imagen", "selected": "Seleccionado", "selectedBadge": "Seleccionado",
+    "view": "Ver", "viewDetails": "Ver detalles del gato"
+  },
+  "status": {
+    "hunger": "Hambre", "mood": "Humor", "health": "Salud",
+    "loadError": "No se pudo cargar el estado.", "currentCat": "Gato actual"
+  },
+  "inventory": {
+    "title": "Inventario",
+    "empty": "No hay objetos disponibles.", "emptyHint": "Consigue objetos para verlos aquí.",
+    "available": "Disponible: {{amount}}", "use": "Usar", "noIcon": "Sin icono",
+    "itemGained": "+1 {{name}}"
+  },
+  "friends": {
+    "title": "Amigos",
+    "borrowingBanner": "Prestando el gato de un amigo", "return": "Devolver",
+    "friendsTab": "Amigos", "requestsTab": "Solicitudes", "sentTab": "Enviadas",
+    "noFriends": "Aún no tienes amigos. ¡Envía una solicitud!",
+    "noIncoming": "No hay solicitudes entrantes.", "noOutgoing": "No hay solicitudes salientes.",
+    "pending": "Pendiente", "borrowCat": "Pedir gato prestado",
+    "cancelRequest": "Cancelar solicitud", "removeFriend": "Eliminar amigo",
+    "approve": "Aceptar", "decline": "Rechazar",
+    "usernamePlaceholder": "Usuario…", "add": "Añadir", "requestSent": "¡Solicitud enviada!",
+    "noCats": "Este amigo no tiene gatos.",
+    "borrowing": "¡Ahora tienes prestado a {{name}}!", "inUse": "En uso", "borrow": "Pedir prestado"
+  },
+  "chat": {
+    "loadError": "No se pudo cargar tu gato.", "loadErrorMessage": "¡Por favor, inténtalo de nuevo!", "tryAgain": "¡Por favor, inténtalo de nuevo!",
+    "placeholder": "Preguntando a {{name}}…", "yourCat": "tu gato",
+    "idle": "Ronroneando pacientemente hasta que hables… 🐈",
+    "send": "Enviar",
+    "thinking": [
+      "Pensando… 🐾", "Mrrr… déjame pensar 🐱", "Olfateando respuestas… 🐾",
+      "Espera tu atún… estoy pensando 🐟", "Tramando la respuesta perfecta… 😼",
+      "*parpadeo lento de concentración* 🐈", "*cola moviéndose en pensamiento profundo* 🐾"
+    ]
+  },
+  "server": {
+    "awake": "¡El servidor está despierto!", "awakeSubtext": "Cargando tus gatos…",
+    "waking": "Despertando el servidor…",
+    "wakingSubtext": "El servidor estaba durmiendo en el plan gratuito. Suele tardar 30–60 segundos.",
+    "altSleep": "Gato durmiendo"
+  },
+  "landscape": { "title": "Por favor, gira tu dispositivo", "message": "CatGPT está diseñado para modo vertical." },
+  "error": { "generic": "Algo salió mal", "defaultTitle": "Algo salió mal", "retry": "Intentar de nuevo" },
+  "validation": {
+    "nameRequired": "El nombre es obligatorio.",
+    "nameInvalid": "Solo se permiten letras, números y espacios. Debe comenzar con una letra.",
+    "nameTooShort": "El nombre debe tener al menos 3 caracteres.",
+    "nameTooLong": "El nombre debe tener menos de 16 caracteres.",
+    "nameDuplicate": "Ya tienes un gato llamado \"{{name}}\"",
+    "nicknameRequired": "El apodo es obligatorio.",
+    "nicknameTooShort": "Debe tener al menos 3 caracteres.",
+    "nicknameTooLong": "Debe tener menos de 16 caracteres.",
+    "nicknameInvalid": "Solo se permiten letras, números y espacios. Debe comenzar con una letra.",
+    "nicknameDuplicate": "Ya tienes un gato llamado \"{{name}}\"",
+    "nicknameSaveError": "No se pudo guardar el gato. Por favor, inténtalo de nuevo.",
+    "passwordMismatch": "Las contraseñas no coinciden.",
+    "loginFailed": "Usuario o contraseña incorrectos.",
+    "signupFailed": "Error al registrarse. ¿Prueba con otro nombre de usuario?"
+  }
+}

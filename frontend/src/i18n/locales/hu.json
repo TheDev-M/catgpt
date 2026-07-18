@@ -1,0 +1,139 @@
+{
+  "common": { "save": "Mentés", "cancel": "Mégse", "back": "Vissza", "done": "Kész", "tryAgain": "Újra", "or": "VAGY" },
+  "nav": {
+    "catBox": "Macskadoboz", "goCatBox": "Macskadobozhoz",
+    "inventory": "Táska", "toggleInventory": "Táska váltása",
+    "openInventory": "Táska megnyitása", "closeInventory": "Táska bezárása",
+    "friends": "Barátok", "friendList": "Barátok", "toggleFriendList": "Barátlista váltása",
+    "openFriendList": "Barátlista megnyitása", "closeFriendList": "Barátlista bezárása",
+    "viewCat": "Megtekint", "viewCatDetails": "Macska megtekintése"
+  },
+  "login": {
+    "title": "Üdv vissza 🐾",
+    "subtitle": "Lépj be, és csevegj a macskáiddal.",
+    "username": "Felhasználónév", "password": "Jelszó",
+    "submitting": "Bejelentkezés…", "submit": "Bejelentkezés",
+    "google": "Folytatás Google-lal",
+    "googleError": "Google-bejelentkezés sikertelen. Kérlek próbáld újra.",
+    "noAccount": "Még nincs fiókod?", "signupLink": "Regisztráció"
+  },
+  "signup": {
+    "title": "Hozd létre a fiókodat 😺",
+    "subtitle": "Ajándékba kapsz egy saját Bobot.",
+    "username": "Felhasználónév",
+    "aboutLabel": "Mesélj magadról", "aboutOptional": "(opcionális)",
+    "aboutPlaceholder": "Írj valami érdekeset a fejlesztőnek…",
+    "aboutHint": "Ez csak egy üzenet a fejlesztőnek, mások nem látják.",
+    "password": "Jelszó", "confirmPassword": "Jelszó megerősítése",
+    "submitting": "Regisztrálás…", "submit": "Regisztráció",
+    "google": "Folytatás Google-lal",
+    "hasAccount": "Már van fiókod?", "loginLink": "Bejelentkezés"
+  },
+  "home": { "stats": "Állapot", "greeting": "Szia, {{name}}", "logout": "Kijelentkezés", "logOut": "Kijelentkezés" },
+  "profile": {
+    "back": "← Vissza",
+    "googleAccount": "Google fiók", "localAccount": "Helyi fiók",
+    "saved": "Mentve.",
+    "displayName": "Megjelenített név",
+    "displayNameHint": "Az alkalmazásban látható. Duplikátumok megengedettek.",
+    "displayNameHint2": "Ha üres, a felhasználóneved jelenik meg.",
+    "password": "Jelszó",
+    "passwordHintGoogle": "Google fióknál nem elérhető.",
+    "passwordHintMin": "Minimum 6 karakter.",
+    "googleManaged": "A bejelentkezésedet a Google kezeli.",
+    "currentPassword": "Jelenlegi jelszó", "newPassword": "Új jelszó", "confirm": "Megerősítés",
+    "updatePassword": "Jelszó módosítása",
+    "passwordMismatch": "Az új jelszavak nem egyeznek."
+  },
+  "oauth": {
+    "error": "Google-bejelentkezés sikertelen. Kérlek próbáld újra.",
+    "backToLogin": "Vissza a bejelentkezéshez", "loading": "Bejelentkezés…"
+  },
+  "caughtCat": {
+    "heading": "Elfogtál egy {{name}}-t!",
+    "article_a": "", "article_an": "",
+    "nicknameLabel": "Adj neki becenevet:",
+    "nicknamePlaceholder": "Becenév",
+    "descError": "Nem sikerült betölteni a fajtainfót. Ettől még mentheted."
+  },
+  "catDetails": {
+    "notFound": "A macska nem található.", "backToCatBox": "Vissza a Macskadobozhoz",
+    "releaseError": "Nem sikerült elengedni a macskát. Kérlek próbáld újra.",
+    "releaseFailed": "Nem sikerült elengedni a macskát. Kérlek próbáld újra.",
+    "profileTitle": "Macskaprofil",
+    "profile": "🐾 Macskaprofil",
+    "breed": "Fajta", "temperaments": "Jellemvonások", "stats": "Állapot",
+    "select": "Kiválaszt", "rename": "Átnevez", "release": "Elenged", "back": "Vissza",
+    "renameLabel": "Nevezd át a macskádat", "renamePlaceholder": "Új macskanév", "renameDone": "Kész",
+    "releaseTitle": "Elengedje: {{name}}?",
+    "releaseConfirm": "Biztosan el akarod engedni ezt a macskát? Visszahozni nem lehet.",
+    "releaseYes": "Igen, elengedem",
+    "renameError": "Átnevezés sikertelen. Kérlek próbáld újra."
+  },
+  "catBox": {
+    "loadError": "Nem sikerült betölteni a macskákat.", "loadErrorMessage": "Kérlek próbáld újra!", "tryAgain": "Kérlek próbáld újra!",
+    "noCats": "Nem találhatók macskák.", "allBreeds": "Összes fajta",
+    "searchPlaceholder": "Keresés név szerint…", "searchLabel": "Szűrés macska neve szerint", "searchAriaLabel": "Szűrés macska neve szerint",
+    "selectBreed": "Válassz fajtát", "breedAriaLabel": "Válassz fajtát",
+    "noImage": "Nincs kép", "selected": "Kiválasztva", "selectedBadge": "Kiválasztva",
+    "view": "Megtekint", "viewDetails": "Macska megtekintése"
+  },
+  "status": {
+    "hunger": "Éhség", "mood": "Hangulat", "health": "Egészség",
+    "loadError": "Az állapot betöltése sikertelen.", "currentCat": "Jelenlegi macska"
+  },
+  "inventory": {
+    "title": "Táska",
+    "empty": "Nincs elérhető tárgy.", "emptyHint": "Szerezz tárgyakat, hogy megjelenjenek itt.",
+    "available": "Elérhető: {{amount}}", "use": "Használ", "noIcon": "Nincs ikon",
+    "itemGained": "+1 {{name}}"
+  },
+  "friends": {
+    "title": "Barátok",
+    "borrowingBanner": "Kölcsönzött macska", "return": "Visszaad",
+    "friendsTab": "Barátok", "requestsTab": "Kérések", "sentTab": "Elküldve",
+    "noFriends": "Még nincs barátod. Küldj felkérést!",
+    "noIncoming": "Nincs bejövő kérés.", "noOutgoing": "Nincs kimenő kérés.",
+    "pending": "Függőben", "borrowCat": "Macska kölcsönzése",
+    "cancelRequest": "Kérés visszavonása", "removeFriend": "Barát eltávolítása",
+    "approve": "Elfogad", "decline": "Elutasít",
+    "usernamePlaceholder": "Felhasználónév…", "add": "Hozzáad", "requestSent": "Kérés elküldve!",
+    "noCats": "Ennek a barátnak nincs macskája.",
+    "borrowing": "Kölcsönzöd: {{name}}!", "inUse": "Használatban", "borrow": "Kölcsönöz"
+  },
+  "chat": {
+    "loadError": "Nem sikerült betölteni a macskádat.", "loadErrorMessage": "Kérlek próbáld újra!", "tryAgain": "Kérlek próbáld újra!",
+    "placeholder": "Kérdezd {{name}}-t…", "yourCat": "a macskád",
+    "idle": "Türelmesen dorombol, amíg szólsz… 🐈",
+    "send": "Küldés",
+    "thinking": [
+      "Gondolkodik… 🐾", "Mrrr… hadd gondoljam meg 🐱", "Szimatolja a választ… 🐾",
+      "Várd meg a tonhalamig… 🐟", "A tökéletes választ tervezi… 😼",
+      "*lassú pislogás koncentráltan* 🐈", "*farokrázás mély gondolatban* 🐾"
+    ]
+  },
+  "server": {
+    "awake": "A szerver éber!", "awakeSubtext": "Macskáid betöltése…",
+    "waking": "A szerver felébresztése…",
+    "wakingSubtext": "Az ingyenes szerver szundit tartott. Ez általában 30–60 másodpercig tart.",
+    "altSleep": "Alvó macska"
+  },
+  "landscape": { "title": "Forgasd el az eszközöd", "message": "A CatGPT portré módra van tervezve." },
+  "error": { "generic": "Valami hiba történt", "defaultTitle": "Valami hiba történt", "retry": "Újra" },
+  "validation": {
+    "nameRequired": "A név kötelező.",
+    "nameInvalid": "Csak betűk, számok és szóközök engedélyezettek. Betűvel kell kezdődnie.",
+    "nameTooShort": "A névnek legalább 3 karakterből kell állnia.",
+    "nameTooLong": "A névnek 16 karakternél rövidebbnek kell lennie.",
+    "nameDuplicate": "Már van \"{{name}}\" nevű macskád",
+    "nicknameRequired": "Becenév szükséges.",
+    "nicknameTooShort": "Legalább 3 karakter szükséges.",
+    "nicknameTooLong": "Kevesebb mint 16 karakter szükséges.",
+    "nicknameInvalid": "Csak betűk, számok és szóközök engedélyezek. Betűvel kell kezdődnie.",
+    "nicknameDuplicate": "Már van \"{{name}}\" nevű macskád",
+    "nicknameSaveError": "Nem sikerült menteni a macskát. Kérlek próbáld újra.",
+    "passwordMismatch": "A jelszavak nem egyeznek.",
+    "loginFailed": "Érvénytelen felhasználónév vagy jelszó.",
+    "signupFailed": "Regisztráció sikertelen. Próbálj másik felhasználónevet?"
+  }
+}
