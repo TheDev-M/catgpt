@@ -48,7 +48,14 @@ class ChangePasswordRequestValidationTest {
 
     @Test
     void newPasswordExactlyMinLength_shouldPassValidation() {
-        var req = new ChangePasswordRequest("oldpass", "123456");
+        var req = new ChangePasswordRequest("oldpass", "12345678");
         assertThat(validator.validate(req)).isEmpty();
+    }
+
+    @Test
+    void newPasswordBelowMinLength_shouldFailValidation() {
+        var req = new ChangePasswordRequest("oldpass", "1234567");
+        assertThat(validator.validate(req))
+                .anyMatch(v -> v.getPropertyPath().toString().equals("newPassword"));
     }
 }

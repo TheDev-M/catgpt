@@ -1,6 +1,7 @@
 package com.codecool.catgpt.users.api;
 
 import com.codecool.catgpt.borrow.app.BorrowService;
+import com.codecool.catgpt.cats.app.CatService;
 import com.codecool.catgpt.security.CurrentUser;
 import com.codecool.catgpt.users.api.dto.ChangePasswordRequest;
 import com.codecool.catgpt.users.api.dto.SelectedCatUpdateRequest;
@@ -21,6 +22,7 @@ public class UserProfileController {
     private final CurrentUser currentUser;
     private final UserService users;
     private final BorrowService borrowService;
+    private final CatService cats;
 
     @GetMapping
     public UserResponse getCurrentUser() {
@@ -29,18 +31,24 @@ public class UserProfileController {
     }
 
     @PatchMapping("/selected-cat")
-    public UserResponse updateSelectedCat(@RequestBody SelectedCatUpdateRequest req) {
+    public UserResponse updateSelectedCat(@Valid @RequestBody SelectedCatUpdateRequest req) {
         User user = currentUser.get();
-        // Owner priority: if this cat is currently borrowed by a friend, reclaim it first
+
         if (req.selectedCatId() != null) {
+            // Rejects a cat the user neither owns nor borrows, so the selection
+            // cannot be pointed at a stranger's cat.
+            cats.getForUser(req.selectedCatId(), user);
+
+            // Owner priority: if this cat is currently borrowed by a friend, reclaim it first
             borrowService.releaseBorrowIfOwner(user, req.selectedCatId());
         }
+
         users.updateSelectedCat(user, req.selectedCatId());
         return UserResponse.from(user);
     }
 
     @PatchMapping("/nickname")
-    public UserResponse updateNickname(@RequestBody UpdateNicknameRequest req) {
+    public UserResponse updateNickname(@Valid @RequestBody UpdateNicknameRequest req) {
         User user = currentUser.get();
         users.updateNickname(user, req.nickname());
         return UserResponse.from(user);

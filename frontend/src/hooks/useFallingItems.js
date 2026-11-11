@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { randomInt, randomItem } from "@/utils/random.js";
 import { GAME_CONFIG } from "@/config/gameConfig.js";
 import { ITEM_DROPS } from "@/constants/itemDrops.js";
@@ -12,6 +12,7 @@ export function useFallingItems(onItemCaught) {
   const [falling, setFalling] = useState(null);
   const [lastCaught, setLastCaught] = useState(null);
   const keyRef = useRef(0);
+  const timeoutRef = useRef(null);
 
   useEffect(() => {
     const spawn = () => {
@@ -26,18 +27,25 @@ export function useFallingItems(onItemCaught) {
         left: randomInt(20, window.innerWidth - 80)
       });
 
-      setTimeout(spawn, FALL_DURATION + randomInt(MIN_INTERVAL, MAX_INTERVAL));
+      // Each spawn schedules the next one, so the id has to live in a ref —
+      // a local would leave every timeout after the first uncancellable, and
+      // items would keep spawning (and setting state) after unmount.
+      timeoutRef.current = setTimeout(spawn, FALL_DURATION + randomInt(MIN_INTERVAL, MAX_INTERVAL));
     };
 
-    const timeoutId = setTimeout(spawn, randomInt(MIN_INTERVAL, MAX_INTERVAL));
-    return () => clearTimeout(timeoutId);
+    timeoutRef.current = setTimeout(spawn, randomInt(MIN_INTERVAL, MAX_INTERVAL));
+
+    return () => clearTimeout(timeoutRef.current);
   }, []);
 
-  const handleCatch = async () => {
-    if (!falling) return;
+  const handleCatch = useCallback(async () => {
+    let caught;
+    setFalling((current) => {
+      caught = current;
+      return null;
+    });
 
-    const caught = falling;
-    setFalling(null);
+    if (!caught) return;
 
     try {
       await increaseItemAmountByName(caught.name);
@@ -46,12 +54,9 @@ export function useFallingItems(onItemCaught) {
     } catch (e) {
       console.error("Failed to increase item amount", e);
     }
-  };
+  }, [onItemCaught]);
 
-  return {
-    falling,
-    lastCaught,
-    handleCatch,
-    clearLastCaught: () => setLastCaught(null)
-  };
+  const clearLastCaught = useCallback(() => setLastCaught(null), []);
+
+  return { falling, lastCaught, handleCatch, clearLastCaught };
 }

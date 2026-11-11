@@ -1,47 +1,42 @@
-import { apiFetch } from "./apiClient.js";
+import { request } from "./apiClient.js";
 
-async function handleResponse(res, fallback) {
-    if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || fallback);
-    }
-    return res.status === 204 ? null : res.json();
+export function getFriends() {
+    return request("/api/friends", { errorMessage: "Failed to load friends." });
 }
 
-export async function getFriends() {
-    const res = await apiFetch("/api/friends");
-    return handleResponse(res, "Failed to load friends.");
+export function getIncomingRequests() {
+    return request("/api/friends/requests/incoming", { errorMessage: "Failed to load requests." });
 }
 
-export async function getIncomingRequests() {
-    const res = await apiFetch("/api/friends/requests/incoming");
-    return handleResponse(res, "Failed to load requests.");
+export function getOutgoingRequests() {
+    return request("/api/friends/requests/outgoing", { errorMessage: "Failed to load outgoing requests." });
 }
 
-export async function getOutgoingRequests() {
-    const res = await apiFetch("/api/friends/requests/outgoing");
-    return handleResponse(res, "Failed to load outgoing requests.");
-}
-
-export async function sendFriendRequest(username) {
-    const res = await apiFetch("/api/friends/request", {
+export function sendFriendRequest(username) {
+    return request("/api/friends/request", {
         method: "POST",
-        body: JSON.stringify({ username })
+        json: { username },
+        errorMessage: "Failed to send friend request."
     });
-    return handleResponse(res, "Failed to send friend request.");
 }
 
-export async function approveRequest(friendshipId) {
-    const res = await apiFetch(`/api/friends/${friendshipId}/approve`, { method: "PATCH" });
-    return handleResponse(res, "Failed to approve request.");
+export function approveRequest(friendshipId) {
+    return request(`/api/friends/${friendshipId}/approve`, {
+        method: "PATCH",
+        errorMessage: "Failed to approve request."
+    });
 }
 
-export async function declineRequest(friendshipId) {
-    const res = await apiFetch(`/api/friends/${friendshipId}/decline`, { method: "PATCH" });
-    return handleResponse(res, "Failed to decline request.");
+export function declineRequest(friendshipId) {
+    return request(`/api/friends/${friendshipId}/decline`, {
+        method: "PATCH",
+        errorMessage: "Failed to decline request."
+    });
 }
 
-export async function removeFriend(friendshipId) {
-    const res = await apiFetch(`/api/friends/${friendshipId}`, { method: "DELETE" });
-    return handleResponse(res, "Failed to remove friend.");
+export function removeFriend(friendshipId) {
+    return request(`/api/friends/${friendshipId}`, {
+        method: "DELETE",
+        errorMessage: "Failed to remove friend."
+    });
 }

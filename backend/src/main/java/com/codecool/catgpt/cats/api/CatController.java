@@ -29,20 +29,18 @@ public class CatController {
 
     @GetMapping("/{id}")
     public CatResponse get(@PathVariable Long id) {
-        return CatResponse.from(cats.get(id));
+        return CatResponse.from(cats.getForUser(id, currentUser.get()));
     }
 
     @PostMapping
-    public ResponseEntity<CatResponse> create(@RequestBody CatCreateRequest req) {
+    public ResponseEntity<CatResponse> create(@Valid @RequestBody CatCreateRequest req) {
         var created = cats.create(req, currentUser.get());
         return ResponseEntity.status(HttpStatus.CREATED).body(CatResponse.from(created));
     }
 
     @PostMapping("/{id}/stats/{stat}/decrement")
-    public ResponseEntity<?> decrementStat(@PathVariable Long id, @PathVariable String stat) {
-        StatType type = StatType.valueOf(stat.toUpperCase());
-
-        var result = cats.decrementStat(id, type, currentUser.get());
+    public ResponseEntity<?> decrementStat(@PathVariable Long id, @PathVariable StatType stat) {
+        var result = cats.decrementStat(id, stat, currentUser.get());
 
         if (result.isEmpty()) {
             return ResponseEntity.ok(Map.of("status", "released"));

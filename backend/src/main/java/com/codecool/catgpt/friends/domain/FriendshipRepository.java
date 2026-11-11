@@ -10,8 +10,13 @@ import java.util.Optional;
 
 public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
+    // Both sides of every friendship are read when building the response DTO,
+    // so they are join-fetched rather than loaded lazily one row at a time.
+
     @Query("""
         SELECT f FROM Friendship f
+        JOIN FETCH f.requester
+        JOIN FETCH f.receiver
         WHERE f.status = 'APPROVED'
           AND (f.requester = :user OR f.receiver = :user)
         """)
@@ -19,6 +24,8 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
     @Query("""
         SELECT f FROM Friendship f
+        JOIN FETCH f.requester
+        JOIN FETCH f.receiver
         WHERE f.status = 'PENDING'
           AND f.receiver = :user
         """)
@@ -26,6 +33,8 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
     @Query("""
         SELECT f FROM Friendship f
+        JOIN FETCH f.requester
+        JOIN FETCH f.receiver
         WHERE f.status = 'PENDING'
           AND f.requester = :user
         """)
@@ -33,6 +42,8 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
     @Query("""
         SELECT f FROM Friendship f
+        JOIN FETCH f.requester
+        JOIN FETCH f.receiver
         WHERE (f.requester = :a AND f.receiver = :b)
            OR (f.requester = :b AND f.receiver = :a)
         """)

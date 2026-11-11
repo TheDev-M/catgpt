@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useCat } from "@/hooks/useCat.js";
 import { useCats } from "@/hooks/useCats.js";
-import { useSelectedCat } from "@/contexts/SelectedCatContext.jsx";
+import { useSelectedCat } from "@/hooks/useSelectedCat.js";
 import { useRenameForm } from "@/hooks/useRenameForm.js";
 import { deleteCatById } from "@/services/catApi.js";
 

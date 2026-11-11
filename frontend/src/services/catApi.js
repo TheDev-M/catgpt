@@ -1,42 +1,18 @@
-import { apiFetch } from "./apiClient";
+import { request } from "./apiClient.js";
 
-export async function getCatById(id) {
-  const res = await apiFetch(`/api/cats/${id}`);
-
-  if (!res.ok) {
-    const err = new Error("FAILED_TO_LOAD_CAT");
-    err.status = res.status;
-    throw err;
-  }
-  return res.json();
+export function getCatById(id) {
+  return request(`/api/cats/${id}`, { errorMessage: "FAILED_TO_LOAD_CAT" });
 }
 
-export async function createCat({
-  name,
-  breed,
-  temperaments,
-  sourceMetrics,
-  image
-}) {
-  const res = await apiFetch("/api/cats", {
+export function createCat({ name, breed, temperaments, sourceMetrics, image }) {
+  return request("/api/cats", {
     method: "POST",
-    body: JSON.stringify({ name, breed, temperaments, sourceMetrics, image })
+    json: { name, breed, temperaments, sourceMetrics, image }
   });
-
-    if (!res.ok) {
-        let serverMsg = "Request failed.";
-        const data = await res.json();
-        serverMsg = data.message || data.error || serverMsg;
-        throw new Error(serverMsg);
-    }
-
-  return res.json();
 }
 
 export async function getAllCats() {
-  const res = await apiFetch("/api/cats");
-  if (!res.ok) throw new Error("FAILED_TO_LOAD_CATS");
-  const data = await res.json();
+  const data = await request("/api/cats", { errorMessage: "FAILED_TO_LOAD_CATS" });
   return Array.isArray(data) ? data : [];
 }
 
@@ -44,76 +20,42 @@ export function getBreedsFromCats(cats = []) {
   return Array.from(new Set(cats.map((c) => c.breed).filter(Boolean))).sort();
 }
 
-export async function renameCatById(id, newName) {
-  const res = await apiFetch(`/api/cats/${id}`, {
-    method: "PATCH",
-    body: JSON.stringify({ name: newName })
-  });
-
-    if (!res.ok) {
-        let serverMsg = "Request failed.";
-        const data = await res.json();
-        serverMsg = data.message || data.error || serverMsg;
-        throw new Error(serverMsg);
-    }
-
-    return res.json();
+export function renameCatById(id, newName) {
+  return request(`/api/cats/${id}`, { method: "PATCH", json: { name: newName } });
 }
 
-export async function deleteCatById(id) {
-  const res = await apiFetch(`/api/cats/${id}`, { method: "DELETE" });
-  if (!res.ok) throw new Error("Failed to delete cat");
+export function deleteCatById(id) {
+  return request(`/api/cats/${id}`, { method: "DELETE", errorMessage: "Failed to delete cat." });
 }
 
-export async function applyItem(catId, itemId) {
-  const res = await apiFetch(`/api/cats/${catId}/items/${itemId}`, {
-    method: "POST"
+export function applyItem(catId, itemId) {
+  return request(`/api/cats/${catId}/items/${itemId}`, {
+    method: "POST",
+    errorMessage: "Failed to apply item."
   });
-
-  if (!res.ok) {
-    let serverMsg = "Failed to apply item.";
-    try {
-      const data = await res.json();
-      serverMsg = data.message || data.error || serverMsg;
-    } catch { /* ignore parse errors */ }
-    throw new Error(serverMsg);
-  }
-  return res.json();
 }
 
 export async function decreaseCatStat(catId, stat) {
-  const res = await apiFetch(`/api/cats/${catId}/stats/${stat}/decrement`, {
-    method: "POST"
-  });
-
-  if (!res.ok) {
-    throw new Error(`Failed to decrease ${stat}`);
-  }
-
-  const data = await res.json();
-  return data.cat;
-}
-
-export async function chatAsCat(prompt, cat) {
-  const res = await apiFetch("/api/chat", {
+  const data = await request(`/api/cats/${catId}/stats/${stat}/decrement`, {
     method: "POST",
-    body: JSON.stringify({ prompt, cat })
+    errorMessage: `Failed to decrease ${stat}`
   });
-
-  if (!res.ok) throw new Error("CHAT_FAILED");
-
-  const data = await res.json();
-  return data.reply ?? "Zzz… 💤";
+  return data?.cat;
 }
 
-export async function getRandomBreedWithImage() {
-  const res = await apiFetch("/api/breeds/random");
+/**
+ * The cat's persona is built server-side from the stored cat, so only its id
+ * travels with the prompt — stats and temperament are never client-supplied.
+ */
+export async function chatAsCat(prompt, catId) {
+  const data = await request("/api/chat", {
+    method: "POST",
+    json: { prompt, catId },
+    errorMessage: "CHAT_FAILED"
+  });
+  return data?.reply ?? "Zzz… 💤";
+}
 
-  if (!res.ok) {
-    const err = new Error("BREEDS_LOAD_FAILED");
-    err.status = res.status;
-    throw err;
-  }
-
-  return res.json();
+export function getRandomBreedWithImage() {
+  return request("/api/breeds/random", { errorMessage: "BREEDS_LOAD_FAILED" });
 }

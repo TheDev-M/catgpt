@@ -13,7 +13,7 @@ import FriendListButton from "@/components/NavButtons/FriendListButton.jsx";
 import InventoryDrawer from "@/components/Inventory/InventoryDrawer.jsx";
 import FriendListDrawer from "@/components/FriendList/FriendListDrawer.jsx";
 import StatusPanel from "@/components/Status/StatusPanel.jsx";
-import { useSelectedCat } from "@/contexts/SelectedCatContext.jsx";
+import { useSelectedCat } from "@/hooks/useSelectedCat.js";
 import { useCat } from "@/hooks/useCat.js";
 import { useInventory } from "@/hooks/useInventory.js";
 import { useHungerDecay } from "@/hooks/useHungerDecay.js";

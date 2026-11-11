@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useSelectedCat } from "@/contexts/SelectedCatContext.jsx";
+import { useSelectedCat } from "@/hooks/useSelectedCat.js";
 import CatDetailsButton from "@/components/NavButtons/CatDetailsButton.jsx";
 import SelectedBadge from "@/components/Badges/SelectedBadge.jsx";
 

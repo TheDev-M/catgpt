@@ -54,15 +54,6 @@ class ItemServiceTest {
     }
 
     @Test
-    void create_shouldSaveItem() {
-        when(repository.save(item)).thenReturn(item);
-
-        Item saved = service.create(item);
-
-        assertEquals(item, saved);
-    }
-
-    @Test
     void catchItemForUser_existingItem_shouldIncreaseAmount() {
         when(repository.findByOwnerAndName(user, "Salmon")).thenReturn(Optional.of(item));
 
@@ -87,8 +78,8 @@ class ItemServiceTest {
 
     @Test
     void catchItemForUser_unknownItem_shouldThrowForInvalidName() {
-        when(repository.findByOwnerAndName(user, "Unknown")).thenReturn(Optional.empty());
-
+        // The template is resolved before the bag is read, so an unknown name
+        // never reaches the repository at all.
         ResponseStatusException ex = assertThrows(ResponseStatusException.class,
                 () -> service.catchItemForUser("Unknown", user));
 

@@ -1,8 +1,8 @@
-import { createContext, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { loginUser, registerUser, getCurrentUser } from "@/services/userApi.js";
+import { UNAUTHORIZED_EVENT } from "@/services/apiClient.js";
+import { AuthContext } from "./authContextObject.js";
 import { jwtDecode } from "jwt-decode";
-
-export const AuthContext = createContext(null);
 
 const STORAGE_KEY = "auth";
 
@@ -21,7 +21,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const logoutTimerRef = useRef(null);
 
-  const clearAuth = () => {
+  const clearAuth = useCallback(() => {
     setToken(null);
     setUser(null);
     localStorage.removeItem(STORAGE_KEY);
@@ -29,9 +29,9 @@ export function AuthProvider({ children }) {
       clearTimeout(logoutTimerRef.current);
       logoutTimerRef.current = null;
     }
-  };
+  }, []);
 
-  const saveAuth = (newToken, newUser) => {
+  const saveAuth = useCallback((newToken, newUser) => {
     setToken(newToken);
     setUser(newUser || null);
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ token: newToken, user: newUser }));
@@ -47,20 +47,20 @@ export function AuthProvider({ children }) {
         clearAuth();
       }
     }
-  };
+  }, [clearAuth]);
 
-  const login = async (username, password) => {
+  const login = useCallback(async (username, password) => {
     const { token: newToken, user: newUser } = await loginUser(username, password);
     saveAuth(newToken, newUser);
-  };
+  }, [saveAuth]);
 
-  const register = async (username, password, description) => {
+  const register = useCallback(async (username, password, description) => {
     await registerUser(username, password, description);
     const { token: newToken, user: newUser } = await loginUser(username, password);
     saveAuth(newToken, newUser);
-  };
+  }, [saveAuth]);
 
-  const refreshUser = async () => {
+  const refreshUser = useCallback(async () => {
     try {
       const me = await getCurrentUser();
       setUser(me);
@@ -73,12 +73,12 @@ export function AuthProvider({ children }) {
     } catch {
       // ignore — stale user data is acceptable
     }
-  };
+  }, []);
 
   // Completes login for a JWT obtained from the Google OAuth2 redirect
   // (see OAuthCallbackPage). The backend has already verified the user;
   // we just need to fetch their profile and persist the session locally.
-  const loginWithOAuthToken = async (newToken) => {
+  const loginWithOAuthToken = useCallback(async (newToken) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ token: newToken, user: null }));
     try {
       const me = await getCurrentUser();
@@ -87,7 +87,7 @@ export function AuthProvider({ children }) {
       clearAuth();
       throw err;
     }
-  };
+  }, [saveAuth, clearAuth]);
 
   // Restore auth from localStorage on mount
   useEffect(() => {
@@ -113,7 +113,15 @@ export function AuthProvider({ children }) {
     return () => {
       if (logoutTimerRef.current) clearTimeout(logoutTimerRef.current);
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [saveAuth, clearAuth]);
+
+  // The API client raises this whenever the server rejects our token, so a
+  // revoked or server-side-expired session logs out everywhere at once rather
+  // than failing request by request.
+  useEffect(() => {
+    window.addEventListener(UNAUTHORIZED_EVENT, clearAuth);
+    return () => window.removeEventListener(UNAUTHORIZED_EVENT, clearAuth);
+  }, [clearAuth]);
 
   return (
     <AuthContext.Provider

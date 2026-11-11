@@ -1,25 +1,26 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { chatAsCat } from "@/services/catApi.js";
 
-export function useCatChat(cat) {
+export function useCatChat(catId) {
   const [answer, setAnswer] = useState("");
   const [thinking, setThinking] = useState(false);
 
-  const sendPrompt = async (prompt) => {
+  const sendPrompt = useCallback(async (prompt) => {
     const trimmed = prompt?.trim();
-    if (!trimmed || thinking) return;
+    if (!trimmed || !catId || thinking) return;
 
     setThinking(true);
     try {
-      const text = await chatAsCat(trimmed, cat);
-      setAnswer(text);
+      // Only the cat's id goes to the server; it builds the persona from the
+      // stored cat so stats cannot be spoofed by the client.
+      setAnswer(await chatAsCat(trimmed, catId));
     } catch (e) {
       console.error("Chat error:", e);
       setAnswer("mrrp… 💤");
     } finally {
       setThinking(false);
     }
-  };
+  }, [catId, thinking]);
 
   return { answer, thinking, sendPrompt };
 }

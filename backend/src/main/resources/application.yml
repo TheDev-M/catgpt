@@ -1,6 +1,12 @@
 spring:
   profiles:
     active: dev
+
+  jpa:
+    # Lazy associations must be resolved inside a transaction, not lazily during
+    # view rendering — this keeps N+1s visible instead of silently working.
+    open-in-view: false
+
   security:
     oauth2:
       client:
@@ -12,9 +18,13 @@ spring:
 
 app:
   frontend-url: ${FRONTEND_URL:http://localhost:5173}
+  cors:
+    # Comma-separated. Defaults cover local Vite and the Docker frontend.
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173}
 
 groq:
-  api-key: ${GROQ_API_KEY}
+  api-key: ${GROQ_API_KEY:}
+  model: ${GROQ_MODEL:qwen/qwen3.6-27b}
 
 thecatapi:
   api-key: ${THE_CAT_API_KEY:}

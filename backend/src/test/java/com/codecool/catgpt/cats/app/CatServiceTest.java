@@ -36,6 +36,7 @@ class CatServiceTest {
     @Mock private ItemService items;
     @Mock private StatsLimits limits;
     @Mock private StatsCalculator statsCalculator;
+    @Mock private CatSelection catSelection;
     @InjectMocks private CatService service;
 
     private User owner;
@@ -65,13 +66,13 @@ class CatServiceTest {
 
         when(cats.existsByOwnerAndNameIgnoreCase(owner, "Luna")).thenReturn(false);
         when(statsCalculator.fromSourceMetrics(req.sourceMetrics())).thenReturn(stats);
-        when(cats.save(any(Cat.class))).thenAnswer(inv -> inv.getArgument(0));
+        when(cats.saveAndFlush(any(Cat.class))).thenAnswer(inv -> inv.getArgument(0));
 
         Cat result = service.create(req, owner);
 
         assertThat(result.getName()).isEqualTo("Luna");
         assertThat(result.getStats()).isEqualTo(stats);
-        verify(cats).save(any(Cat.class));
+        verify(cats).saveAndFlush(any(Cat.class));
     }
 
     @Test
@@ -88,18 +89,18 @@ class CatServiceTest {
 
     @Test
     void get_existingCat_shouldReturn() {
-        when(cats.findById(1L)).thenReturn(Optional.of(cat));
+        when(cats.findWithDetailsById(1L)).thenReturn(Optional.of(cat));
 
-        Cat result = service.get(1L);
+        Cat result = service.getForUser(1L, owner);
 
         assertThat(result).isSameAs(cat);
     }
 
     @Test
     void get_notFound_shouldThrow404() {
-        when(cats.findById(99L)).thenReturn(Optional.empty());
+        when(cats.findWithDetailsById(99L)).thenReturn(Optional.empty());
 
-        var ex = assertThrows(ResponseStatusException.class, () -> service.get(99L));
+        var ex = assertThrows(ResponseStatusException.class, () -> service.getForUser(99L, owner));
         assertThat(ex.getStatusCode().value()).isEqualTo(404);
     }
 
@@ -107,7 +108,7 @@ class CatServiceTest {
 
     @Test
     void delete_ownedCat_shouldDelete() {
-        when(cats.findById(1L)).thenReturn(Optional.of(cat));
+        when(cats.findWithDetailsById(1L)).thenReturn(Optional.of(cat));
 
         service.delete(1L, owner);
 
@@ -118,7 +119,7 @@ class CatServiceTest {
     void delete_catOwnedByOther_shouldThrow403() {
         var otherOwner = new User();
         ReflectionTestUtils.setField(otherOwner, "id", 2L);
-        when(cats.findById(1L)).thenReturn(Optional.of(cat));
+        when(cats.findWithDetailsById(1L)).thenReturn(Optional.of(cat));
 
         var ex = assertThrows(ResponseStatusException.class, () -> service.delete(1L, otherOwner));
         assertThat(ex.getStatusCode().value()).isEqualTo(403);
@@ -128,8 +129,9 @@ class CatServiceTest {
 
     @Test
     void rename_newName_shouldUpdate() {
-        when(cats.findById(1L)).thenReturn(Optional.of(cat));
+        when(cats.findWithDetailsById(1L)).thenReturn(Optional.of(cat));
         when(cats.existsByOwnerAndNameIgnoreCase(owner, "Whiskers")).thenReturn(false);
+        when(cats.saveAndFlush(any(Cat.class))).thenAnswer(inv -> inv.getArgument(0));
 
         Cat result = service.rename(1L, "Whiskers", owner);
 
@@ -138,7 +140,8 @@ class CatServiceTest {
 
     @Test
     void rename_sameName_shouldNotCheckDuplicate() {
-        when(cats.findById(1L)).thenReturn(Optional.of(cat));
+        when(cats.findWithDetailsById(1L)).thenReturn(Optional.of(cat));
+        when(cats.saveAndFlush(any(Cat.class))).thenAnswer(inv -> inv.getArgument(0));
 
         service.rename(1L, "luna", owner);
 
@@ -147,7 +150,7 @@ class CatServiceTest {
 
     @Test
     void rename_duplicateName_shouldThrowBadRequest() {
-        when(cats.findById(1L)).thenReturn(Optional.of(cat));
+        when(cats.findWithDetailsById(1L)).thenReturn(Optional.of(cat));
         when(cats.existsByOwnerAndNameIgnoreCase(owner, "Bob")).thenReturn(true);
 
         var ex = assertThrows(ResponseStatusException.class, () -> service.rename(1L, "Bob", owner));
@@ -166,7 +169,7 @@ class CatServiceTest {
                 .owner(owner)
                 .build();
 
-        when(cats.findById(1L)).thenReturn(Optional.of(cat));
+        when(cats.findWithDetailsById(1L)).thenReturn(Optional.of(cat));
         when(items.getOwnedItem(2L, owner)).thenReturn(item);
         when(limits.maxHunger()).thenReturn(10);
 
@@ -185,7 +188,7 @@ class CatServiceTest {
                 .owner(owner)
                 .build();
 
-        when(cats.findById(1L)).thenReturn(Optional.of(cat));
+        when(cats.findWithDetailsById(1L)).thenReturn(Optional.of(cat));
         when(items.getOwnedItem(2L, owner)).thenReturn(item);
 
         var ex = assertThrows(ResponseStatusException.class, () -> service.applyItem(1L, 2L, owner));
@@ -196,7 +199,7 @@ class CatServiceTest {
 
     @Test
     void decrementStat_hunger_shouldDecrementAndReturn() {
-        when(cats.findById(1L)).thenReturn(Optional.of(cat));
+        when(cats.findWithDetailsById(1L)).thenReturn(Optional.of(cat));
 
         Optional<Cat> result = service.decrementStat(1L, StatType.HUNGER, owner);
 
@@ -207,7 +210,7 @@ class CatServiceTest {
     @Test
     void decrementStat_healthReachesZero_shouldDeleteAndReturnEmpty() {
         cat.setStats(new Stats(5, 5, 1));
-        when(cats.findById(1L)).thenReturn(Optional.of(cat));
+        when(cats.findWithDetailsById(1L)).thenReturn(Optional.of(cat));
 
         Optional<Cat> result = service.decrementStat(1L, StatType.HEALTH, owner);
 
@@ -219,7 +222,7 @@ class CatServiceTest {
     void decrementStat_defaultCatHealthLow_shouldNotDecrement() {
         cat.setDefaultCat(true);
         cat.setStats(new Stats(5, 5, 5));
-        when(cats.findById(1L)).thenReturn(Optional.of(cat));
+        when(cats.findWithDetailsById(1L)).thenReturn(Optional.of(cat));
 
         Optional<Cat> result = service.decrementStat(1L, StatType.HEALTH, owner);
 

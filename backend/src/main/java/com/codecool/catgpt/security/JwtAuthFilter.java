@@ -1,6 +1,5 @@
 package com.codecool.catgpt.security;
 
-import com.codecool.catgpt.security.AppUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -31,12 +31,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String jwt = resolveToken(request);
 
-        if (jwt == null) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        if (!jwtService.isTokenValid(jwt)) {
+        if (jwt == null || !jwtService.isTokenValid(jwt)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -44,31 +39,36 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String username = jwtService.extractUsername(jwt);
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            var userDetails = userDetailsService.loadUserByUsername(username);
+            try {
+                var userDetails = userDetailsService.loadUserByUsername(username);
 
-            var authToken = new UsernamePasswordAuthenticationToken(
-                    userDetails,
-                    null,
-                    userDetails.getAuthorities()
-            );
-            authToken.setDetails(
-                    new WebAuthenticationDetailsSource().buildDetails(request)
-            );
-            SecurityContextHolder.getContext().setAuthentication(authToken);
+                var authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
+                );
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            } catch (UsernameNotFoundException e) {
+                // Token signed for a user that no longer exists — leave the request anonymous.
+                SecurityContextHolder.clearContext();
+            }
         }
 
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * Reads the Bearer token. There is deliberately no query-parameter fallback:
+     * the SSE stream authenticates with a single-use ticket instead, so a
+     * long-lived JWT never ends up in a URL.
+     */
     private String resolveToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             return authHeader.substring(7);
-        }
-        // Fallback for EventSource (SSE) which cannot send custom headers
-        String queryToken = request.getParameter("token");
-        if (queryToken != null && !queryToken.isBlank()) {
-            return queryToken;
         }
         return null;
     }

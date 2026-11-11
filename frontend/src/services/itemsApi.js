@@ -1,23 +1,13 @@
-import { apiFetch } from "./apiClient";
+import { request } from "./apiClient.js";
 
 export async function getAllItems() {
-  const res = await apiFetch("/api/items");
-  if (!res.ok) throw new Error("FAILED_TO_LOAD_ITEMS");
-  const data = await res.json();
+  const data = await request("/api/items", { errorMessage: "FAILED_TO_LOAD_ITEMS" });
   return Array.isArray(data) ? data : [];
 }
 
-export async function increaseItemAmountByName(name) {
-  const res = await apiFetch(
-    `/api/items/${encodeURIComponent(name)}/increment`,
-    {
-      method: "POST"
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed to increase item amount");
-  }
-
-  return res.json();
+export function increaseItemAmountByName(name) {
+  return request(`/api/items/${encodeURIComponent(name)}/increment`, {
+    method: "POST",
+    errorMessage: "Failed to increase item amount."
+  });
 }

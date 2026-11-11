@@ -8,10 +8,11 @@ import com.codecool.catgpt.common.StatsLimits;
 import com.codecool.catgpt.items.app.ItemService;
 import com.codecool.catgpt.items.domain.StatType;
 import com.codecool.catgpt.users.domain.User;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -26,14 +27,21 @@ public class CatService {
     private final ItemService items;
     private final StatsLimits limits;
     private final StatsCalculator statsCalculator;
+    private final CatSelection catSelection;
 
+    @Transactional(readOnly = true)
     public List<Cat> getAllForOwner(User owner) {
         return cats.findAllByOwner(owner);
     }
 
-    public Cat get(Long id) {
-        return cats.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "Cat not found."));
+    /**
+     * Loads a cat the given user is allowed to see — one they own, or one they
+     * have currently borrowed. Cat ids are sequential, so this must never fall
+     * back to a plain lookup by id.
+     */
+    @Transactional(readOnly = true)
+    public Cat getForUser(Long id, User user) {
+        return getOwnedOrBorrowedCat(id, user);
     }
 
     public Cat create(CatCreateRequest req, User owner) {
@@ -41,22 +49,27 @@ public class CatService {
 
         var stats = statsCalculator.fromSourceMetrics(req.sourceMetrics());
 
-        return cats.save(Cat.builder()
-                .name(req.name())
-                .breed(req.breed())
-                .temperaments(req.temperaments())
-                .stats(stats)
-                .image(req.image())
-                .owner(owner)
-                .defaultCat(false)
-                .build());
+        try {
+            return cats.saveAndFlush(Cat.builder()
+                    .name(req.name())
+                    .breed(req.breed())
+                    .temperaments(req.temperaments())
+                    .stats(stats)
+                    .image(req.image())
+                    .owner(owner)
+                    .defaultCat(false)
+                    .build());
+        } catch (DataIntegrityViolationException e) {
+            // Lost the race against a concurrent create with the same name.
+            throw duplicateName(req.name());
+        }
     }
 
     public void delete(Long id, User owner) {
         var cat = getOwnedCat(id, owner);
+        releaseEveryReferenceTo(cat);
         cats.delete(cat);
     }
-
 
     public Cat rename(Long id, String newName, User owner) {
         var cat = getOwnedCat(id, owner);
@@ -66,9 +79,13 @@ public class CatService {
         }
 
         cat.setName(newName);
-        return cat;
-    }
 
+        try {
+            return cats.saveAndFlush(cat);
+        } catch (DataIntegrityViolationException e) {
+            throw duplicateName(newName);
+        }
+    }
 
     public Cat applyItem(Long catId, Long itemId, User owner) {
         var cat = getOwnedOrBorrowedCat(catId, owner);
@@ -84,7 +101,12 @@ public class CatService {
         return cat;
     }
 
-
+    /**
+     * Lowers one stat by one. A cat whose health reaches zero leaves for good —
+     * every reference to it is cleared before the row is removed.
+     *
+     * @return the updated cat, or empty if the cat was released
+     */
     public Optional<Cat> decrementStat(Long id, StatType stat, User owner) {
         var cat = getOwnedCat(id, owner);
 
@@ -96,6 +118,7 @@ public class CatService {
         cat.setStats(newStats);
 
         if (newStats.getHealth() <= 0) {
+            releaseEveryReferenceTo(cat);
             cats.delete(cat);
             return Optional.empty();
         }
@@ -122,8 +145,25 @@ public class CatService {
         return bob.getId();
     }
 
+    /**
+     * Clears the owner's and any borrower's pointers to this cat, so deleting the
+     * row cannot leave either of them selecting a cat that no longer exists.
+     */
+    private void releaseEveryReferenceTo(Cat cat) {
+        Long catId = cat.getId();
+
+        User borrower = cat.getBorrowedBy();
+        if (borrower != null) {
+            cat.setBorrowedBy(null);
+            cat.setBorrowedAt(null);
+            catSelection.releaseReferences(borrower, catId);
+        }
+
+        catSelection.releaseReferences(cat.getOwner(), catId);
+    }
+
     private Cat getOwnedCat(Long id, User owner) {
-        var cat = cats.findById(id).orElseThrow(() ->
+        var cat = cats.findWithDetailsById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Cat not found."));
 
         if (!cat.getOwner().getId().equals(owner.getId())) {
@@ -134,7 +174,7 @@ public class CatService {
     }
 
     private Cat getOwnedOrBorrowedCat(Long id, User user) {
-        var cat = cats.findById(id).orElseThrow(() ->
+        var cat = cats.findWithDetailsById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Cat not found."));
 
         boolean isOwner = cat.getOwner().getId().equals(user.getId());
@@ -149,8 +189,11 @@ public class CatService {
 
     private void validateUniqueNameForOwner(String name, User owner) {
         if (cats.existsByOwnerAndNameIgnoreCase(owner, name)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You already have a cat named " + name + ".");
+            throw duplicateName(name);
         }
     }
 
+    private static ResponseStatusException duplicateName(String name) {
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, "You already have a cat named " + name + ".");
+    }
 }

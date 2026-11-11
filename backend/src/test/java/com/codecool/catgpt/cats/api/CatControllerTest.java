@@ -3,6 +3,7 @@ package com.codecool.catgpt.cats.api;
 import com.codecool.catgpt.cats.api.dto.CatCreateRequest;
 import com.codecool.catgpt.cats.api.dto.CatRenameRequest;
 import com.codecool.catgpt.cats.api.dto.CatResponse;
+import com.codecool.catgpt.cats.api.dto.SourceMetrics;
 import com.codecool.catgpt.cats.app.CatService;
 import com.codecool.catgpt.cats.domain.Cat;
 import com.codecool.catgpt.cats.domain.Stats;
@@ -17,6 +18,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
@@ -63,19 +65,32 @@ class CatControllerTest {
     }
 
     @Test
-    void get_shouldReturnSingleCat() {
-        when(cats.get(1L)).thenReturn(sampleCat);
+    void get_shouldLoadThroughOwnershipCheck() {
+        when(cats.getForUser(1L, sampleUser)).thenReturn(sampleCat);
 
         CatResponse response = controller.get(1L);
 
         assertNotNull(response);
         assertEquals("Luna", response.name());
         assertEquals("Siamese", response.breed());
+        // The cat must never be fetched by id alone — that would expose every
+        // user's cats to anyone who can guess a sequential id.
+        verify(cats).getForUser(1L, sampleUser);
+    }
+
+    @Test
+    void get_catBelongingToSomeoneElse_shouldPropagateForbidden() {
+        when(cats.getForUser(99L, sampleUser))
+                .thenThrow(new ResponseStatusException(HttpStatus.FORBIDDEN, "This cat does not belong to you."));
+
+        var ex = assertThrows(ResponseStatusException.class, () -> controller.get(99L));
+
+        assertEquals(HttpStatus.FORBIDDEN, ex.getStatusCode());
     }
 
     @Test
     void create_shouldReturnCreatedCat() {
-        var req = new CatCreateRequest("Luna", "Siamese", Set.of("Playful"), null, "img");
+        var req = new CatCreateRequest("Luna", "Siamese", Set.of("Playful"), new SourceMetrics(1, 1, 1), "img");
         when(cats.create(req, sampleUser)).thenReturn(sampleCat);
 
         ResponseEntity<CatResponse> response = controller.create(req);
@@ -89,7 +104,7 @@ class CatControllerTest {
     void decrementStat_validStat_returnsOk() {
         when(cats.decrementStat(1L, StatType.HUNGER, sampleUser)).thenReturn(Optional.of(sampleCat));
 
-        ResponseEntity<?> response = controller.decrementStat(1L, "hunger");
+        ResponseEntity<?> response = controller.decrementStat(1L, StatType.HUNGER);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         Map<?, ?> body = (Map<?, ?>) response.getBody();
@@ -102,16 +117,11 @@ class CatControllerTest {
     void decrementStat_catReleased_returnsReleasedStatus() {
         when(cats.decrementStat(1L, StatType.HEALTH, sampleUser)).thenReturn(Optional.empty());
 
-        ResponseEntity<?> response = controller.decrementStat(1L, "health");
+        ResponseEntity<?> response = controller.decrementStat(1L, StatType.HEALTH);
 
         Map<?, ?> body = (Map<?, ?>) response.getBody();
         assertNotNull(body);
         assertEquals("released", body.get("status"));
-    }
-
-    @Test
-    void decrementStat_invalidStat_throwsIllegalArgument() {
-        assertThrows(IllegalArgumentException.class, () -> controller.decrementStat(1L, "invalid"));
     }
 
     @Test

@@ -3,6 +3,7 @@ import { AuthProvider } from "@/contexts/AuthContext.jsx";
 import { SelectedCatProvider } from "@/contexts/SelectedCatContext.jsx";
 import { useServerWakeup } from "@/hooks/useServerWakeup.js";
 import ServerWakeupPopup from "@/components/ServerWakeupPopup.jsx";
+import ErrorBoundary from "@/components/Errors/ErrorBoundary.jsx";
 
 import RequireAuth from "@/routes/RequireAuth.jsx";
 import LandscapeBlocker from "@/components/LandscapeBlocker.jsx";
@@ -44,10 +45,12 @@ function AppShell() {
 
 export default function App() {
     return (
-        <AuthProvider>
-            <SelectedCatProvider>
-                <AppShell />
-            </SelectedCatProvider>
-        </AuthProvider>
+        <ErrorBoundary>
+            <AuthProvider>
+                <SelectedCatProvider>
+                    <AppShell />
+                </SelectedCatProvider>
+            </AuthProvider>
+        </ErrorBoundary>
     );
 }

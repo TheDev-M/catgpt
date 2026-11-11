@@ -40,8 +40,31 @@ class UserRegisterRequestValidationTest {
     }
 
     @Test
-    void bothBlank_shouldHaveTwoViolations() {
+    void bothBlank_shouldViolateBothFields() {
         var req = new UserRegisterRequest("", "", null);
-        assertThat(validator.validate(req)).hasSize(2);
+        var violations = validator.validate(req);
+
+        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("username"));
+        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("password"));
+    }
+
+    @Test
+    void shortPassword_shouldFailValidation() {
+        var req = new UserRegisterRequest("alice", "short", null);
+        assertThat(validator.validate(req))
+                .anyMatch(v -> v.getPropertyPath().toString().equals("password"));
+    }
+
+    @Test
+    void usernameWithAccentedLetters_shouldPassValidation() {
+        var req = new UserRegisterRequest("józsef", "correct-horse", null);
+        assertThat(validator.validate(req)).isEmpty();
+    }
+
+    @Test
+    void usernameWithSpaces_shouldFailValidation() {
+        var req = new UserRegisterRequest("not a username", "correct-horse", null);
+        assertThat(validator.validate(req))
+                .anyMatch(v -> v.getPropertyPath().toString().equals("username"));
     }
 }

@@ -7,12 +7,13 @@ import com.codecool.catgpt.users.api.dto.UserRegisterRequest;
 import com.codecool.catgpt.users.domain.AuthProvider;
 import com.codecool.catgpt.users.domain.User;
 import com.codecool.catgpt.users.infra.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.SecureRandom;
@@ -30,18 +31,25 @@ public class UserService {
     private final CatService catService;
 
     public User register(UserRegisterRequest req) {
-        if (users.existsByUsername(req.username())) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already taken.");
+        String username = req.username().trim();
+
+        if (users.existsByUsername(username)) {
+            throw usernameTaken();
         }
 
         var user = User.builder()
-                .username(req.username().trim())
+                .username(username)
                 .passwordHash(passwordEncoder.encode(req.password()))
                 .description(req.description())
                 .lastVisit(null)
                 .build();
 
-        users.save(user);
+        try {
+            users.saveAndFlush(user);
+        } catch (DataIntegrityViolationException e) {
+            // Lost the race against a concurrent registration of the same username.
+            throw usernameTaken();
+        }
 
         var catId = catService.createDefaultCatForUser(user);
         updateSelectedCat(user, catId);
@@ -51,9 +59,7 @@ public class UserService {
 
     public User authenticate(UserLoginRequest req) {
         var user = users.findByUsername(req.username())
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.UNAUTHORIZED, "Invalid username or password."
-                ));
+                .orElseThrow(UserService::invalidCredentials);
 
         if (user.getPasswordHash() == null) {
             throw new ResponseStatusException(
@@ -63,9 +69,7 @@ public class UserService {
         }
 
         if (!passwordEncoder.matches(req.password(), user.getPasswordHash())) {
-            throw new ResponseStatusException(
-                    HttpStatus.UNAUTHORIZED, "Invalid username or password."
-            );
+            throw invalidCredentials();
         }
 
         recordVisit(user);
@@ -107,6 +111,10 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Stamps the visit, and docks a point of health if the user has been away for
+     * at least an hour. A failure here must never block the login itself.
+     */
     private void recordVisit(User user) {
         Instant now = Instant.now();
         Instant lastVisit = user.getLastVisit();
@@ -117,13 +125,14 @@ public class UserService {
             if (selectedCatId != null) {
                 try {
                     catService.decrementStat(selectedCatId, StatType.HEALTH, user); // return value intentionally ignored
-                } catch (Exception e) {
-                    log.warn("Failed to decrease cat health on login for user {}: {}", user.getUsername(), e.getMessage());
+                } catch (ResponseStatusException e) {
+                    // The selected cat is gone or no longer theirs — nothing to decay.
+                    log.debug("Skipped login health decay for user {}: {}", user.getUsername(), e.getReason());
                 }
             }
         }
 
-        user.setLastVisit(Instant.now());
+        user.setLastVisit(now);
     }
 
     private String generateUsernameFromEmail(String email) {
@@ -151,7 +160,6 @@ public class UserService {
         return candidate;
     }
 
-    @Transactional
     public void updateSelectedCat(User user, Long catId) {
         user.setSelectedCatId(catId);
         users.save(user);
@@ -172,5 +180,14 @@ public class UserService {
         user.setPasswordHash(passwordEncoder.encode(newPassword));
         users.save(user);
     }
-}
 
+    private static ResponseStatusException usernameTaken() {
+        return new ResponseStatusException(HttpStatus.CONFLICT, "Username already taken.");
+    }
+
+    /** Deliberately identical for unknown user and wrong password, so the endpoint
+     *  cannot be used to enumerate accounts. */
+    private static ResponseStatusException invalidCredentials() {
+        return new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password.");
+    }
+}
