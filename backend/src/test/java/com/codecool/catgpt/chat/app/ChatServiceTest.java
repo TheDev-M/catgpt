@@ -88,7 +88,48 @@ class ChatServiceTest {
         assertThat(systemPrompt).contains("Siamese");
         assertThat(systemPrompt).contains("Playful");
         assertThat(systemPrompt).contains("1/10 (starving)");
-        assertThat(systemPrompt).contains("9/10 (extra affectionate)");
+        assertThat(systemPrompt).contains("9/10 (purry and clingy)");
+    }
+
+    // --- staying in character ---
+    // The model drifted into romantic register ("my love", and in Hungarian
+    // "kedvesem"/"szerelmem") because the prompt described the cat's mood with the
+    // abstract word "affectionate" in three reinforcing places. These pin the fix.
+
+    @Test
+    void theMoodDescriptionNamesBehaviourRatherThanAffection() {
+        String systemPrompt = systemPromptOf(
+                serviceFor("openai/gpt-oss-120b").buildRequestBody(cat(5, 9), "hi", null));
+
+        assertThat(systemPrompt).doesNotContain("affectionate");
+    }
+
+    @Test
+    void forbidsTermsOfEndearmentInEveryLanguage() {
+        String systemPrompt = systemPromptOf(
+                serviceFor("openai/gpt-oss-120b").buildRequestBody(cat(5, 9), "szia", "hu"));
+
+        assertThat(systemPrompt).contains("NEVER use pet names or terms of endearment");
+        // The ban has to generalise, or it only blocks the English examples listed.
+        assertThat(systemPrompt).contains("in ANY language");
+    }
+
+    @Test
+    void anchorsTheCatAsAnAnimalRatherThanAPartnerOrAssistant() {
+        String systemPrompt = systemPromptOf(
+                serviceFor("openai/gpt-oss-120b").buildRequestBody(cat(5, 5), "hi", null));
+
+        assertThat(systemPrompt).contains("not a person, not an assistant, and not anyone's partner");
+    }
+
+    @Test
+    void framesApiTemperamentsAsCatTraits() {
+        // TheCatAPI hands back words like "Affectionate" verbatim, which is part of
+        // what pulled the model toward human sentiment.
+        String systemPrompt = systemPromptOf(
+                serviceFor("openai/gpt-oss-120b").buildRequestBody(cat(5, 5), "hi", null));
+
+        assertThat(systemPrompt).contains("these are cat traits, not human feelings");
     }
 
     @Test
