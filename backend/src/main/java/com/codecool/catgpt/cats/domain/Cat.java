@@ -12,7 +12,12 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @Entity
-@Table(name = "cats")
+@Table(
+    name = "cats",
+    // Backs the application-level duplicate-name check, which on its own is a
+    // read-then-write race between two concurrent creates.
+    uniqueConstraints = @UniqueConstraint(name = "uk_cats_owner_name", columnNames = {"owner_id", "name"})
+)
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Cat extends BaseEntity {
 

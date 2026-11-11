@@ -1,3 +1,4 @@
+// Only variables prefixed with VITE_ are exposed to client code by Vite.
 export const GAME_CONFIG = {
   runningCat: {
     runDuration: Number(import.meta.env.VITE_RUN_DURATION_MS) || 4000,
@@ -14,6 +15,6 @@ export const GAME_CONFIG = {
   },
 
   decay: {
-    hungerInterval: Number(import.meta.env.HUNGER_INTERVAL_MS) || 60 * 1000
+    hungerInterval: Number(import.meta.env.VITE_HUNGER_INTERVAL_MS) || 60 * 1000
   }
 };

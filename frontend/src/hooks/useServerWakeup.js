@@ -9,30 +9,35 @@ export function useServerWakeup() {
 
   useEffect(() => {
     let cancelled = false;
+    let awakeTimer;
 
     const threshold = setTimeout(() => {
       if (!cancelled) setStatus("waking");
     }, WAKEUP_THRESHOLD_MS);
 
     fetch(`${API_BASE_URL}/actuator/health`)
+      // A failed health check still means we are done waiting. Without this the
+      // rejection propagates through .finally() as an unhandled rejection.
+      .catch(() => null)
       .finally(() => {
         clearTimeout(threshold);
-        if (!cancelled) {
-          setStatus((prev) => {
-            if (prev === "waking") {
-              setTimeout(() => {
-                if (!cancelled) setStatus("done");
-              }, AWAKE_DISPLAY_MS);
-              return "awake";
-            }
-            return "done";
-          });
-        }
+        if (cancelled) return;
+
+        setStatus((prev) => {
+          if (prev === "waking") {
+            awakeTimer = setTimeout(() => {
+              if (!cancelled) setStatus("done");
+            }, AWAKE_DISPLAY_MS);
+            return "awake";
+          }
+          return "done";
+        });
       });
 
     return () => {
       cancelled = true;
       clearTimeout(threshold);
+      clearTimeout(awakeTimer);
     };
   }, []);
 

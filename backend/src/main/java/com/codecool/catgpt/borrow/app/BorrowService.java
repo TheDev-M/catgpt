@@ -1,6 +1,7 @@
 package com.codecool.catgpt.borrow.app;
 
 import com.codecool.catgpt.borrow.api.dto.BorrowableCatResponse;
+import com.codecool.catgpt.cats.app.CatSelection;
 import com.codecool.catgpt.cats.domain.Cat;
 import com.codecool.catgpt.cats.infra.CatRepository;
 import com.codecool.catgpt.friends.domain.Friendship;
@@ -19,6 +20,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class BorrowService {
 
@@ -26,7 +28,9 @@ public class BorrowService {
     private final FriendshipRepository friendships;
     private final UserRepository users;
     private final SseService sse;
+    private final CatSelection catSelection;
 
+    @Transactional(readOnly = true)
     public List<BorrowableCatResponse> getFriendCats(User me, Long friendshipId) {
         Friendship friendship = getApprovedFriendship(me, friendshipId);
         User friend = getOtherUser(friendship, me);
@@ -36,7 +40,6 @@ public class BorrowService {
                 .toList();
     }
 
-    @Transactional
     public void borrowCat(User me, Long catId) {
         Cat cat = cats.findById(catId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cat not found."));
@@ -55,7 +58,9 @@ public class BorrowService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "The owner is currently using this cat.");
         }
 
-        // First-come-first-served: cannot borrow if already borrowed
+        // First-come-first-served: cannot borrow if already borrowed.
+        // The @Version column on BaseEntity settles a genuine race here — the loser
+        // gets an optimistic lock failure rather than silently stealing the cat.
         if (cat.getBorrowedBy() != null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "This cat is already borrowed by someone else.");
         }
@@ -82,7 +87,6 @@ public class BorrowService {
         sse.send(cat.getOwner().getId(), "cat-borrow-update", "borrowed");
     }
 
-    @Transactional
     public void returnCat(User me, Long catId) {
         Cat cat = cats.findByIdAndBorrowedBy(catId, me)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not borrowing this cat."));
@@ -91,11 +95,7 @@ public class BorrowService {
         cat.setBorrowedAt(null);
         cats.save(cat);
 
-        if (catId.equals(me.getSelectedCatId())) {
-            me.setSelectedCatId(resolveFallback(me));
-            me.setLastOwnCatId(null);
-            users.save(me);
-        }
+        catSelection.releaseReferences(me, catId);
 
         // Notify the owner
         sse.send(cat.getOwner().getId(), "cat-borrow-update", "returned");
@@ -105,7 +105,6 @@ public class BorrowService {
      * Called when an owner selects one of their own cats that is currently borrowed.
      * The borrow is released and the borrower loses the cat.
      */
-    @Transactional
     public void releaseBorrowIfOwner(User owner, Long catId) {
         Cat cat = cats.findById(catId).orElse(null);
         if (cat == null || !cat.getOwner().getId().equals(owner.getId())) return;
@@ -116,27 +115,10 @@ public class BorrowService {
         cat.setBorrowedAt(null);
         cats.save(cat);
 
-        if (catId.equals(borrower.getSelectedCatId())) {
-            borrower.setSelectedCatId(resolveFallback(borrower));
-            borrower.setLastOwnCatId(null);
-            users.save(borrower);
-        }
+        catSelection.releaseReferences(borrower, catId);
 
         // Notify the borrower that they lost the cat
         sse.send(borrower.getId(), "cat-borrow-update", "reclaimed");
-    }
-
-    private Long resolveFallback(User user) {
-        Long last = user.getLastOwnCatId();
-        if (last != null && cats.findById(last).map(c -> c.getOwner().getId().equals(user.getId())).orElse(false)) {
-            return last;
-        }
-        return cats.findAllByOwner(user).stream()
-                .filter(Cat::isDefaultCat)
-                .map(Cat::getId)
-                .findFirst()
-                .or(() -> cats.findAllByOwner(user).stream().map(Cat::getId).findFirst())
-                .orElse(null);
     }
 
     private Friendship getApprovedFriendship(User me, Long friendshipId) {

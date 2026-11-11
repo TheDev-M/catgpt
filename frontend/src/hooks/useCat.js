@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getCatById } from "@/services/catApi.js";
 
 export function useCat(id) {
@@ -45,7 +45,10 @@ export function useCat(id) {
     };
   }, [id]);
 
-  const updateCat = (updatedCat) => {
+  // Memoised because consumers put it in effect dependency arrays — notably
+  // useHungerDecay, whose interval would otherwise be torn down and restarted
+  // on every render, so the decay tick could never actually elapse.
+  const updateCat = useCallback((updatedCat) => {
     if (!updatedCat) return;
 
     if (typeof updatedCat === "function") {
@@ -53,6 +56,7 @@ export function useCat(id) {
     } else {
       setCat(updatedCat);
     }
-  };
+  }, []);
+
   return { cat, loading, error, updateCat };
 }
