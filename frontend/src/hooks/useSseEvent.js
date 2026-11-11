@@ -12,13 +12,18 @@ import { requestSseTicket } from "@/services/userApi.js";
 let eventSource = null;
 let connecting = null;
 let subscriberCount = 0;
+let reconnectTimer = null;
+let reconnectAttempt = 0;
 const listeners = new Map(); // eventName -> Set<handler>
 const forwarders = new Map(); // eventName -> the single listener attached to the EventSource
+
+const FIRST_RETRY_MS = 1000;
+const MAX_RETRY_MS = 30000;
 
 async function openStream() {
   if (eventSource && eventSource.readyState !== EventSource.CLOSED) return eventSource;
   if (connecting) return connecting;
-  if (!getAuthToken()) return null;
+  if (!getAuthToken() || subscriberCount <= 0) return null;
 
   connecting = (async () => {
     try {
@@ -27,14 +32,22 @@ async function openStream() {
         `${API_BASE_URL}/api/sse/events?ticket=${encodeURIComponent(ticket)}`
       );
 
-      // A ticket is single-use, so the browser's automatic retry cannot
-      // reconnect on its own — close the stream and let the next subscriber
-      // (or a remount) open a fresh one with a new ticket.
+      source.onopen = () => {
+        reconnectAttempt = 0;
+      };
+
+      // Tickets are single-use, so EventSource's own retry — which reuses the
+      // same URL — always fails. The stream has to be reopened with a fresh
+      // ticket instead, or live updates silently stop after the first blip.
       source.onerror = () => {
-        if (source.readyState === EventSource.CLOSED) {
-          if (eventSource === source) eventSource = null;
+        if (source.readyState !== EventSource.CLOSED) return;
+
+        source.close();
+        if (eventSource === source) {
+          eventSource = null;
           forwarders.clear();
         }
+        scheduleReconnect();
       };
 
       eventSource = source;
@@ -47,6 +60,7 @@ async function openStream() {
       return source;
     } catch (e) {
       console.error("Failed to open live updates:", e);
+      scheduleReconnect();
       return null;
     } finally {
       connecting = null;
@@ -54,6 +68,22 @@ async function openStream() {
   })();
 
   return connecting;
+}
+
+/**
+ * Backs off exponentially, so a server that is down (or asleep on a free tier)
+ * is not hammered with a ticket request every second.
+ */
+function scheduleReconnect() {
+  if (reconnectTimer || subscriberCount <= 0) return;
+
+  const delay = Math.min(FIRST_RETRY_MS * 2 ** reconnectAttempt, MAX_RETRY_MS);
+  reconnectAttempt++;
+
+  reconnectTimer = setTimeout(() => {
+    reconnectTimer = null;
+    if (subscriberCount > 0) openStream();
+  }, delay);
 }
 
 function attachForwarder(eventName) {
@@ -68,6 +98,9 @@ function attachForwarder(eventName) {
 }
 
 function closeStream() {
+  clearTimeout(reconnectTimer);
+  reconnectTimer = null;
+  reconnectAttempt = 0;
   eventSource?.close();
   eventSource = null;
   connecting = null;

@@ -137,6 +137,33 @@ class CatApiIntegrationTest {
     }
 
     @Test
+    void aRejectedStreamTicketAnswers401EvenForAnEventStreamClient() throws Exception {
+        // EventSource only accepts text/event-stream. Answering a bad ticket with
+        // the usual JSON error body fails content negotiation, so the client saw a
+        // 406 and the server logged a stack trace for a routine expired ticket.
+        mvc.perform(get("/api/sse/events")
+                        .param("ticket", "not-a-real-ticket")
+                        .accept(MediaType.TEXT_EVENT_STREAM))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void aStreamTicketCannotBeRedeemedTwice() throws Exception {
+        String token = registerAndLogin();
+
+        String body = mvc.perform(post("/api/sse/ticket").header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        String ticket = json.readTree(body).get("ticket").asText();
+
+        mvc.perform(get("/api/sse/events").param("ticket", ticket).accept(MediaType.TEXT_EVENT_STREAM))
+                .andExpect(status().isOk());
+
+        mvc.perform(get("/api/sse/events").param("ticket", ticket).accept(MediaType.TEXT_EVENT_STREAM))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     void renamingToADuplicateNameIsRejected() throws Exception {
         String token = registerAndLogin();
         long catId = firstCatId(token);
