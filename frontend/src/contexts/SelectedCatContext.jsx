@@ -1,8 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/hooks/useAuth.js";
 import { getCurrentUser, updateSelectedCat } from "@/services/userApi.js";
-
-export const SelectedCatContext = createContext(null);
+import { SelectedCatContext } from "./selectedCatContextObject.js";
 
 function getStorageKey(userId) {
   return userId ? `selectedCatId:${userId}` : null;
@@ -13,14 +12,17 @@ export function SelectedCatProvider({ children }) {
   const [selectedCatId, setSelectedCatIdState] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const userId = user?.id;
+
   useEffect(() => {
-    if (!isAuthenticated || !user) {
+    if (!isAuthenticated || !userId) {
       setSelectedCatIdState(null);
       setLoading(false);
       return;
     }
 
-    const storageKey = getStorageKey(user.id);
+    let cancelled = false;
+    const storageKey = getStorageKey(userId);
     const stored = storageKey ? localStorage.getItem(storageKey) : null;
 
     if (stored) {
@@ -29,21 +31,32 @@ export function SelectedCatProvider({ children }) {
 
     getCurrentUser()
       .then((currentUser) => {
+        if (cancelled) return;
         const id = currentUser.selectedCatId ? String(currentUser.selectedCatId) : null;
         setSelectedCatIdState(id);
         if (storageKey && id) {
           localStorage.setItem(storageKey, id);
         }
       })
-      .catch((err) => console.error("Failed to load selected cat:", err))
-      .finally(() => setLoading(false));
-  }, [isAuthenticated, user]);
+      .catch((err) => {
+        if (!cancelled) console.error("Failed to load selected cat:", err);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
 
-  const setSelectedCatId = async (id) => {
+    return () => {
+      cancelled = true;
+    };
+    // Keyed on the user's id, not the user object: refreshUser() replaces that
+    // object on every call, which would re-trigger this fetch indefinitely.
+  }, [isAuthenticated, userId]);
+
+  const setSelectedCatId = useCallback(async (id) => {
     const idStr = id ? String(id) : null;
     setSelectedCatIdState(idStr);
 
-    const storageKey = getStorageKey(user?.id);
+    const storageKey = getStorageKey(userId);
     if (storageKey) {
       if (idStr) {
         localStorage.setItem(storageKey, idStr);
@@ -59,19 +72,11 @@ export function SelectedCatProvider({ children }) {
         console.error("Failed to update selected cat:", err);
       }
     }
-  };
+  }, [userId, isAuthenticated]);
 
   return (
     <SelectedCatContext.Provider value={{ selectedCatId, setSelectedCatId, loading }}>
       {children}
     </SelectedCatContext.Provider>
   );
-}
-
-export function useSelectedCat() {
-  const ctx = useContext(SelectedCatContext);
-  if (!ctx) {
-    throw new Error("useSelectedCat must be used within <SelectedCatProvider>");
-  }
-  return ctx;
 }

@@ -1,6 +1,6 @@
 package com.codecool.catgpt.items.api;
 
-import com.codecool.catgpt.items.api.dto.ItemCreateRequest;
+import com.codecool.catgpt.common.RateLimiter;
 import com.codecool.catgpt.items.api.dto.ItemResponse;
 import com.codecool.catgpt.items.app.ItemService;
 import com.codecool.catgpt.items.domain.*;
@@ -12,30 +12,35 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.Duration;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ItemControllerTest {
 
-    @Mock
-    private ItemService service;
+    @Mock private ItemService service;
+    @Mock private CurrentUser currentUser;
+    @Mock private RateLimiter rateLimiter;
 
-    @Mock
-    private CurrentUser currentUser;
-
-    @InjectMocks
-    private ItemController controller;
+    @InjectMocks private ItemController controller;
 
     private Item sampleItem;
+    private User sampleUser;
 
     @BeforeEach
     void setUp() {
-        User sampleUser = new User();
+        sampleUser = new User();
+        sampleUser.setUsername("alice");
         lenient().when(currentUser.get()).thenReturn(sampleUser);
+        lenient().when(rateLimiter.tryAcquire(anyString(), anyInt(), any(Duration.class))).thenReturn(true);
 
         sampleItem = Item.builder()
                 .name("Salmon")
@@ -59,28 +64,6 @@ class ItemControllerTest {
     }
 
     @Test
-    void create_shouldReturnCreatedItem() {
-        ItemCreateRequest.EffectRequest effectReq =
-                new ItemCreateRequest.EffectRequest(StatType.HUNGER, 4);
-
-        ItemCreateRequest req = new ItemCreateRequest(
-                "Salmon",
-                ItemCategory.FOOD,
-                effectReq,
-                3
-        );
-
-        when(service.create(any(Item.class))).thenReturn(sampleItem);
-
-        ItemResponse response = controller.create(req);
-
-        assertNotNull(response);
-        assertEquals("Salmon", response.name());
-        assertEquals(ItemCategory.FOOD, response.category());
-        assertEquals(4, response.effect().amount());
-    }
-
-    @Test
     void incrementByName_existingItem_shouldIncreaseAmount() {
         when(service.catchItemForUser(eq("Salmon"), any(User.class))).thenReturn(sampleItem);
 
@@ -94,12 +77,24 @@ class ItemControllerTest {
     @Test
     void incrementByName_unknownItem_shouldThrow() {
         when(service.catchItemForUser(eq("Unknown"), any(User.class)))
-                .thenThrow(new RuntimeException("Unknown item: Unknown"));
+                .thenThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Unknown item: Unknown."));
 
-        Exception exception = assertThrows(RuntimeException.class, () ->
+        var exception = assertThrows(ResponseStatusException.class, () ->
                 controller.incrementByName("Unknown")
         );
 
-        assertTrue(exception.getMessage().contains("Unknown item"));
+        assertTrue(exception.getReason().contains("Unknown item"));
+    }
+
+    @Test
+    void incrementByName_overRateLimit_shouldReject() {
+        when(rateLimiter.tryAcquire(anyString(), anyInt(), any(Duration.class))).thenReturn(false);
+
+        var exception = assertThrows(ResponseStatusException.class, () ->
+                controller.incrementByName("Salmon")
+        );
+
+        assertEquals(HttpStatus.TOO_MANY_REQUESTS, exception.getStatusCode());
+        verify(service, never()).catchItemForUser(anyString(), any(User.class));
     }
 }

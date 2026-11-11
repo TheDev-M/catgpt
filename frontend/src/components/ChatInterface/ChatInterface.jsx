@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { useSelectedCat } from "@/contexts/SelectedCatContext.jsx";
+import { useSelectedCat } from "@/hooks/useSelectedCat.js";
 import { useCatChat } from "@/hooks/useCatChat.js";
 import { useMoodDecay } from "@/hooks/useMoodDecay.js";
 
@@ -12,7 +12,7 @@ import ChatAnswer from "./ChatAnswer.jsx";
 export default function ChatInterface({ cat, loading, error, onCatUpdated }) {
   const { t } = useTranslation();
   const { selectedCatId } = useSelectedCat();
-  const { answer, thinking, sendPrompt } = useCatChat(cat);
+  const { answer, thinking, sendPrompt } = useCatChat(cat?.id);
   const decreaseMood = useMoodDecay(selectedCatId, onCatUpdated);
 
   if (loading) {

@@ -1,80 +1,53 @@
-import { apiFetch } from "./apiClient.js";
+import { request } from "./apiClient.js";
 
-export async function loginUser(username, password) {
-    const res = await apiFetch("/api/auth/login", {
+export function loginUser(username, password) {
+    return request("/api/auth/login", {
         method: "POST",
-        body: JSON.stringify({ username, password })
+        json: { username, password },
+        errorMessage: "LOGIN_FAILED"
     });
-
-    if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || data.error || "LOGIN_FAILED");
-    }
-
-    return res.json();
 }
 
-export async function registerUser(username, password, description) {
-    const res = await apiFetch("/api/auth/register", {
+export function registerUser(username, password, description) {
+    return request("/api/auth/register", {
         method: "POST",
-        body: JSON.stringify({ username, password, description })
+        json: { username, password, description },
+        errorMessage: "REGISTER_FAILED"
     });
-
-    if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || data.error || "REGISTER_FAILED");
-    }
-
-    return res.json();
 }
 
-export async function getCurrentUser() {
-    const res = await apiFetch("/api/user/me");
-
-    if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || data.error || "FAILED_TO_LOAD_USER");
-    }
-
-    return res.json();
+export function getCurrentUser() {
+    return request("/api/user/me", { errorMessage: "FAILED_TO_LOAD_USER" });
 }
 
-export async function updateSelectedCat(selectedCatId) {
-    const res = await apiFetch("/api/user/me/selected-cat", {
+export function updateSelectedCat(selectedCatId) {
+    return request("/api/user/me/selected-cat", {
         method: "PATCH",
-        body: JSON.stringify({ selectedCatId })
+        json: { selectedCatId },
+        errorMessage: "FAILED_TO_UPDATE_SELECTED_CAT"
     });
-
-    if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || data.error || "FAILED_TO_UPDATE_SELECTED_CAT");
-    }
-
-    return res.json();
 }
 
-export async function updateNickname(nickname) {
-    const res = await apiFetch("/api/user/me/nickname", {
+export function updateNickname(nickname) {
+    return request("/api/user/me/nickname", {
         method: "PATCH",
-        body: JSON.stringify({ nickname })
+        json: { nickname },
+        errorMessage: "Failed to update nickname."
     });
-
-    if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || "Failed to update nickname.");
-    }
-
-    return res.json();
 }
 
-export async function changePassword(currentPassword, newPassword) {
-    const res = await apiFetch("/api/user/me/password", {
+export function changePassword(currentPassword, newPassword) {
+    return request("/api/user/me/password", {
         method: "PATCH",
-        body: JSON.stringify({ currentPassword, newPassword })
+        json: { currentPassword, newPassword },
+        errorMessage: "Failed to change password."
     });
+}
 
-    if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.message || "Failed to change password.");
-    }
+/** Exchanges the session token for a short-lived, single-use SSE stream ticket. */
+export function requestSseTicket() {
+    return request("/api/sse/ticket", {
+        method: "POST",
+        errorMessage: "Failed to open live updates."
+    });
 }

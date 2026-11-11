@@ -1,0 +1,51 @@
+# In-memory configuration for integration tests.
+#
+# Flyway is off and the schema comes from the entities here, so the suite needs
+# no Docker or local Postgres. The production path (Flyway migration +
+# ddl-auto: validate) is exercised against a real Postgres on startup.
+spring:
+  datasource:
+    url: jdbc:h2:mem:catgpt;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    # Mirrors production: anything relying on lazy loading outside a transaction
+    # will fail here rather than in the browser.
+    open-in-view: false
+
+  flyway:
+    enabled: false
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test-client-id
+            client-secret: test-client-secret
+            scope: openid,email,profile
+
+jwt:
+  secret: test-secret-key-that-is-at-least-32-characters-long
+  expiration: 3600000
+
+app:
+  frontend-url: http://localhost:5173
+  cors:
+    allowed-origins: http://localhost:5173
+
+groq:
+  api-key: test-key
+
+thecatapi:
+  api-key: ""
+
+catgpt:
+  stats:
+    max-hunger: 10
+    max-mood: 10
+    max-health: 10

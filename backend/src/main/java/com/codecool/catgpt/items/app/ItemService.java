@@ -3,10 +3,10 @@ package com.codecool.catgpt.items.app;
 import com.codecool.catgpt.items.domain.*;
 import com.codecool.catgpt.items.infra.ItemRepository;
 import com.codecool.catgpt.users.domain.User;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -17,32 +17,31 @@ import java.util.List;
 public class ItemService {
     private final ItemRepository items;
 
+    @Transactional(readOnly = true)
     public List<Item> getAllForOwner(User owner) {
         return items.findAllByOwner(owner);
     }
 
-    public Item create(Item item) {
-        return items.save(item);
-    }
-
+    /**
+     * Adds one of the named item to the user's bag. The item's category, icon and
+     * effect all come from {@link ItemTemplate}, never from the caller.
+     */
     public Item catchItemForUser(String itemName, User owner) {
-        var existing = items.findByOwnerAndName(owner, itemName);
-        if (existing.isPresent()) {
-            var item = existing.get();
-            item.increaseOne();
-            return item;
-        }
-
         var template = ItemTemplate.fromName(itemName)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
                         "Unknown item: " + itemName + "."
                 ));
 
-        var newItem = template.createOwnedItem(owner);
-        return items.save(newItem);
+        return items.findByOwnerAndName(owner, template.getDisplayName())
+                .map(existing -> {
+                    existing.increaseOne();
+                    return existing;
+                })
+                .orElseGet(() -> items.save(template.createOwnedItem(owner)));
     }
 
+    @Transactional(readOnly = true)
     public Item getOwnedItem(Long id, User owner) {
         var item = items.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found."));
