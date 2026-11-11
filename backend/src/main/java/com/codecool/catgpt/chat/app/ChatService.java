@@ -13,6 +13,7 @@ import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -51,8 +52,8 @@ public class ChatService {
         this.restClient = RestClient.builder().requestFactory(requestFactory).build();
     }
 
-    public String chat(Cat cat, String prompt) {
-        Map<String, Object> body = buildRequestBody(cat, prompt);
+    public String chat(Cat cat, String prompt, String languageTag) {
+        Map<String, Object> body = buildRequestBody(cat, prompt, languageTag);
 
         GroqResponse response;
         try {
@@ -83,12 +84,13 @@ public class ChatService {
      * {@code include_reasoning} instead. Picking per model keeps GROQ_MODEL
      * swappable without a second setting to remember.
      */
-    Map<String, Object> buildRequestBody(Cat cat, String prompt) {
+    Map<String, Object> buildRequestBody(Cat cat, String prompt, String languageTag) {
         Map<String, Object> body = new LinkedHashMap<>();
 
         body.put("model", model);
         body.put("messages", List.of(
-                Map.of("role", "system", "content", buildSystemPrompt(cat)),
+                Map.of("role", "system", "content",
+                        buildSystemPrompt(cat, ChatLanguage.fromTag(languageTag))),
                 Map.of("role", "user", "content", prompt)
         ));
 
@@ -108,7 +110,7 @@ public class ChatService {
         return model != null && model.startsWith("openai/gpt-oss");
     }
 
-    private String buildSystemPrompt(Cat cat) {
+    private String buildSystemPrompt(Cat cat, Optional<ChatLanguage> uiLanguage) {
         String name = cat.getName() != null ? cat.getName() : "the cat";
         String breed = cat.getBreed() != null ? cat.getBreed() : "unknown";
 
@@ -148,8 +150,25 @@ public class ChatService {
             - If mood 3–4: mildly snarky tone.
             - If mood ≥ 8: affectionate, purry, cute.
 
+            **Language:**
+            - ALWAYS reply in the same language the human's message is written in.
+            - Cat noises (meow, mrrp, purr) and emojis work in every language — keep using them.%s
+
             Keep replies short, 1–2 sentences max."""
-                .formatted(name, breed, temperamentText, hunger, hungerDesc, mood, moodDesc);
+                .formatted(name, breed, temperamentText, hunger, hungerDesc, mood, moodDesc,
+                        languageFallbackRule(uiLanguage));
+    }
+
+    /**
+     * Mirroring the human's language fails on prompts too short to identify —
+     * a greeting, an emoji, "ok". The UI's locale is a better guess than English
+     * in those cases, so it is offered as a tie-breaker only.
+     */
+    private static String languageFallbackRule(Optional<ChatLanguage> uiLanguage) {
+        return uiLanguage
+                .map(language -> "\n- If their message is too short to tell (a greeting, an emoji, \"ok\"), reply in %s."
+                        .formatted(language.displayName()))
+                .orElse("");
     }
 
     record GroqResponse(List<Choice> choices) {
