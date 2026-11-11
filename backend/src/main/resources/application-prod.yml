@@ -32,7 +32,14 @@ jwt:
 app:
   frontend-url: ${FRONTEND_URL}
   cors:
-    allowed-origins: ${CORS_ALLOWED_ORIGINS}
+    # Defaults to the frontend origin, which is already required here for the
+    # OAuth redirect — so a deployment that worked before needs no new variable.
+    # Set CORS_ALLOWED_ORIGINS (comma-separated) to allow further origins.
+    #
+    # This must keep a default: a bare ${CORS_ALLOWED_ORIGINS} makes the property
+    # present but unresolvable, which defeats the fallback on the @Value that
+    # reads it and fails the whole context at startup.
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:${FRONTEND_URL}}
 
 catgpt:
   stats:

@@ -269,7 +269,7 @@ Nginx proxies `/api/*` to the backend, so there are no CORS issues in the Docker
 | `GOOGLE_CLIENT_ID` | | Google OAuth client ID (OAuth login disabled without it) |
 | `GOOGLE_CLIENT_SECRET` | | Google OAuth client secret |
 | `FRONTEND_URL` | ✅ | Frontend origin used for OAuth redirect, e.g. `http://localhost:5173` |
-| `CORS_ALLOWED_ORIGINS` | ✅ | Comma-separated origins allowed to call the API from a browser |
+| `CORS_ALLOWED_ORIGINS` | | Extra comma-separated origins allowed to call the API from a browser. Defaults to `FRONTEND_URL`, which is all a single-frontend deployment needs. |
 | `THE_CAT_API_KEY` | | Optional — raises The Cat API rate limits |
 
 ### Database schema
