@@ -81,7 +81,7 @@ The project is built with a Spring Boot REST API, a React + Vite frontend, and a
 
 | Service | Purpose |
 |---|---|
-| [Groq](https://groq.com) — `qwen/qwen3.6-27b` | Powers cat chat responses |
+| [Groq](https://groq.com) — `openai/gpt-oss-120b` | Powers cat chat responses |
 | [The Cat API](https://thecatapi.com) | Breed info and images for new cats |
 | Google OAuth 2.0 | Social sign-in |
 
@@ -265,7 +265,7 @@ Nginx proxies `/api/*` to the backend, so there are no CORS issues in the Docker
 | `JWT_SECRET` | ✅ | HS256 signing key — **minimum 32 characters** (`openssl rand -base64 48`) |
 | `JWT_EXPIRATION` | | Token lifetime in ms (default `3600000` = 1 h) |
 | `GROQ_API_KEY` | ✅ | API key from [console.groq.com](https://console.groq.com) |
-| `GROQ_MODEL` | | Chat model override (default `qwen/qwen3.6-27b`) |
+| `GROQ_MODEL` | | Chat model override (default `openai/gpt-oss-120b`) |
 | `GOOGLE_CLIENT_ID` | | Google OAuth client ID (OAuth login disabled without it) |
 | `GOOGLE_CLIENT_SECRET` | | Google OAuth client secret |
 | `FRONTEND_URL` | ✅ | Frontend origin used for OAuth redirect, e.g. `http://localhost:5173` |
@@ -395,7 +395,7 @@ catgpt/
 ## Roadmap
 
 - [x] Core virtual pet mechanics (hunger, mood, health)
-- [x] AI-powered chat (Groq / qwen3.6-27b)
+- [x] AI-powered chat (Groq / gpt-oss-120b)
 - [x] JWT authentication + Google OAuth
 - [x] Item collection and inventory system
 - [x] Multi-cat management and cat box

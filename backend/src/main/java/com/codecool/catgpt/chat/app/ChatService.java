@@ -10,6 +10,7 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 
 import java.time.Duration;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +22,13 @@ public class ChatService {
     /** Returned when the model is unreachable, so an upstream outage reads as a sleepy cat. */
     private static final String FALLBACK_REPLY = "Zzz… 💤";
 
+    /**
+     * Production-tier model. Groq's preview tier is explicitly "evaluation only",
+     * and preview models are the ones that get retired — which is how the previous
+     * default (qwen/qwen3.6-27b, shut down 2026-09-14) ended up broken.
+     */
+    private static final String DEFAULT_MODEL = "openai/gpt-oss-120b";
+
     private final RestClient restClient;
     private final String groqApiKey;
     private final String groqUrl;
@@ -29,7 +37,7 @@ public class ChatService {
     public ChatService(
             @Value("${groq.api-key}") String groqApiKey,
             @Value("${groq.url:https://api.groq.com/openai/v1/chat/completions}") String groqUrl,
-            @Value("${groq.model:qwen/qwen3.6-27b}") String model,
+            @Value("${groq.model:" + DEFAULT_MODEL + "}") String model,
             @Value("${groq.timeout-seconds:20}") long timeoutSeconds
     ) {
         this.groqApiKey = groqApiKey;
@@ -44,14 +52,7 @@ public class ChatService {
     }
 
     public String chat(Cat cat, String prompt) {
-        Map<String, Object> body = Map.of(
-                "model", model,
-                "reasoning_format", "hidden",
-                "messages", List.of(
-                        Map.of("role", "system", "content", buildSystemPrompt(cat)),
-                        Map.of("role", "user", "content", prompt)
-                )
-        );
+        Map<String, Object> body = buildRequestBody(cat, prompt);
 
         GroqResponse response;
         try {
@@ -71,6 +72,40 @@ public class ChatService {
             return FALLBACK_REPLY;
         }
         return response.choices().getFirst().message().content();
+    }
+
+    /**
+     * Builds the completion request.
+     * <p>
+     * Groq has two mutually exclusive switches for keeping a reasoning model's
+     * chain of thought out of the reply, and sending the wrong one is rejected:
+     * the GPT-OSS models do not accept {@code reasoning_format} and use
+     * {@code include_reasoning} instead. Picking per model keeps GROQ_MODEL
+     * swappable without a second setting to remember.
+     */
+    Map<String, Object> buildRequestBody(Cat cat, String prompt) {
+        Map<String, Object> body = new LinkedHashMap<>();
+
+        body.put("model", model);
+        body.put("messages", List.of(
+                Map.of("role", "system", "content", buildSystemPrompt(cat)),
+                Map.of("role", "user", "content", prompt)
+        ));
+
+        if (isGptOss(model)) {
+            body.put("include_reasoning", false);
+            // Replies are one or two sentences in a cat voice — deep reasoning
+            // buys nothing here and costs both latency and output tokens.
+            body.put("reasoning_effort", "low");
+        } else {
+            body.put("reasoning_format", "hidden");
+        }
+
+        return body;
+    }
+
+    private static boolean isGptOss(String model) {
+        return model != null && model.startsWith("openai/gpt-oss");
     }
 
     private String buildSystemPrompt(Cat cat) {
