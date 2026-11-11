@@ -258,16 +258,27 @@ Nginx proxies `/api/*` to the backend, so there are no CORS issues in the Docker
 
 | Variable | Required | Description |
 |---|---|---|
+| `SPRING_PROFILES_ACTIVE` | ✅ | Use `prod` with a real database — runs Flyway migrations and validates the schema |
 | `SPRING_DATASOURCE_URL` | ✅ | JDBC URL, e.g. `jdbc:postgresql://localhost:5432/catgpt` |
 | `SPRING_DATASOURCE_USERNAME` | ✅ | Database user |
 | `SPRING_DATASOURCE_PASSWORD` | ✅ | Database password |
-| `JWT_SECRET` | ✅ | HS256 signing key — **minimum 32 characters** |
+| `JWT_SECRET` | ✅ | HS256 signing key — **minimum 32 characters** (`openssl rand -base64 48`) |
 | `JWT_EXPIRATION` | | Token lifetime in ms (default `3600000` = 1 h) |
 | `GROQ_API_KEY` | ✅ | API key from [console.groq.com](https://console.groq.com) |
+| `GROQ_MODEL` | | Chat model override (default `qwen/qwen3.6-27b`) |
 | `GOOGLE_CLIENT_ID` | | Google OAuth client ID (OAuth login disabled without it) |
 | `GOOGLE_CLIENT_SECRET` | | Google OAuth client secret |
 | `FRONTEND_URL` | ✅ | Frontend origin used for OAuth redirect, e.g. `http://localhost:5173` |
+| `CORS_ALLOWED_ORIGINS` | ✅ | Comma-separated origins allowed to call the API from a browser |
 | `THE_CAT_API_KEY` | | Optional — raises The Cat API rate limits |
+
+### Database schema
+
+The schema is owned by Flyway migrations in `backend/src/main/resources/db/migration`,
+and the `prod` profile runs Hibernate in `validate` mode so entity drift fails at startup
+rather than silently altering tables. Databases created before migrations were introduced
+are baselined automatically on first run. **Any entity change needs a matching
+`V<n>__description.sql`.**
 
 ### Frontend (`frontend/.env`)
 
@@ -288,19 +299,32 @@ Nginx proxies `/api/*` to the backend, so there are no CORS issues in the Docker
 
 ## Running Tests
 
-The backend has 140 unit tests covering services, controllers, domain logic, security, and validation.
+The backend has 151 tests — unit tests across services, controllers, domain logic,
+security and validation, plus end-to-end tests that run against the real filter chain
+and an in-memory database (no Docker required).
 
 ```bash
 cd backend
 ./mvnw test
 ```
 
+The frontend has 29 tests covering the API client, validation and the data hooks.
+
+```bash
+cd frontend
+npm test
+```
+
 Test coverage includes:
 
 | Layer | What's tested |
 |---|---|
+| `CatApiIntegrationTest` | authorization enforced over HTTP (no cross-user cat reads, selects or chats), validation rejections, lazy-loading safety with `open-in-view` disabled |
 | `CatService` | create, get, delete, rename, applyItem, decrementStat, default cat creation |
-| `ItemService` | getAllForOwner, create, catchItemForUser, getOwnedItem (ownership + 404) |
+| `ItemService` | getAllForOwner, catchItemForUser, getOwnedItem (ownership + 404) |
+| `apiClient` (FE) | auth header, preflight-avoiding headers, error extraction, non-JSON error bodies, 401 handling |
+| `validateCatName` (FE) | length/charset rules including non-ASCII names, duplicate detection |
+| `useCat` / `useHungerDecay` (FE) | fetch lifecycle, stable callback identity, decay surviving re-renders |
 | `UserService` | register, authenticate, OAuth login, visit recording, health decrement on login, nickname + password update |
 | `FriendService` | send/approve/decline/remove friendships, conflict and ownership checks |
 | `JwtService` | generate, extract, valid/expired/tampered/garbage token, short-secret guard |

@@ -8,6 +8,7 @@ import com.codecool.catgpt.sse.SseService;
 import com.codecool.catgpt.users.domain.User;
 import com.codecool.catgpt.users.infra.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class FriendService {
 
@@ -23,25 +25,27 @@ public class FriendService {
     private final UserRepository users;
     private final SseService sse;
 
+    @Transactional(readOnly = true)
     public List<FriendResponse> getFriends(User me) {
         return friendships.findApprovedFriendships(me).stream()
                 .map(f -> FriendResponse.from(f, me))
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<FriendResponse> getIncomingRequests(User me) {
         return friendships.findIncomingRequests(me).stream()
                 .map(f -> FriendResponse.from(f, me))
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<FriendResponse> getOutgoingRequests(User me) {
         return friendships.findOutgoingRequests(me).stream()
                 .map(f -> FriendResponse.from(f, me))
                 .toList();
     }
 
-    @Transactional
     public FriendResponse sendRequest(User me, String targetUsername) {
         if (me.getUsername().equalsIgnoreCase(targetUsername)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You cannot send a friend request to yourself.");
@@ -63,7 +67,13 @@ public class FriendService {
                 .receiver(target)
                 .build();
 
-        FriendResponse saved = FriendResponse.from(friendships.save(friendship), me);
+        FriendResponse saved;
+        try {
+            saved = FriendResponse.from(friendships.saveAndFlush(friendship), me);
+        } catch (DataIntegrityViolationException e) {
+            // Lost the race against a concurrent request between the same two users.
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "A friend request is already pending.");
+        }
 
         // Notify the receiver that they have a new incoming request
         sse.send(target.getId(), "friend-update", "request");
@@ -71,7 +81,6 @@ public class FriendService {
         return saved;
     }
 
-    @Transactional
     public FriendResponse approveRequest(User me, Long friendshipId) {
         Friendship f = getAndValidateReceiver(me, friendshipId);
         if (f.getStatus() != FriendshipStatus.PENDING) {
@@ -86,7 +95,6 @@ public class FriendService {
         return saved;
     }
 
-    @Transactional
     public void declineRequest(User me, Long friendshipId) {
         Friendship f = getAndValidateReceiver(me, friendshipId);
         if (f.getStatus() != FriendshipStatus.PENDING) {
@@ -99,7 +107,6 @@ public class FriendService {
         sse.send(f.getRequester().getId(), "friend-update", "declined");
     }
 
-    @Transactional
     public void removeFriend(User me, Long friendshipId) {
         Friendship f = friendships.findById(friendshipId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Friendship not found."));

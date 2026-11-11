@@ -49,7 +49,7 @@ class FriendServiceTest {
     void sendRequest_validTarget_shouldCreatePendingFriendship() {
         when(users.findByUsername("bob")).thenReturn(Optional.of(other));
         when(friendships.findBetween(me, other)).thenReturn(Optional.empty());
-        when(friendships.save(any(Friendship.class))).thenAnswer(inv -> {
+        when(friendships.saveAndFlush(any(Friendship.class))).thenAnswer(inv -> {
             Friendship f = inv.getArgument(0);
             ReflectionTestUtils.setField(f, "id", 10L);
             return f;
@@ -60,7 +60,7 @@ class FriendServiceTest {
         assertThat(result.status()).isEqualTo(FriendshipStatus.PENDING);
         assertThat(result.username()).isEqualTo("bob");
         assertThat(result.isRequester()).isTrue();
-        verify(friendships).save(any(Friendship.class));
+        verify(friendships).saveAndFlush(any(Friendship.class));
     }
 
     @Test
