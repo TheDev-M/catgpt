@@ -44,6 +44,7 @@ public class ChatController {
         // from a cat this user owns or has borrowed.
         var cat = cats.getForUser(request.catId(), me);
 
-        return ResponseEntity.ok(new ChatResponse(chatService.chat(cat, request.prompt())));
+        return ResponseEntity.ok(
+                new ChatResponse(chatService.chat(cat, request.prompt(), request.language())));
     }
 }

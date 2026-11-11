@@ -46,11 +46,15 @@ export async function decreaseCatStat(catId, stat) {
 /**
  * The cat's persona is built server-side from the stored cat, so only its id
  * travels with the prompt — stats and temperament are never client-supplied.
+ *
+ * The cat replies in whatever language it was spoken to in. `language` is the
+ * UI locale, used by the server only to break a tie when the prompt is too
+ * short to identify.
  */
-export async function chatAsCat(prompt, catId) {
+export async function chatAsCat(prompt, catId, language) {
   const data = await request("/api/chat", {
     method: "POST",
-    json: { prompt, catId },
+    json: { prompt, catId, language },
     errorMessage: "CHAT_FAILED"
   });
   return data?.reply ?? "Zzz… 💤";

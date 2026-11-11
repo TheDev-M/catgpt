@@ -119,6 +119,24 @@ class CatApiIntegrationTest {
     }
 
     @Test
+    void chatRejectsAnOverlongLanguageTag() throws Exception {
+        // Also proves the optional `language` field actually binds from the JSON
+        // body — a typo in the field name would otherwise go unnoticed, since the
+        // service-level tests pass it directly.
+        String token = registerAndLogin();
+        long catId = firstCatId(token);
+
+        mvc.perform(post("/api/chat")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json.writeValueAsString(java.util.Map.of(
+                                "prompt", "szia",
+                                "catId", catId,
+                                "language", "x".repeat(17)))))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     void renamingToADuplicateNameIsRejected() throws Exception {
         String token = registerAndLogin();
         long catId = firstCatId(token);

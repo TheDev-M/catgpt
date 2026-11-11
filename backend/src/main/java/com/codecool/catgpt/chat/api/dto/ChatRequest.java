@@ -14,5 +14,13 @@ public record ChatRequest(
         String prompt,
 
         @NotNull(message = "Cat id is required")
-        Long catId
+        Long catId,
+
+        /**
+         * The UI's current locale (a BCP-47 tag such as "hu" or "de-DE"), used only
+         * as a fallback when the prompt itself is too short to identify a language.
+         * Optional, and silently ignored if it is not one of the supported locales.
+         */
+        @Size(max = 16, message = "Language tag must be at most 16 characters")
+        String language
 ) {}
